@@ -3,7 +3,7 @@ Cryptoanalysis
 
 All this grown on my deepest love to all kind of math-based algorythms and,
 especially, cryptographic ones. Or, if you are fan of the naked truth, on 
-fear of nearest test).
+fear of nearest test.
 
 Intro
 -------
