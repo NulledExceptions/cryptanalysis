@@ -5,7 +5,10 @@ russian = ("а", "б", "в", "г", "д", "е", "ж", "з",
            "и", "к", "л", "м", "н", "о", "п", "р",
            "с", "т", "у", "ф", "х", "ц", "ч", "ш",
            "щ", "ь", "ъ", "ы", "э", "ю", "я")
-
+english = ("a", "b", "c", "d", "e", "f", "g", "h",
+           "i", "j", "k", "l", "m", "n", "o", "p",
+           "q", "r", "s", "t", "y", "v", "w", "x",
+           "y", "z")
 
 def statistic(encrypted_message):
     '''
@@ -20,7 +23,7 @@ def statistic(encrypted_message):
                 stat[char] = 1
     return sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
-def euclid(a,b):
+def euclid(a, b):
     '''
     Euclid's Algorithm.
     '''

@@ -30,8 +30,9 @@ def statistic(encrypted_message):
     return sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
 def create_sample(message):
-    '''Remove all whitespaces and transform letters into lower case.
-    With perl-style s/// it could look much more nicer.'''
+    '''
+    Remove all whitespaces and transform letters into lower case.
+    '''
     text = ''
     sample = ''
     for line in message:
@@ -47,8 +48,10 @@ def create_sample(message):
     return text
 
 def sauna_check(crypted_message):
-    '''You know something about L. S. Kazarin? No?
-    Then just forget about this function.'''
+    '''
+    You know something about L. S. Kazarin? No?
+    Then just forget about this function.
+    '''
     for i in range(0, len(crypted_message) - 6):
         for (x1, x2, x5) in izip(crypted_message[i],
                                  crypted_message[i - 1:],
