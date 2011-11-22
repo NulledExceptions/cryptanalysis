@@ -16,15 +16,15 @@ class affine_cipher(unittest.TestCase):
                          affine.create_sample('''BHJUH NBULS VULRU SLYXH
                                                  ONUUN BWNUA XUSNL DYJSS'''))
 
-    def test_affine_guess(self):
-        affine.options.lang = 'en'
-        self.assertEqual(('saunaisnotknowntobea', 23,  21),
-                          affine.guess(self.affine_crypted))
+    #def test_affine_guess(self):
+        #affine.options.lang = 'en'
+        #self.assertEqual(('saunaisnotknowntobea', 23,  21),
+                          #affine.guess(self.affine_crypted))
 
-    def test_affine_sauna(self):
-        affine.options.lang = 'en'
-        self.assertEqual(('saunaisnotknowntobea', 23,  21),
-                         affine.sauna_check(self.affine_crypted))
+    #def test_affine_sauna(self):
+        #affine.options.lang = 'en'
+        #self.assertEqual(('saunaisnotknowntobea', 23,  21),
+                         #affine.sauna_check(self.affine_crypted))
 
 
 #BHJUH NBULS VULRU SLYXH
