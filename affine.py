@@ -1,70 +1,80 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
 
-from itertools import izip
-from algo import _chr
+from itertools import izip, permutations
+from algo import _chr, _ord, negative
 import re
 
 
-class Cipher:
+class Cipher(object):
     """This class makes research on afinne chipers."""
 
-    __slots__ = ('_message', '_sample')
-    _message = ''
-    _sample = ''
+    __slots__ = ('_message', '_sample', '_statistic', '_lang')
 
     def __init__(self, info):
         """Transform raw message into models.
 
-        With execution Cipher(X, Y) possible X types is file
-        and array.
+        With execution Cipher(X, Y) possible X types is file and array.
         """
-
         if type(info) is file:
             self._message = info.readlines()
         if type(info) in (str, list):
             self._message = info
 
     @property
-    def message(self):
-        return self._message
+    def message(a):
+        return a._message
 
     @property
-    def sample(self):
-        return self._sample
+    def sample(a):
+        return a._sample
 
     @property
-    def statistic(self):
-        return self._statistic
+    def statistic(a):
+        return a._statistic
 
-    @classmethod
-    def decrypt(self, a, b, lang = '', text = ''):
+    @property
+    def lang(a):
+        return a._lang
+
+    def set_lang(self, value):
+        self._lang = value
+
+    def decrypt(self, message, a, b, lang):
         transposition = {}
-        if text:
-            message = text
-        else:
-            message = self.text
         if lang != '':
             if lang == 'en':
                 for i in range(26):
-                    transposition[_chr(i)] = _chr((a * i + b) % 26)
+                    transposition[_chr(i, lang)] = _chr((a * i + b) % 26, lang)
                 return ''.join(transposition[char] for char in message)
             elif lang == 'ru':
                 for i in range(31):
-                    transposition[_chr(i)] = _chr((a * i + b) % 26)
+                    transposition[_chr(i, lang)] = _chr((a * i + b) % 26, lang)
                 return ''.join(transposition[char] for char in message)
         else:
             if options.lang == 'en':
                 for i in range(26):
-                    transposition[_chr(i)] = _chr((a * i + b) % 26)
+                    transposition[_chr(i, lang)] = _chr((a * i + b) % 26, lang)
                 return ''.join(transposition[char] for char in message)
 
-    @classmethod
-    def guess(sample, statistic):
-        return 0
+    def guess(self, sample, statistic):
+        G = []
+        high5 = [statistic[i][0] for i in range(10)]
+        H = permutations(high5, 2)
+        for h in H:
+            x = _ord(h[0])
+            y = _ord(h[1])
+            if self._lang == 'en':
+                x_t = _ord('e')
+                y_t = _ord('t')
+                a = ((x + y) * negative(x_t + y_t, 26)) % 26
+                b = (x - x_t * a) % 26
+            if self._lang == 'ru':
+                pass
+            G.append([a, b])
+        return G
 
-    @classmethod
-    def count_statistic(encrypted_message):
+    def count_statistic(self, encrypted_message):
         '''Count how many times each char found in message.'''
         stat = {}
         for string in encrypted_message:
@@ -73,14 +83,12 @@ class Cipher:
                     stat[char] += 1
                 else:
                     stat[char] = 1
-        return sorted(stat.items(), key = lambda x:x[1], reverse = True)
+        self._statistic = sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
-    @classmethod
     def create_sample(self, message):
         '''Remove all whitespaces and transform letters into lower case.'''
         text = ''
         sample = ''
-        print self.message
         for line in message:
             line = re.sub(re.compile('\s'), '', line)
             sample += line
@@ -93,7 +101,6 @@ class Cipher:
                     text = text + char
         self._sample = sample
 
-    @classmethod
     def sauna_check(crypted_message):
         '''
         You know something about L. S. Kazarin? No?
@@ -121,9 +128,22 @@ def main():
             #print guess(sample, statistic)
     f = open('file')
     a = Cipher(f)
+    a.set_lang('en')
     a.create_sample(a.message)
-    print a.sample
-    print a.decrypt(12,12,text=a.sample)
+    a.count_statistic(a.sample)
+    hypotesa = a.guess(a.sample, a.statistic)
+    print hypotesa
+    print a.statistic
+    #i = 1
+    #for h in hypotesa:
+        #print '%d. %s' % (i, a.decrypt(a.sample, h[0], h[1], a.lang)[:30])
+        #i += 1
+    i = 1
+    for h in hypotesa:
+        dec = a.decrypt(a.sample, h[0], h[1], a.lang)
+        i += 1
+        if dec[0] == 'S':
+            print '%s: %d %d with %d' % (dec[:30], h[0], h[1], i)
 
 
 from optparse import OptionParser
