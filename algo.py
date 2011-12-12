@@ -61,42 +61,37 @@ def _negative(a, m):
     """
     return a ** (totient(m) - 1) % m
 
+
 def _ord(char, alphabet = []):
     '''
     Returns position in the natural alphabet.
     Also, says "goodbye" to additional info :(
     '''
     if alphabet != []:
-        return alphabet.find(char) + 1
+        return alphabet.index(char)
     else:
         if char in english:
-            return english.find(char) + 1
+            return english.index(char)
         elif char in ENGLISH:
-            return ENGLISH.find(char) + 1
+            return ENGLISH.index(char)
         elif char in russian:
-            return russian.find(char) + 1
+            return russian.index(char)
         elif char in RUSSIAN:
-            return RUSSIAN.find(char) + 1
+            return RUSSIAN.index(char)
         else:
             print "[ERROR] Aliens char detected! it is <%d>." % char
             return 0
 
-def _chr(n, alphabet = []):
+def _chr(n, lang):
     '''
     Negative for _ord().
     '''
-    if alphabet != []:
-        return alphabet[n]
+    if lang == 'en':
+        return ENGLISH[n-1]
+    elif lang == 'en':
+        return RUSSIAN[n]
     else:
-        if n in english:
-            return english[n] + 1
-        elif n in ENGLISH:
-            return ENGLISH[n] + 1
-        elif n in russian:
-            return russian[n] + 1
-        elif n in RUSSIAN:
-            return RUSSIAN[n] + 1
-        else:
-            print "[ERROR] No char for %d position found!" % n
-            return 0
+        print "[ERROR] No char for %d position found!" % n
+        return 0
+
 
