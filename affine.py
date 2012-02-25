@@ -2,7 +2,7 @@
 #-*-coding:utf-8-*-
 
 from itertools import izip, permutations
-from algo import _chr, _ord, negative
+from algo import _ord, _chr, negative
 import re
 
 
@@ -40,7 +40,7 @@ class Cipher(object):
     def set_lang(self, value):
         self._lang = value
 
-    def decrypt(self, message, a, b, lang):
+    def encrypt(self, message, a, b, lang):
         transposition = {}
         if lang != '':
             if lang == 'en':
@@ -57,6 +57,23 @@ class Cipher(object):
                     transposition[_chr(i, lang)] = _chr((a * i + b) % 26, lang)
                 return ''.join(transposition[char] for char in message)
 
+    def decrypt(self, message, a, b, lang):
+        transposition = {}
+        if lang != '':
+            if lang == 'en':
+                for i in range(26):
+                    transposition[_chr(i, lang)] = _chr((negative(a, 26) * (i - b)) % 26, lang)
+                return ''.join(transposition[char] for char in message)
+            elif lang == 'ru':
+                for i in range(31):
+                    transposition[_chr(i, lang)] = _chr((negative(a, 26) * (i - b)) % 26, lang)
+                return ''.join(transposition[char] for char in message)
+        else:
+            if options.lang == 'en':
+                for i in range(26):
+                    transposition[_chr(i, lang)] =  _chr((negative(a, 26) * (i - b)) % 26, lang)
+                return ''.join(transposition[char] for char in message)
+
     def guess(self, sample, statistic):
         G = []
         high5 = [statistic[i][0] for i in range(10)]
@@ -69,13 +86,14 @@ class Cipher(object):
                 y_t = _ord('t')
                 a = ((x + y) * negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
-            if self._lang == 'ru':
+            elif self._lang == 'ru':
                 pass
             G.append([a, b])
         return G
 
     def count_statistic(self, encrypted_message):
-        '''Count how many times each char found in message.'''
+        '''Count how many times each char found in message.
+        '''
         stat = {}
         for string in encrypted_message:
             for char in string:
@@ -86,7 +104,8 @@ class Cipher(object):
         self._statistic = sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
     def create_sample(self, message):
-        '''Remove all whitespaces and transform letters into lower case.'''
+        '''Remove all whitespaces and transform letters into lower case.
+        '''
         text = ''
         sample = ''
         for line in message:
@@ -101,58 +120,39 @@ class Cipher(object):
                     text = text + char
         self._sample = sample
 
-    def sauna_check(crypted_message):
-        '''
-        You know something about L. S. Kazarin? No?
-        Then just forget about this function.
-        '''
-        for i in range(0, len(crypted_message) - 6):
-            for (x1, x2, x5) in izip(crypted_message[i],
-                                     crypted_message[i - 1:],
-                                     crypted_message[i - 4:]):
-                if x2 == x5:
-                    x2 = x5 = 'a'
-                else:
-                    return 0
 
 def main():
-    #pass
-    #if options.file:
-        #sample = create_sample(open(options.file, 'r').readlines())
-        #if options.a and options.b:
-            #print decrypt(sample, options.a, options.b)
-        #elif options.stat:
-            #for item in statistic(sample):
-                #print str(item[0]) + ' => ' + str(item[1])
-        #else:
-            #print guess(sample, statistic)
-    f = open('sample/affine')
-    a = Cipher(f)
-    a.set_lang('en')
-    a.create_sample(a.message)
-    a.count_statistic(a.sample)
-    hypotesa = a.guess(a.sample, a.statistic)
-    print hypotesa
-    print a.statistic
-    #i = 1
-    #for h in hypotesa:
-        #print '%d. %s' % (i, a.decrypt(a.sample, h[0], h[1], a.lang)[:30])
-        #i += 1
-    i = 1
+    if options.file:
+        sample = create_sample(open(options.file, 'r').readlines())
+        if options.a and options.b:
+            hypotesa = decrypt(sample, options.a, options.b)
+    else:
+        f = open('sample/affine')
+        a = Cipher(f)
+        a.set_lang('en')
+        a.create_sample(a.message)
+        a.count_statistic(a.sample)
+        hypotesa = a.guess(a.sample, a.statistic)
+    print '''
+Trying to guess factors (a, b) in [y=a*x+b] equation:
+-------------------------------------------------
+| i  | guess                          | a  | b  |
+-------------------------------------------------'''
+    i = 0
     for h in hypotesa:
         dec = a.decrypt(a.sample, h[0], h[1], a.lang)
         i += 1
-        if dec[0] == 'S':
-            print '%s: %d %d with %d' % (dec[:30], h[0], h[1], i)
+        print '| %-2g | %s | %-2g | %-2g |' % (i, dec[:30], h[0], h[1])
+    print '-------------------------------------------------'
 
 
 from optparse import OptionParser
-parser = OptionParser('usage: %prog [options] [file]')
+parser = OptionParser('usage: python %prog [options] [file]')
 parser.add_option('-f',
                   dest = 'file',
                   action = 'store',
                   default = '',
-                  help = 'decrypt file with given arguments')
+                  help = 'encrypt file with given arguments')
 parser.add_option('-a',
                   dest = 'a',
                   action = 'store',
@@ -163,11 +163,6 @@ parser.add_option('-b',
                   action = 'store',
                   default = '',
                   help = 'the "b" in y = ax + b equation')
-parser.add_option('-s',
-                  dest = 'stat',
-                  action = 'store_true',
-                  default = False,
-                  help = 'perform statistic counting')
 parser.add_option('-l',
                   dest = 'lang',
                   action = 'store',

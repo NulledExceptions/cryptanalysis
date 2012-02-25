@@ -27,22 +27,16 @@ class affine_test(unittest.TestCase):
         self.assertEqual('saunaisnotknowntobea',
                          a.decrypt(23, 21, text='bhjuhnbulsvulruslyxh'))
 
-    #def test_sampler(self):
-        #a = affine.Chiper(self.chiper)
-        #self.assertEqual('bhjuhnbulsvulruslyxhonuunbwnuaxusnldyjss',
-                         #a.create_sample(self.chiper[:60]))
+    def test_sampler(self):
+        a = affine.Chiper(self.chiper)
+        self.assertEqual('bhjuhnbulsvulruslyxhonuunbwnuaxusnldyjss',
+                         a.create_sample(self.chiper[:60]))
 
-    #def test_affine_guess(self):
-        #a = affine.Chiper(self.chiper)
-        #affine.options.lang = 'en'
-        #self.assertEqual(('saunaisnotknowntobea', 23,  21),
-                          #a.guess(self.affine_crypted))
-
-    #def test_affine_sauna(self):
-        #a = affine.Chiper(self.chiper)
-        #affine.options.lang = 'en'
-        #self.assertEqual(('saunaisnotknowntobea', 23,  21),
-                         #a.sauna_check(self.affine_crypted))
+    def test_affine_guess(self):
+        a = affine.Chiper(self.chiper)
+        affine.options.lang = 'en'
+        self.assertEqual(('saunaisnotknowntobea', 23,  21),
+                          a.guess(self.affine_crypted))
 
 def main():
     unittest.main()
