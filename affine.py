@@ -126,7 +126,7 @@ def main():
                 #print str(item[0]) + ' => ' + str(item[1])
         #else:
             #print guess(sample, statistic)
-    f = open('file')
+    f = open('sample/affine')
     a = Cipher(f)
     a.set_lang('en')
     a.create_sample(a.message)
