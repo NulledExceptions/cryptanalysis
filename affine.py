@@ -2,7 +2,8 @@
 #-*-coding:utf-8-*-
 
 from itertools import izip, permutations
-from algo import _ord, _chr, negative
+from core import _ord, _chr, negative
+import sys
 import re
 
 
@@ -122,28 +123,41 @@ class Cipher(object):
 
 
 def main():
-    if options.file:
-        sample = create_sample(open(options.file, 'r').readlines())
-        if options.a and options.b:
-            hypotesa = decrypt(sample, options.a, options.b)
-    else:
-        f = open('sample/affine')
-        a = Cipher(f)
+    if options.task == "d" or options.task == "decrypt":
+        if options.file:
+            message = create_sample(open(options.file, 'r').readlines())
+        elif options.a and options.b and options.file:
+            message = create_sample(open(options.file, 'r').readlines())
+            text = decrypt(message, options.a, options.b)
+            print text
+            sys.exit(0)
+        else:
+            sample = open('sample/affine')
+        a = Cipher(sample)
         a.set_lang('en')
         a.create_sample(a.message)
         a.count_statistic(a.sample)
         hypotesa = a.guess(a.sample, a.statistic)
-    print '''
+        print '''
 Trying to guess factors (a, b) in [y=a*x+b] equation:
 -------------------------------------------------
 | i  | guess                          | a  | b  |
 -------------------------------------------------'''
-    i = 0
-    for h in hypotesa:
-        dec = a.decrypt(a.sample, h[0], h[1], a.lang)
-        i += 1
-        print '| %-2g | %s | %-2g | %-2g |' % (i, dec[:30], h[0], h[1])
-    print '-------------------------------------------------'
+        i = 0
+        for h in hypotesa:
+            dec = a.decrypt(a.sample, h[0], h[1], a.lang)
+            i += 1
+            print '| %-2g | %s | %-2g | %-2g |' % (i, dec[:30], h[0], h[1])
+        print '-------------------------------------------------'
+    elif options.task == "e" or options.task == "encrypt":
+        if options.a and options.b and options.file:
+            message = create_sample(open(options.file, 'r').readlines())
+            text = encrypt(message, options.a, options.b)
+            print text
+            sys.exit(0)
+        else:
+            print "This task needs more actions."
+            sys.exit(0)
 
 
 from optparse import OptionParser
@@ -156,7 +170,7 @@ parser.add_option('-f',
 parser.add_option('-a',
                   dest = 'a',
                   action = 'store',
-                  default = '',
+                  default = 'd',
                   help = 'the "a" in y = ax + b equation')
 parser.add_option('-b',
                   dest = 'b',
@@ -168,6 +182,11 @@ parser.add_option('-l',
                   action = 'store',
                   default = '',
                   help = 'message language')
+parser.add_option('-t',
+                  dest = 'task',
+                  action = 'store',
+                  default = '',
+                  help = 'what task we are going to manage')
 (options, args) = parser.parse_args()
 
 
