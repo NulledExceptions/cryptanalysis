@@ -4,7 +4,6 @@
 import unittest
 import affine
 
-
 class affine_test(unittest.TestCase):
     chiper = '''
     BHJUH NBULS VULRU SLYXH
@@ -37,6 +36,12 @@ class affine_test(unittest.TestCase):
         affine.options.lang = 'en'
         self.assertEqual(('saunaisnotknowntobea', 23,  21),
                           a.guess(self.affine_crypted))
+
+class vigenere_test(unittest.TestCase):
+    pass
+
+class enigma_test(unittest.TestCase):
+    pass
 
 def main():
     unittest.main()
