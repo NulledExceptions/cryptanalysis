@@ -156,3 +156,23 @@ def factors(n):
         f.append(d)
     return f
 
+def f2c(nom, denom):
+    '''
+    Fraction to continous fraction.
+    '''
+    r_denoms = []
+    c_nom = float(nom)
+    c_denom = float(denom)
+    while True:
+        intpart = 0
+        if c_nom > c_denom:
+            intpart = math.floor(c_nom / c_denom)
+            r_denoms.append(int(intpart))
+            if (c_nom / c_denom) - intpart == 0:
+                break
+            c_nom = c_nom - (c_denom * intpart)
+        t = c_nom
+        c_nom = c_denom
+        c_denom = t
+    return r_denoms
+
