@@ -12,7 +12,7 @@ The following ciphers are alredy been studied:
 
 * [Affine](http://en.wikipedia.org/wiki/Affine_cipher) - simple substitution 
   cipher, contains abstraction of all shift ciphers (like [Caesar cipher](
-  http://en.wikipedia.org/wiki/Caesar_cipher))
+  http://en.wikipedia.org/wiki/Caesar_cipher)).
 
 Usage
 -----
@@ -26,11 +26,4 @@ Also, each file can be used like library:
 
     #!/usr/bin/python
     import filename
-
-Testing
--------
-
-To run the tests:
-
-    $ python test.py
 
