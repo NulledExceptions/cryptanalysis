@@ -3,45 +3,36 @@
 
 import unittest
 import affine
+import core
 
 class affine_test(unittest.TestCase):
-    chiper = '''
-    BHJUH NBULS VULRU SLYXH
-    ONUUN BWNUA XUSNL DYJSS
-    WXRLK GNBON UUNBW SWXKX
-    HKXDH UZDLK XBHJU HBNUO
-    NUMHU GSWHU XMBXR WXKXL
-    UXBHJ UHCXK XAXKZ SWKXX
-    LKOLJ KCXLC MXONU UBVUL
-    RRWHS HBHJU HNBXM BXRWX
-    KXNOZ LJBXX HBNFU BHJUH
-    LUSWX GLLKZ LJPHU ULSYX
-    BJKXS WHSSW XKXNB HBHJU
-    HYXWN UGSWX GLLK
-    '''
+    ciphertext = file('sample/affine').readlines()
+
+    def test_affine_encrypt(self):
+        a = affine.Afinne(self.ciphertext)
+        affine.options.lang = 'en'
+        self.assertEqual('bhjuhnbulsvulruslyxh',
+                         a.encrypt('saunaisnotknowntobea', 23, 21))
 
     def test_affine_decrypt(self):
-        a = affine.Afinne(self.chiper)
+        a = affine.Afinne(self.ciphertext)
         affine.options.lang = 'en'
         self.assertEqual('saunaisnotknowntobea',
-                         a.decrypt(23, 21, text='bhjuhnbulsvulruslyxh'))
+                         a.decrypt('bhjuhnbulsvulruslyxh', 23, 21))
 
-    def test_sampler(self):
-        a = affine.Afinne(self.chiper)
-        self.assertEqual('bhjuhnbulsvulruslyxhonuunbwnuaxusnldyjss',
-                         a.create_sample(self.chiper[:60]))
-
-    def test_affine_guess(self):
-        a = affine.Afinne(self.chiper)
+    def test_affine_decipher(self):
+        a = affine.Afinne(self.ciphertext)
         affine.options.lang = 'en'
         self.assertEqual(('saunaisnotknowntobea', 23,  21),
-                          a.guess(self.affine_crypted))
+                          a.decipher())
 
-class vigenere_test(unittest.TestCase):
-    pass
+class core_test(unittest.TestCase):
+    ciphertext = file('sample/affine').readlines()
 
-class enigma_test(unittest.TestCase):
-    pass
+    def test_sampler(self):
+        a = core.Cipher(self.ciphertext)
+        self.assertEqual('bhjuhnbulsvulruslyxhonuunbwnuaxusnldyjss',
+                         a.sample(self.ciphertext)[:40])
 
 def main():
     unittest.main()
