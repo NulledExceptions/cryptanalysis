@@ -2,44 +2,13 @@
 #-*-coding:utf-8-*-
 
 from itertools import izip, permutations
-from core import _ord, _chr, negative
-import sys
+from sys import exit
+import core
 import re
 
 
-class Cipher(object):
+class Afinne(core.Cipher):
     """This class makes research on afinne chipers."""
-
-    __slots__ = ('_message', '_sample', '_statistic', '_lang')
-
-    def __init__(self, info):
-        """Transform raw message into models.
-
-        With execution Cipher(X, Y) possible X types is file and array.
-        """
-        if type(info) is file:
-            self._message = info.readlines()
-        if type(info) in (str, list):
-            self._message = info
-
-    @property
-    def message(a):
-        return a._message
-
-    @property
-    def sample(a):
-        return a._sample
-
-    @property
-    def statistic(a):
-        return a._statistic
-
-    @property
-    def lang(a):
-        return a._lang
-
-    def set_lang(self, value):
-        self._lang = value
 
     def encrypt(self, message, a, b, lang):
         transposition = {}
@@ -63,16 +32,16 @@ class Cipher(object):
         if lang != '':
             if lang == 'en':
                 for i in range(26):
-                    transposition[_chr(i, lang)] = _chr((negative(a, 26) * (i - b)) % 26, lang)
+                    transposition[_chr(i, lang)] = _chr((core.negative(a, 26) * (i - b)) % 26, lang)
                 return ''.join(transposition[char] for char in message)
             elif lang == 'ru':
                 for i in range(31):
-                    transposition[_chr(i, lang)] = _chr((negative(a, 26) * (i - b)) % 26, lang)
+                    transposition[_chr(i, lang)] = _chr((core.negative(a, 26) * (i - b)) % 26, lang)
                 return ''.join(transposition[char] for char in message)
         else:
             if options.lang == 'en':
                 for i in range(26):
-                    transposition[_chr(i, lang)] =  _chr((negative(a, 26) * (i - b)) % 26, lang)
+                    transposition[_chr(i, lang)] =  _chr((core.negative(a, 26) * (i - b)) % 26, lang)
                 return ''.join(transposition[char] for char in message)
 
     def guess(self, sample, statistic):
@@ -85,14 +54,14 @@ class Cipher(object):
             if self._lang == 'en':
                 x_t = _ord('e')
                 y_t = _ord('t')
-                a = ((x + y) * negative(x_t + y_t, 26)) % 26
+                a = ((x + y) * core.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
             elif self._lang == 'ru':
                 pass
             G.append([a, b])
         return G
 
-    def count_statistic(self, encrypted_message):
+    def statistic(self, encrypted_message):
         '''Count how many times each char found in message.
         '''
         stat = {}
@@ -130,13 +99,13 @@ def main():
             message = create_sample(open(options.file, 'r').readlines())
             text = decrypt(message, options.a, options.b)
             print text
-            sys.exit(0)
+            exit(0)
         else:
             sample = open('sample/affine')
-        a = Cipher(sample)
+        a = Afinne(sample)
         a.set_lang('en')
         a.create_sample(a.message)
-        a.count_statistic(a.sample)
+        a.statistic(a.sample)
         hypotesa = a.guess(a.sample, a.statistic)
         print '''
 Trying to guess factors (a, b) in [y=a*x+b] equation:
@@ -154,10 +123,10 @@ Trying to guess factors (a, b) in [y=a*x+b] equation:
             message = create_sample(open(options.file, 'r').readlines())
             text = encrypt(message, options.a, options.b)
             print text
-            sys.exit(0)
+            exit(0)
         else:
             print "This task needs more actions."
-            sys.exit(0)
+            exit(0)
 
 
 from optparse import OptionParser

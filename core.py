@@ -3,29 +3,101 @@
 from random import randint
 from math import *
 
-__rus = ["а", "б", "в", "г", "д", "е", "ж", "з",
-         "и", "к", "л", "м", "н", "о", "п", "р",
-         "с", "т", "у", "ф", "х", "ц", "ч", "ш",
-         "щ", "ь", "ъ", "ы", "э", "ю", "я"]
-__RUS = ["А", "Б", "В", "Г", "Д", "Е", "Ж", "З",
-         "И", "К", "Л", "М", "Н", "О", "П", "Р",
-         "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш",
-         "Щ", "Ь", "Ъ", "Ы", "Э", "Ю", "Я"]
-__eng = [chr(x) for x in range(97, 123)]
-__ENG = [chr(x) for x in range(65, 91)]
+class Cipher(object):
+    __slots__ = ('_message', '_sample', '_statistic', '_lang',
+                 '__rus', '__RUS', '__eng', '__ENG')
+    __rus = ["а", "б", "в", "г", "д", "е", "ж", "з",
+             "и", "к", "л", "м", "н", "о", "п", "р",
+             "с", "т", "у", "ф", "х", "ц", "ч", "ш",
+             "щ", "ь", "ъ", "ы", "э", "ю", "я"]
+    __RUS = ["А", "Б", "В", "Г", "Д", "Е", "Ж", "З",
+             "И", "К", "Л", "М", "Н", "О", "П", "Р",
+             "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш",
+             "Щ", "Ь", "Ъ", "Ы", "Э", "Ю", "Я"]
+    __eng = [chr(x) for x in range(97, 123)]
+    __ENG = [chr(x) for x in range(65, 91)]
 
-def statistic(encrypted_message):
-    '''
-    Count how many times each char found in message.
-    '''
-    stat = {}
-    for string in encrypted_message:
-        for char in string:
-            if char in stat.keys():
-                stat[char] += 1
+    def __init__(self, info):
+        """Transform raw message into models.
+
+        With execution Cipher(X, Y) possible X types is file and array.
+        """
+        if type(info) is file:
+            self._message = info.readlines()
+        if type(info) in (str, list):
+            self._message = info
+
+    @property
+    def message(a):
+        return a._message
+
+    @property
+    def sample(a):
+        return a._sample
+
+    @property
+    def statistic(a):
+        return a._statistic
+
+    @property
+    def lang(a):
+        return a._lang
+
+    def set_lang(self, value):
+        self._lang = value
+
+    def encrypt(self):
+        '''
+        '''
+
+    def decrypt(self):
+        '''
+        '''
+
+    def _ord(self, char, alphabet = []):
+        '''
+        Returns position in the natural alphabet.
+        Also, says "goodbye" to additional info :(
+        '''
+        if alphabet != []:
+            return alphabet.index(char)
+        else:
+            if char in self.__eng:
+                return self.__eng.index(char)
+            elif char in self.__ENG:
+                return self.__ENG.index(char)
+            elif char in self.__rus:
+                return self.__rus.index(char)
+            elif char in self.__RUS:
+                return self.__RUS.index(char)
             else:
-                stat[char] = 1
-    return sorted(stat.items(), key = lambda x:x[1], reverse = True)
+                print "[ERROR] Aliens char detected! it is <%d>." % char
+                return 0
+
+    def _chr(self, n, lang):
+        '''
+        Negative for _ord().
+        '''
+        if lang == 'en':
+            return self.__eng[n-1]
+        elif lang == 'ru':
+            return self.__rus[n]
+        else:
+            print "[ERROR] No char for %d position found!" % n
+            return 0
+
+    def statistic(self, message):
+        '''
+        Count how many times each char found in message.
+        '''
+        stat = {}
+        for string in message:
+            for char in string:
+                if char in stat.keys():
+                    stat[char] += 1
+                else:
+                    stat[char] = 1
+        return sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
 def gcd(a, b):
     '''
@@ -85,38 +157,6 @@ def _negative(a, m):
     Negative element for element a in field Z_m, where m is prime.
     """
     return a ** (totient(m) - 1) % m
-
-def _ord(char, alphabet = []):
-    '''
-    Returns position in the natural alphabet.
-    Also, says "goodbye" to additional info :(
-    '''
-    if alphabet != []:
-        return alphabet.index(char)
-    else:
-        if char in __eng:
-            return __eng.index(char)
-        elif char in __ENG:
-            return __ENG.index(char)
-        elif char in __rus:
-            return __rus.index(char)
-        elif char in __RUS:
-            return __RUS.index(char)
-        else:
-            print "[ERROR] Aliens char detected! it is <%d>." % char
-            return 0
-
-def _chr(n, lang):
-    '''
-    Negative for _ord().
-    '''
-    if lang == 'en':
-        return __eng[n-1]
-    elif lang == 'ru':
-        return __rus[n]
-    else:
-        print "[ERROR] No char for %d position found!" % n
-        return 0
 
 def brent(N):
     '''
