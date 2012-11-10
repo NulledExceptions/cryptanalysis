@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
+
 from random import randint
 from math import *
 import re
+
 
 class Cipher(object):
     __slots__ = ('_message', '_text', '_statistic', '_lang',
@@ -19,7 +21,8 @@ class Cipher(object):
     __ENG = [chr(x) for x in range(65, 91)]
 
     def __init__(self, info):
-        """Transform raw message into models.
+        """
+        Transform raw message into models.
 
         With execution Cipher(X, Y) possible X types is file and array.
         """
@@ -44,9 +47,6 @@ class Cipher(object):
     def lang(a):
         return a._lang
 
-    def set_lang(self, value):
-        self._lang = value
-
     def encrypt(self):
         '''
         '''
@@ -55,7 +55,11 @@ class Cipher(object):
         '''
         '''
 
-    def _ord(self, char, alphabet = []):
+    def decipher(self):
+        '''
+        '''
+
+    def ord(self, char, alphabet = []):
         '''
         Returns position in the natural alphabet.
         Also, says "goodbye" to additional info :(
@@ -63,7 +67,9 @@ class Cipher(object):
         if alphabet != []:
             return alphabet.index(char)
         else:
-            if char in self.__eng:
+            if char == ' ':
+                return 0
+            elif char in self.__eng:
                 return self.__eng.index(char)
             elif char in self.__ENG:
                 return self.__ENG.index(char)
@@ -72,12 +78,12 @@ class Cipher(object):
             elif char in self.__RUS:
                 return self.__RUS.index(char)
             else:
-                print "[ERROR] Aliens char detected! it is <%d>." % char
+                print "[ERROR] Aliens char detected: <" + char + ">."
                 return 0
 
-    def _chr(self, n, lang):
+    def chr(self, n, lang='en'):
         '''
-        Negative for _ord().
+        Negative for self.ord().
         '''
         if lang == 'en':
             return self.__eng[n-1]
@@ -100,7 +106,7 @@ class Cipher(object):
                     stat[char] = 1
         return sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
-    def sample(self, message):
+    def sample(self, message, lang='en'):
         '''
         Remove all whitespaces and transform letters into lower case.
         '''
@@ -109,14 +115,8 @@ class Cipher(object):
         for line in message:
             line = re.sub(re.compile('\s'), '', line)
             sample += line
-        for char in sample:
-            if options.lang == 'en':
-                if 64 < ord(char) < 91:
-                    char = chr(ord(char) + 32)
-                    text = text + char
-                elif 96 < ord(char) < 123:
-                    text = text + char
-        self._sample = sample
+        return sample.lower()
+
 
 def gcd(a, b):
     '''

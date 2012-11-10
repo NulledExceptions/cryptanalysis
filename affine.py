@@ -9,57 +9,46 @@ import core
 class Afinne(core.Cipher):
     """This class makes research on afinne chipers."""
 
-    def encrypt(self, message, a, b, lang):
+    def encrypt(self, message, a, b, lang='en'):
         transposition = {}
-        if lang != '':
-            if lang == 'en':
-                for i in range(26):
-                    transposition[_chr(i, lang)] = _chr((a * i + b) % 26, lang)
-                return ''.join(transposition[char] for char in message)
-            elif lang == 'ru':
-                for i in range(31):
-                    transposition[_chr(i, lang)] = _chr((a * i + b) % 26, lang)
-                return ''.join(transposition[char] for char in message)
-        else:
-            if options.lang == 'en':
-                for i in range(26):
-                    transposition[_chr(i, lang)] = _chr((a * i + b) % 26, lang)
-                return ''.join(transposition[char] for char in message)
+        if len(options.lang) > 0:
+            lang = options.lang
+        if lang == 'en':
+            for i in range(26):
+                transposition[self.chr(i, lang)] = self.chr((a * i + b) % 26, lang)
+            return ''.join(transposition[char] for char in message)
+        elif lang == 'ru':
+            for i in range(31):
+                transposition[self.chr(i, lang)] = self.chr((a * i + b) % 26, lang)
+            return ''.join(transposition[char] for char in message)
 
-    def decrypt(self, message, a, b, lang):
+    def decrypt(self, message, a, b, lang='en'):
         transposition = {}
-        if lang != '':
-            if lang == 'en':
-                for i in range(26):
-                    transposition[_chr(i, lang)] = _chr((core.negative(a, 26) * (i - b)) % 26, lang)
-                return ''.join(transposition[char] for char in message)
-            elif lang == 'ru':
-                for i in range(31):
-                    transposition[_chr(i, lang)] = _chr((core.negative(a, 26) * (i - b)) % 26, lang)
-                return ''.join(transposition[char] for char in message)
-        else:
-            if options.lang == 'en':
-                for i in range(26):
-                    transposition[_chr(i, lang)] =  _chr((core.negative(a, 26) * (i - b)) % 26, lang)
-                return ''.join(transposition[char] for char in message)
+        if len(options.lang) > 0:
+            lang = options.lang
+        if lang == 'en':
+            for i in range(26):
+                transposition[self.chr(i, lang)] = self.chr((core.negative(a, 26) * (i - b)) % 26, lang)
+            return ''.join(transposition[char] for char in message)
+        elif lang == 'ru':
+            for i in range(31):
+                transposition[self.chr(i, lang)] = self.chr((core.negative(a, 26) * (i - b)) % 26, lang)
+            return ''.join(transposition[char] for char in message)
 
-    def guess(self, sample, statistic):
+    def guess(self, sample, lang='en'):
         G = []
-        high5 = [statistic[i][0] for i in range(10)]
+        high5 = [self.statistic(sample)[i][0] for i in range(10)]
         H = permutations(high5, 2)
         for h in H:
-            x = _ord(h[0])
-            y = _ord(h[1])
-            if self._lang == 'en':
-                x_t = _ord('e')
-                y_t = _ord('t')
+            x = self.ord(h[0])
+            y = self.ord(h[1])
+            if lang == 'en':
+                x_t = self.ord('e')
+                y_t = self.ord('t')
                 a = ((x + y) * core.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
-            elif self._lang == 'ru':
-                pass
             G.append([a, b])
         return G
-
 
 
 def main():
