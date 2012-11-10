@@ -2,9 +2,10 @@
 #-*-coding:utf-8-*-
 from random import randint
 from math import *
+import re
 
 class Cipher(object):
-    __slots__ = ('_message', '_sample', '_statistic', '_lang',
+    __slots__ = ('_message', '_text', '_statistic', '_lang',
                  '__rus', '__RUS', '__eng', '__ENG')
     __rus = ["а", "б", "в", "г", "д", "е", "ж", "з",
              "и", "к", "л", "м", "н", "о", "п", "р",
@@ -32,8 +33,8 @@ class Cipher(object):
         return a._message
 
     @property
-    def sample(a):
-        return a._sample
+    def text(a):
+        return a._text
 
     @property
     def statistic(a):
@@ -98,6 +99,24 @@ class Cipher(object):
                 else:
                     stat[char] = 1
         return sorted(stat.items(), key = lambda x:x[1], reverse = True)
+
+    def sample(self, message):
+        '''
+        Remove all whitespaces and transform letters into lower case.
+        '''
+        text = ''
+        sample = ''
+        for line in message:
+            line = re.sub(re.compile('\s'), '', line)
+            sample += line
+        for char in sample:
+            if options.lang == 'en':
+                if 64 < ord(char) < 91:
+                    char = chr(ord(char) + 32)
+                    text = text + char
+                elif 96 < ord(char) < 123:
+                    text = text + char
+        self._sample = sample
 
 def gcd(a, b):
     '''

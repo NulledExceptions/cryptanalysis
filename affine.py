@@ -4,7 +4,6 @@
 from itertools import izip, permutations
 from sys import exit
 import core
-import re
 
 
 class Afinne(core.Cipher):
@@ -61,42 +60,14 @@ class Afinne(core.Cipher):
             G.append([a, b])
         return G
 
-    def statistic(self, encrypted_message):
-        '''Count how many times each char found in message.
-        '''
-        stat = {}
-        for string in encrypted_message:
-            for char in string:
-                if char in stat.keys():
-                    stat[char] += 1
-                else:
-                    stat[char] = 1
-        self._statistic = sorted(stat.items(), key = lambda x:x[1], reverse = True)
-
-    def create_sample(self, message):
-        '''Remove all whitespaces and transform letters into lower case.
-        '''
-        text = ''
-        sample = ''
-        for line in message:
-            line = re.sub(re.compile('\s'), '', line)
-            sample += line
-        for char in sample:
-            if options.lang == 'en':
-                if 64 < ord(char) < 91:
-                    char = chr(ord(char) + 32)
-                    text = text + char
-                elif 96 < ord(char) < 123:
-                    text = text + char
-        self._sample = sample
 
 
 def main():
     if options.task == "d" or options.task == "decrypt":
         if options.file:
-            message = create_sample(open(options.file, 'r').readlines())
+            message = open(options.file, 'r').readlines()
         elif options.a and options.b and options.file:
-            message = create_sample(open(options.file, 'r').readlines())
+            message = open(options.file, 'r').readlines()
             text = decrypt(message, options.a, options.b)
             print text
             exit(0)
@@ -104,7 +75,7 @@ def main():
             sample = open('sample/affine')
         a = Afinne(sample)
         a.set_lang('en')
-        a.create_sample(a.message)
+        a.sample(a.message)
         a.statistic(a.sample)
         hypotesa = a.guess(a.sample, a.statistic)
         print '''
@@ -120,7 +91,7 @@ Trying to guess factors (a, b) in [y=a*x+b] equation:
         print '-------------------------------------------------'
     elif options.task == "e" or options.task == "encrypt":
         if options.a and options.b and options.file:
-            message = create_sample(open(options.file, 'r').readlines())
+            message = sample(open(options.file, 'r').readlines())
             text = encrypt(message, options.a, options.b)
             print text
             exit(0)
