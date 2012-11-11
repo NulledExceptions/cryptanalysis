@@ -1,24 +1,79 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
+from builtins import str, list
+from _io import TextIOWrapper
 from random import randint
 from math import *
 import re
 
 
 class Cipher(object):
-    __slots__ = ('_message', '_text', '_statistic', '_lang',
-                 '__rus', '__RUS', '__eng', '__ENG')
-    __rus = ["а", "б", "в", "г", "д", "е", "ж", "з",
-             "и", "к", "л", "м", "н", "о", "п", "р",
-             "с", "т", "у", "ф", "х", "ц", "ч", "ш",
-             "щ", "ь", "ъ", "ы", "э", "ю", "я"]
-    __RUS = ["А", "Б", "В", "Г", "Д", "Е", "Ж", "З",
-             "И", "К", "Л", "М", "Н", "О", "П", "Р",
-             "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш",
-             "Щ", "Ь", "Ъ", "Ы", "Э", "Ю", "Я"]
-    __eng = [chr(x) for x in range(97, 123)]
-    __ENG = [chr(x) for x in range(65, 91)]
+    __slots__ = ('_message', '_text', '_statistic', '_lang')
+
+    # The following are language-specific data on character frequencies.
+    # Kappa is the "index of coincidence" described in the cryptography paper
+    # (link above).
+    __russian = { 'А':1, 'Б':1, 'В':1, 'Г':1, 'Д':1, 'Е':1, 'Ж':1, 'З':1,
+                  'И':1, 'К':1, 'Л':1, 'М':1, 'Н':1, 'О':1, 'П':1, 'Р':1,
+                  'С':1, 'Т':1, 'У':1, 'Ф':1, 'Х':1, 'Ц':1, 'Ч':1, 'Ш':1,
+                  'Щ':1, 'Ь':1, 'Ъ':1, 'Ы':1, 'Э':1, 'Ю':1, 'Я':1,
+                  'max':1,
+                  'kappa':1 }
+
+    __english = { 'A':8.16, 'B':1.49, 'C':2.78, 'D':4.25, 'E':12.70,
+                  'F':2.22, 'G':2.01, 'H':6.09, 'I':6.99, 'J':0.15,
+                  'K':0.77, 'L':4.02, 'M':2.41, 'N':6.74, 'O':7.50,
+                  'P':1.92, 'Q':0.09, 'R':5.99, 'S':6.32, 'T':9.05,
+                  'U':2.75, 'V':0.97, 'W':2.36, 'X':0.15, 'Y':1.97,
+                  'Z':0.07, 
+                  'max':12.702, 
+                  'kappa':0.0667 }
+
+    __french = { 'A':8.11, 'B':0.91, 'C':3.49, 'D':4.27, 'E':17.22,
+                 'F':1.14, 'G':1.09, 'H':0.77, 'I':7.44, 'J':0.34,
+                 'K':0.09, 'L':5.53, 'M':2.89, 'N':7.46, 'O':5.38,
+                 'P':3.02, 'Q':0.99, 'R':7.05, 'S':8.04, 'T':6.99,
+                 'U':5.65, 'V':1.30, 'W':0.04, 'X':0.44, 'Y':0.27,
+                 'Z':0.09, 
+                 'max':17.22, 
+                 'kappa':0.0746 }
+
+    __german = { 'A':6.50, 'B':2.56, 'C':2.83, 'D':5.41, 'E':16.69,
+                 'F':2.04, 'G':3.64, 'H':4.06, 'I':7.81, 'J':0.19,
+                 'K':1.87, 'L':2.82, 'M':3.00, 'N':9.90, 'O':2.28,
+                 'P':0.94, 'Q':0.05, 'R':6.53, 'S':6.76, 'T':6.74,
+                 'U':3.70, 'V':1.06, 'W':1.39, 'X':0.02, 'Y':0.03,
+                 'Z':1.00, 
+                 'max':16.693, 
+                 'kappa':0.0767 }
+
+    __italian = { 'A':11.30, 'B':0.97, 'C':4.35, 'D':3.80, 'E':11.24,
+                  'F':1.09, 'G':1.73, 'H':1.02, 'I':11.57, 'J':0.03,
+                  'K':0.07, 'L':6.40, 'M':2.66, 'N':7.29, 'O':9.11,
+                  'P':2.89, 'Q':0.39, 'R':6.68, 'S':5.11, 'T':6.76,
+                  'U':3.18, 'V':1.52, 'W':0.00, 'X':0.02, 'Y':0.048,
+                  'Z':0.95, 
+                  'max':11.57, 
+                  'kappa':0.0733 }
+
+    __portuguese = { 'A':13.89, 'B':0.98, 'C':4.18, 'D':5.24, 'E':12.72,
+                     'F':1.01, 'G':1.17, 'H':0.91, 'I':6.70, 'J':0.31,
+                     'K':0.01, 'L':2.76, 'M':4.54, 'N':5.37, 'O':10.90,
+                     'P':2.74, 'Q':1.06, 'R':6.67, 'S':7.90, 'T':4.63,
+                     'U':4.05, 'V':1.55, 'W':0.01, 'X':0.27, 'Y':0.01,
+                     'Z':0.40, 
+                     'max':13.89, 
+                     'kappa':0.0745 }
+
+    __spanish = { 'A':12.09, 'B':1.21, 'C':4.20, 'D':4.65, 'E':13.89,
+                  'F':0.64, 'G':1.11, 'H':1.13, 'I':6.38, 'J':0.46,
+                  'K':0.03, 'L':5.19, 'M':2.86, 'N':7.23, 'O':9.58,
+                  'P':2.74, 'Q':1.37, 'R':6.14, 'S':7.43, 'T':4.49,
+                  'U':4.53, 'V':1.05, 'W':0.01, 'X':0.12, 'Y':1.14,
+                  'Z':0.324, 
+                  'max':13.89, 
+                  'kappa':0.0766 }
 
     def __init__(self, info):
         """
@@ -26,7 +81,7 @@ class Cipher(object):
 
         With execution Cipher(X, Y) possible X types is file and array.
         """
-        if type(info) is file:
+        if type(info) == TextIOWrapper:
             self._message = info.readlines()
         if type(info) in (str, list):
             self._message = info
@@ -69,19 +124,15 @@ class Cipher(object):
         else:
             if char == ' ':
                 return 0
-            elif char in self.__eng:
-                return self.__eng.index(char)
-            elif char in self.__ENG:
-                return self.__ENG.index(char)
-            elif char in self.__rus:
-                return self.__rus.index(char)
-            elif char in self.__RUS:
-                return self.__RUS.index(char)
+            elif char in self.__english:
+                return self.__english.index(char)
+            elif char in self.__russian:
+                return self.__russian.index(char)
             else:
-                print "[ERROR] Aliens char detected: <" + char + ">."
+                print("[ERROR] Aliens char detected: <{0}>!".format(char))
                 return 0
 
-    def chr(self, n, lang='en'):
+    def chr(self, n, lang = 'en'):
         '''
         Negative for self.ord().
         '''
@@ -90,7 +141,7 @@ class Cipher(object):
         elif lang == 'ru':
             return self.__rus[n]
         else:
-            print "[ERROR] No char for %d position found!" % n
+            print("[ERROR] No char for {0} position found!".format(n))
             return 0
 
     def statistic(self, message):
@@ -106,7 +157,7 @@ class Cipher(object):
                     stat[char] = 1
         return sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
-    def sample(self, message, lang='en'):
+    def sample(self, message, lang = 'en'):
         '''
         Remove all whitespaces and transform letters into lower case.
         '''
@@ -151,11 +202,11 @@ def jacobi(a,n):
             return -1
         else:
             return 1
-    if a%2 == 0:
+    if a % 2 == 0:
         return jacobi(2,n) * jacobi(a//2,n)
     if a >= n:
         return jacobi(a%n,n)
-    if a%4 == 3 and n%4 == 3:
+    if a % 4 == 3 and n%4 == 3:
         return -jacobi(n,a)
     else:
         return jacobi(n,a)
@@ -209,7 +260,7 @@ def brent(N):
 
 def factors(n):
     f = []
-    while n <> 1:
+    while n != 1:
         d = brent(n)
         n /= d
         f.append(d)

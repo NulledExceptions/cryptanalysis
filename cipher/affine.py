@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
-from itertools import izip, permutations
+from itertools import permutations
 from sys import exit
 import core
 
 
-class Afinne(core.Cipher):
+class Affine(core.Cipher):
     """This class makes research on afinne chipers."""
 
     def encrypt(self, message, a, b, lang='en'):
@@ -58,7 +58,7 @@ def main():
         elif options.a and options.b and options.file:
             message = open(options.file, 'r').readlines()
             text = decrypt(message, options.a, options.b)
-            print text
+            print(text)
             exit(0)
         else:
             sample = open('sample/affine')
@@ -67,25 +67,25 @@ def main():
         a.sample(a.message)
         a.statistic(a.sample)
         hypotesa = a.guess(a.sample, a.statistic)
-        print '''
+        print('''
 Trying to guess factors (a, b) in [y=a*x+b] equation:
 -------------------------------------------------
 | i  | guess                          | a  | b  |
--------------------------------------------------'''
+-------------------------------------------------''')
         i = 0
         for h in hypotesa:
             dec = a.decrypt(a.sample, h[0], h[1], a.lang)
             i += 1
-            print '| %-2g | %s | %-2g | %-2g |' % (i, dec[:30], h[0], h[1])
-        print '-------------------------------------------------'
+            print('| {0} | {1} | {2} | {3} |'.format(i, dec[:30], h[0], h[1]))
+        print('-------------------------------------------------')
     elif options.task == "e" or options.task == "encrypt":
         if options.a and options.b and options.file:
             message = sample(open(options.file, 'r').readlines())
             text = encrypt(message, options.a, options.b)
-            print text
+            print(text)
             exit(0)
         else:
-            print "This task needs more actions."
+            print("This task needs more actions.")
             exit(0)
 
 
