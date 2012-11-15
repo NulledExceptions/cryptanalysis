@@ -8,7 +8,7 @@ from math import *
 import re
 
 
-class Cipher(object):
+class Cipher(str):
     __slots__ = ('_message', '_text', '_statistic', '_lang')
 
     # The following are language-specific data on character frequencies.
