@@ -20,31 +20,62 @@ class cached_property(object):
         result = instance.__dict__[self.func.__name__] = self.func(instance)
         return result
 
-class Cipher(str):
-    __slots__ = ('_message', '_text', '_statistic', '_lang')
 
-    def __init__(self, ciphertext, language = 'en'):
+class Cipher(str):
+    '''
+    '''
+    def __init__(self, ciphertext, language = 'undef'):
         """
         Transform raw message into models.
         With execution Cipher(X, Y) possible X types is file and array.
         """
-        pass
+        self.ciphertext = ciphertext
+        if language == 'undef':
+            self.language = 'en' 
+        else:
+            self.language = language
 
     @cached_property
-    def message(a):
-        return a._message
+    def alphabet(self):
+        '''
+        S.alphabet -> list
+
+        Return alphabet of estimated language.
+        '''
+        alphabet = list(_language[self.language][1].keys())
+        alphabet.remove('kappa')
+        alphabet.remove('max')
+        alphabet.sort()
+        return alphabet
 
     @cached_property
-    def text(a):
-        return a._text
+    def statistic(self):
+        '''
+        S.statistic -> list
+
+        Count how many times each char found in message.
+        '''
+        message = self.sample
+        stat = {}
+        for string in message:
+            for char in string:
+                if char in stat.keys():
+                    stat[char] += 1
+                else:
+                    stat[char] = 1
+        return sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
     @cached_property
-    def statistic(a):
-        return a._statistic
-
-    @cached_property
-    def lang(a):
-        return a._lang
+    def sample(self):
+        '''
+        Remove all whitespaces and transform letters into lower case.
+        '''
+        message = self.ciphertext
+        sample = ''
+        for line in message:
+            line = re.sub(re.compile('\s'), '', line)
+            sample += line
+        return sample.upper()
 
     def encrypt(self):
         '''
@@ -92,28 +123,6 @@ class Cipher(str):
             raise ValueError(
                     "No char for {0} position exist!".format(n))
 
-    def statistic(self, message):
-        '''
-        Count how many times each char found in message.
-        '''
-        stat = {}
-        for string in message:
-            for char in string:
-                if char in stat.keys():
-                    stat[char] += 1
-                else:
-                    stat[char] = 1
-        return sorted(stat.items(), key = lambda x:x[1], reverse = True)
-
-    def sample(self, message, lang = 'en'):
-        '''
-        Remove all whitespaces and transform letters into lower case.
-        '''
-        sample = ''
-        for line in message:
-            line = re.sub(re.compile('\s'), '', line)
-            sample += line
-        return sample.lower()
 
 # The following are language-specific data on character frequencies.
 # Kappa is the "index of coincidence" described in the cryptography paper
