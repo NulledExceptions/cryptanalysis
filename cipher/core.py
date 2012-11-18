@@ -58,35 +58,39 @@ class Cipher(str):
         '''
         '''
 
-    def ord(self, char, alphabet = []):
+    def ord(self, char):
         '''
-        Returns position in the natural alphabet.
+        S.ord(str) -> int
+
+        Return str position in the S natural alphabet.
         Also, says "goodbye" to additional info :(
         '''
-        if alphabet != []:
-            return alphabet.index(char)
+        if char == ' ':
+            return len(self.alphabet)
+        elif char in range(10):
+            return len(self.alphabet) + int(char)
+        elif char.upper() in self.alphabet:
+            return self.alphabet.index(char.upper())
         else:
-            if char == ' ':
-                return 0
-            elif char in self.__english:
-                return self.__english.index(char)
-            elif char in self.__russian:
-                return self.__russian.index(char)
-            else:
-                print("[ERROR] Aliens char detected: <{0}>!".format(char))
-                return 0
+            raise ValueError(
+                    "Aliens char detected: <{0}>!".format(char))
 
-    def chr(self, n, lang = 'en'):
+    def chr(self, n):
         '''
-        Negative for self.ord().
+        S.ord(int) -> str
+
+        Negative for self.ord(). Return char fot int position of
+        S alphabet.
         '''
-        if lang == 'en':
-            return self.__eng[n-1]
-        elif lang == 'ru':
-            return self.__rus[n]
+        if n == len(self.alphabet):
+            return ' '
+        elif len(self.alphabet) < n <= 10 + len(self.alphabet):
+            return n - len(self.alphabet)
+        elif 0 <= n < len(self.alphabet):
+            return self.alphabet[n]
         else:
-            print("[ERROR] No char for {0} position found!".format(n))
-            return 0
+            raise ValueError(
+                    "No char for {0} position exist!".format(n))
 
     def statistic(self, message):
         '''
