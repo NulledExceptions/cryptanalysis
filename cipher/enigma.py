@@ -5,7 +5,6 @@ from random import shuffle,randint,choice
 from copy import copy  
 import core
 
-
 class Enigma(core.Cipher):
     def __init__(self, nocogs,printspecialchars):  
         self.printspecialchars=printspecialchars  

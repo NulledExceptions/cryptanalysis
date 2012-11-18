@@ -29,7 +29,6 @@ class Caesar(core.Cipher):
         """
         return self.encipher(-shift)
 
-
 if __name__ == "__main__":
     pass
 
