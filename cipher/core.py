@@ -8,9 +8,16 @@ from math import *
 import re
 
 
+class cached_property(object):
+    def __init__(self, func):
+        self.func = func
+
+    def __get__(self, instance, cls=None):
+        result = instance.__dict__[self.func.__name__] = self.func(instance)
+        return result
+
 class Cipher(str):
     __slots__ = ('_message', '_text', '_statistic', '_lang')
-
 
     def __init__(self, info):
         """
@@ -23,19 +30,19 @@ class Cipher(str):
         if type(info) in (str, list):
             self._message = info
 
-    @property
+    @cached_property
     def message(a):
         return a._message
 
-    @property
+    @cached_property
     def text(a):
         return a._text
 
-    @property
+    @cached_property
     def statistic(a):
         return a._statistic
 
-    @property
+    @cached_property
     def lang(a):
         return a._lang
 
@@ -104,7 +111,6 @@ class Cipher(str):
             line = re.sub(re.compile('\s'), '', line)
             sample += line
         return sample.lower()
-
 
 # The following are language-specific data on character frequencies.
 # Kappa is the "index of coincidence" described in the cryptography paper
