@@ -3,21 +3,20 @@
 
 from itertools import permutations
 from optparse import OptionParser
-from os import curdir
-from sys import exit
 import core
+
 
 class Affine(core.Cipher):
     """
     This class makes research on afinne chipers.
     """
-
     def encrypt(self, a, b):
         n = len(self.alphabet)
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr((a * i + b) % n)
         return ''.join(transposition[char] for char in self.sample)
+
 
     def decrypt(self, a, b):
         n = len(self.alphabet)
@@ -26,6 +25,7 @@ class Affine(core.Cipher):
             transposition[self.chr(i)] = self.chr(
                     (core.negative(a, n) * (i - b)) % n)
         return ''.join(transposition[char] for char in self.sample)
+
 
     def guess(self, n):
         high = [self.statistic[i][0] for i in range(n)]
@@ -39,27 +39,52 @@ class Affine(core.Cipher):
                 y_t = self.ord('T')
                 a = ((x + y) * core.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
-            G.append([a, b])
+            G.append((a, b))
         for h in G:
-            H.append(self.decrypt(h[0], h[1]), h[0], h[1])
+            H.append((self.decrypt(h[0], h[1]), h[0], h[1]))
         return H
 
-    def decipher(self):
-        hypotesa = self.guess(5)
-        print('Trying to guess factors (a, b) in [y=a*x+b] equation:')
-        print('|  i | guess                          |  a |  b |')
-        print('-------------------------------------------------')
-        for h in hypotesa:
-            print 
-        variant = int(input('Which guess seems to be right? ')) - 1
-        while not 0 <= variant <= len(hypotesa):
-            print('There are no such variant!')
-            variant = int(input('Which guess seems to be right? ')) - 1
-        print('Here is open text: {0}'.format(
-            self.decrypt(hypotesa[variant][0], hypotesa[variant][1])))
-        return (self.decrypt(hypotesa[variant][0], hypotesa[variant][1]), 
-                hypotesa[variant][0], 
-                hypotesa[variant][1] )
+
+    def decipher(self, iteration = 0, shift = 0):
+        hypotesa = self.guess(5 + iteration)
+        print('\nTrying to guess factors (a, b) in [y = a * x + b] equation:')
+        print('|  i | guess {0} |  a |  b |'.format(' ' * 44))
+        print('-' * 69)
+        i = 0
+        for h in hypotesa[shift:]:
+            i += 1
+            print('| {0:-2g} | {1} | {2:-2g} | {3:-2g} |'.format(
+                i, h[0][:50], h[1], h[2]))
+
+        def communicate(message = ''):
+            print(message)
+            variant = input(
+                  'Which guess seems to be right? [1..{0} or None] '.format(i))
+            if variant == '':
+                return -1
+            elif variant.isalpha():
+                if (variant.lower() == 'none' or 
+                    variant.lower() == 'n'):
+                    return -1
+                else:
+                    return communicate('There are no such variant!')
+            elif variant.isdigit():
+                variant = int(variant)
+                if 1 <= variant <= len(hypotesa):
+                    return variant - 1
+                return communicate(
+                        'You should choose variant from 1 to {0}.'.format(i))
+
+        desigion = communicate()
+        if desigion == -1:
+            iteration += 1
+            return self.decipher(iteration, i)
+        else:
+            desigion += shift
+            return (self.decrypt(hypotesa[desigion][1], hypotesa[desigion][2]),
+                    hypotesa[desigion][1], 
+                    hypotesa[desigion][2])
+
 
 def main():
     parser = OptionParser('usage: python %prog [options] [file]')
@@ -72,32 +97,20 @@ def main():
     parser.add_option('-f', '--file', 
                       dest='filename',
                       help='write report to FILE', metavar='FILE')
-    parser.add_option('-a', 
-                      dest = 'a', action = 'store',
-                      help = 'the "a" in y = ax + b equation')
-    parser.add_option('-b', 
-                      dest = 'b', action = 'store',
-                      help = 'the "b" in y = ax + b equation')
     (options, args) = parser.parse_args()
     if options.filename:
         a = Affine(open(options.filename).readlines())
         if options.encrypt:
-            if options.a and options.b:
-                print(a.encrypt(options.a, options.b))
-                exit(0)
-            else:
-                print("This task needs more actions.")
-                exit(0)
+            print(a.encrypt(options.a, options.b))
         elif options.decrypt:
             if options.a and options.b:
                 print(a.decrypt(options.a, options.b))
-                exit(0)
             else:
                 a.decipher()
 
 
 if __name__ == '__main__':
     #main()
-    a = Affine(open('{0}/../sample/affine'.format(curdir)).readlines())
-    a.guess()
+    a = Affine(open('sample/affine').readlines())
+    print(a.decipher())
 
