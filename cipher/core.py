@@ -32,6 +32,12 @@ class Cipher(str):
         self.ciphertext = ciphertext
         self.language = language
 
+    def __repr__(self):
+        return self.sample
+
+    def __str__(self):
+        return self.sample
+
     @cached_property
     def alphabet(self):
         '''
@@ -76,21 +82,30 @@ class Cipher(str):
 
     def encrypt(self):
         '''
+		This method should be overriden in Cipher subclass.
+        It contains encyption procedure.
         '''
+        raise NotImplemented('Encryption is not implemented.')
 
     def decrypt(self):
         '''
+		This method should be overriden in Cipher subclass.
+        It contains decyption procedure.
         '''
+        raise NotImplemented('Decryption is not implemented.')
 
     def decipher(self):
         '''
+		This method should be overriden in Cipher subclass.
+        Actually, cryptanalysis main line is here.
         '''
+        raise NotImplemented('Analysis is not implemented.')
 
     def ord(self, char):
         '''
-        S.ord(str) -> int
+        S.ord(s) -> int
 
-        Return str position in the S natural alphabet.
+        Return s position in the S natural alphabet.
         Also, says "goodbye" to additional info :(
         '''
         if char == ' ':
@@ -105,10 +120,9 @@ class Cipher(str):
 
     def chr(self, n):
         '''
-        S.ord(int) -> str
+        S.ord(i) -> str
 
-        Negative for self.ord(). Return char fot int position of
-        S alphabet.
+        Negative for self.ord(). Return char for i position of S alphabet.
         '''
         if n == len(self.alphabet):
             return ' '
@@ -122,8 +136,7 @@ class Cipher(str):
 
 
 # The following are language-specific data on character frequencies.
-# Kappa is the "index of coincidence" described in the cryptography paper
-# (link above).
+# Kappa is the "index of coincidence".
 # Languages represented by ISO 639-1 codes.
 _language = { 
         'ru' : 
@@ -268,26 +281,26 @@ def brent(N):
     '''
     if N % 2 == 0:
         return 2
-    y,c,m = randint(1, N-1), randint(1, N-1), randint(1, N-1)
-    g,r,q = 1,1,1
+    y, c, m = randint(1, N-1), randint(1, N-1), randint(1, N-1)
+    g, r, q = 1, 1, 1
     while g == 1:            
         x = y
         for i in range(r):
-            y = ((y*y)%N+c)%N
+            y = ((y * y) % N + c) % N
         k = 0
-        while (k<r and g==1):
+        while (k < r and g == 1):
             ys = y
-            for i in range(min(m,r-k)):
-                y = ((y*y)%N+c)%N
-                q = q*(abs(x-y))%N
-            g = gcd(q,N)
+            for i in range(min(m, r - k)):
+                y = ((y * y) % N + c) % N
+                q = q * (abs(x - y)) % N
+            g = gcd(q, N)
             k = k + m
-        r = r*2
-    if g==N:
+        r = r * 2
+    if g == N:
         while True:
-            ys = ((ys*ys)%N+c)%N
-            g = gcd(abs(x-ys),N)
-            if g>1:
+            ys = ((ys * ys) % N + c) % N
+            g = gcd(abs(x - ys), N)
+            if g > 1:
                 break
     return g    
 
