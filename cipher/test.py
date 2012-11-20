@@ -1,34 +1,34 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
+from cipher import affine, core
 import unittest
 
 class affine_test(unittest.TestCase):
-    import affine
-    ciphertext = open('../sample/affine').readlines()
-    a = affine.Affine(ciphertext)
-
     def test_affine_encrypt(self):
-        self.assertEqual('bhjuhnbulsvulruslyxh',
-                self.a.encrypt(23, 21)[:20])
+        a = self.affine.Affine('ATTACK AT DAWN')
+        self.assertEqual('EJJEKIEJNESR',
+                a.encrypt(3, 4)[:20])
 
     def test_affine_decrypt(self):
-        import affine
-        self.assertEqual('SAUNAISNOTKNOWNTOBEA',
-                self.a.decrypt(23, 21)[:20])
+        a = self.affine.Affine('EJJEKIEJNESR')
+        self.assertEqual('ATTACKATDAWN',
+                a.decrypt(3, 4)[:20])
 
     def test_affine_decipher(self):
-        self.assertEqual(('SAUNAISNOTKNOWNTOBEA', 23,  21),
-                          self.a.decipher())
+        ciphertext = open('../sample/affine').readlines()
+        a = self.affine.Affine(ciphertext)
+        x = a.decipher()
+        self.assertEqual(('SAUNAISNOTKNOWNTOBEA', 8, 7), 
+                (x[0][:20], x[1], x[2]))
 
 class core_test(unittest.TestCase):
-    import core
     ciphertext = open('../sample/affine').readlines()
     a = core.Cipher(ciphertext)
 
     def test_sampler(self):
-        self.assertEqual('BHJUHNBULSVULRUSLYXHONUUNBWNUAXUSNLDYJSS',
-                         self.a.sample[:40])
+        self.assertEqual('BHJUHNBULSVULRUSLYXH',
+                         self.a.sample[:20])
 
 if __name__ == '__main__':
     unittest.main()
