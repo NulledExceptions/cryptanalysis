@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
+try:
+    from cipher.core import Cipher, negative
+except ImportError:
+    from core import Cipher, negative
 from itertools import permutations
 from optparse import OptionParser
-import core
 
 
-class Affine(core.Cipher):
+class Affine(Cipher):
     """
     This class makes research on afinne chipers.
     """
@@ -23,7 +26,7 @@ class Affine(core.Cipher):
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr(
-                    (core.negative(a, n) * (i - b)) % n)
+                    (negative(a, n) * (i - b)) % n)
         return ''.join(transposition[char] for char in self.sample)
 
 
@@ -37,7 +40,7 @@ class Affine(core.Cipher):
             if self.language == 'en':
                 x_t = self.ord('E')
                 y_t = self.ord('T')
-                a = ((x + y) * core.negative(x_t + y_t, 26)) % 26
+                a = ((x + y) * negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
             G.append((a, b))
         for h in G:

@@ -6,24 +6,24 @@ import unittest
 
 class affine_test(unittest.TestCase):
     def test_affine_encrypt(self):
-        a = self.affine.Affine('ATTACK AT DAWN')
+        a = affine.Affine('ATTACK AT DAWN')
         self.assertEqual('EJJEKIEJNESR',
                 a.encrypt(3, 4)[:20])
 
     def test_affine_decrypt(self):
-        a = self.affine.Affine('EJJEKIEJNESR')
+        a = affine.Affine('EJJEKIEJNESR')
         self.assertEqual('ATTACKATDAWN',
                 a.decrypt(3, 4)[:20])
 
     def test_affine_decipher(self):
-        ciphertext = open('../sample/affine').readlines()
-        a = self.affine.Affine(ciphertext)
+        ciphertext = open('sample/affine').readlines()
+        a = affine.Affine(ciphertext)
         x = a.decipher()
         self.assertEqual(('SAUNAISNOTKNOWNTOBEA', 8, 7), 
                 (x[0][:20], x[1], x[2]))
 
 class core_test(unittest.TestCase):
-    ciphertext = open('../sample/affine').readlines()
+    ciphertext = open('sample/affine').readlines()
     a = core.Cipher(ciphertext)
 
     def test_sampler(self):
