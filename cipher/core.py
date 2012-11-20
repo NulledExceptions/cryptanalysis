@@ -24,16 +24,13 @@ class cached_property(object):
 class Cipher(str):
     '''
     '''
-    def __init__(self, ciphertext, language = 'undef'):
+    def __init__(self, ciphertext, language = 'en'):
         """
         Transform raw message into models.
         With execution Cipher(X, Y) possible X types is file and array.
         """
         self.ciphertext = ciphertext
-        if language == 'undef':
-            self.language = 'en' 
-        else:
-            self.language = language
+        self.language = language
 
     @cached_property
     def alphabet(self):
@@ -42,7 +39,7 @@ class Cipher(str):
 
         Return alphabet of estimated language.
         '''
-        alphabet = list(_language[self.language][1].keys())
+        alphabet = list(_language[self.language].keys())
         alphabet.remove('kappa')
         alphabet.remove('max')
         alphabet.sort()
@@ -129,8 +126,7 @@ class Cipher(str):
 # (link above).
 # Languages represented by ISO 639-1 codes.
 _language = { 
-        'ru' : ( 
-            'Russian',
+        'ru' : 
             { 'А':1, 'Б':1, 'В':1, 'Г':1, 'Д':1, 'Е':1, 
               'Ж':1, 'З':1, 'И':1, 'К':1, 'Л':1, 'М':1, 
               'Н':1, 'О':1, 'П':1, 'Р':1, 'С':1, 'Т':1, 
@@ -138,10 +134,9 @@ _language = {
               'Щ':1, 'Ь':1, 'Ъ':1, 'Ы':1, 'Э':1, 'Ю':1, 
               'Я':1,
               'max':1,
-              'kappa':1 } ),
+              'kappa':1 },
 
-        'en' : (
-            'English',
+        'en' :
             { 'A':8.16, 'B':1.49, 'C':2.78, 'D':4.25, 
               'E':12.70, 'F':2.22, 'G':2.01, 'H':6.09, 
               'I':6.99, 'J':0.15, 'K':0.77, 'L':4.02, 
@@ -149,11 +144,10 @@ _language = {
               'Q':0.09, 'R':5.99, 'S':6.32, 'T':9.05, 
               'U':2.75, 'V':0.97, 'W':2.36, 'X':0.15, 
               'Y':1.97, 'Z':0.07, 
-              'max':12.702, 
-              'kappa':0.0667 } ),
+              'max':12.70, 
+              'kappa':0.0667 },
       
-        'fr' : (
-            'French',
+        'fr' :
             { 'A':8.11, 'B':0.91, 'C':3.49, 'D':4.27, 
               'E':17.22, 'F':1.14, 'G':1.09, 'H':0.77, 
               'I':7.44, 'J':0.34, 'K':0.09, 'L':5.53, 
@@ -162,10 +156,9 @@ _language = {
               'U':5.65, 'V':1.30, 'W':0.04, 'X':0.44, 
               'Y':0.27, 'Z':0.09, 
               'max':17.22, 
-              'kappa':0.0746 } ),
+              'kappa':0.0746 },
       
-        'de' : (
-            'German',
+        'de' :
             { 'A':6.50, 'B':2.56, 'C':2.83, 'D':5.41, 
               'E':16.69, 'F':2.04, 'G':3.64, 'H':4.06, 
               'I':7.81, 'J':0.19, 'K':1.87, 'L':2.82, 
@@ -173,11 +166,10 @@ _language = {
               'Q':0.05, 'R':6.53, 'S':6.76, 'T':6.74, 
               'U':3.70, 'V':1.06, 'W':1.39, 'X':0.02, 
               'Y':0.03, 'Z':1.00, 
-              'max':16.693, 
-              'kappa':0.0767 } ),
+              'max':16.69, 
+              'kappa':0.0767 },
       
-        'it' : (
-            'Italian',
+        'it' :
             { 'A':11.30, 'B':0.97, 'C':4.35, 'D':3.80, 
               'E':11.24, 'F':1.09, 'G':1.73, 'H':1.02, 
               'I':11.57, 'J':0.03, 'K':0.07, 'L':6.40, 
@@ -186,10 +178,9 @@ _language = {
               'U':3.18, 'V':1.52, 'W':0.00, 'X':0.02, 
               'Y':0.048, 'Z':0.95, 
               'max':11.57, 
-              'kappa':0.0733 } ),
+              'kappa':0.0733 },
       
-        'pt' : (
-            'Portuguese',
+        'pt' :
             { 'A':13.89, 'B':0.98, 'C':4.18, 'D':5.24, 
               'E':12.72, 'F':1.01, 'G':1.17, 'H':0.91, 
               'I':6.70, 'J':0.31, 'K':0.01, 'L':2.76, 
@@ -198,10 +189,9 @@ _language = {
               'U':4.05, 'V':1.55, 'W':0.01, 'X':0.27, 
               'Y':0.01, 'Z':0.40, 
               'max':13.89, 
-              'kappa':0.0745 } ),
+              'kappa':0.0745 },
       
-        'es' : (
-            'Spanish',
+        'es' :
             { 'A':12.09, 'B':1.21, 'C':4.20, 'D':4.65, 'E':13.89,
               'F':0.64, 'G':1.11, 'H':1.13, 'I':6.38, 'J':0.4, 
               'K':0.03, 'L':5.19, 'M':2.86, 'N':7.23, 'O':9.5,
@@ -209,7 +199,7 @@ _language = {
               'U':4.53, 'V':1.05, 'W':0.01, 'X':0.12, 'Y':1.1,
               'Z':0.324, 
               'max':13.89, 
-              'kappa':0.0766 } ),
+              'kappa':0.0766 },
         }
 
 def gcd(a, b):
