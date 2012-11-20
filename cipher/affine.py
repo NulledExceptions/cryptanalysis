@@ -3,6 +3,7 @@
 
 from itertools import permutations
 from optparse import OptionParser
+from os import curdir
 from sys import exit
 import core
 
@@ -12,91 +13,55 @@ class Affine(core.Cipher):
     """
 
     def encrypt(self, a, b):
-        message = self.sample
+        n = len(self.alphabet)
         transposition = {}
-        lang = self.language
-        if lang == 'en':
-            for i in range(26):
-                transposition[self.chr(i)] = self.chr(
-                        (a * i + b) % 26)
-            return ''.join(transposition[char] for char in message)
-        elif lang == 'ru':
-            for i in range(31):
-                transposition[self.chr(i)] = self.chr(
-                        (a * i + b) % 26)
-            return ''.join(transposition[char] for char in message)
+        for i in range(n):
+            transposition[self.chr(i)] = self.chr((a * i + b) % n)
+        return ''.join(transposition[char] for char in self.sample)
 
     def decrypt(self, a, b):
-        message = self.sample
+        n = len(self.alphabet)
         transposition = {}
-        lang = self.language
-        if lang == 'en':
-            for i in range(26):
-                transposition[self.chr(i)] = self.chr(
-                        (core.negative(a, 26) * (i - b)) % 26)
-            return ''.join(transposition[char] for char in message)
-        elif lang == 'ru':
-            for i in range(31):
-                transposition[self.chr(i)] = self.chr(
-                        (core.negative(a, 26) * (i - b)) % 26)
-            return ''.join(transposition[char] for char in message)
+        for i in range(n):
+            transposition[self.chr(i)] = self.chr(
+                    (core.negative(a, n) * (i - b)) % n)
+        return ''.join(transposition[char] for char in self.sample)
 
-    def guess(self):
+    def guess(self, n):
+        high = [self.statistic[i][0] for i in range(n)]
         G = []
-        high5 = [self.statistic[i][0] for i in range(5)]
-        H = permutations(high5, 2)
-        for h in H:
+        H = []
+        for h in permutations(high, 2):
             x = self.ord(h[0])
             y = self.ord(h[1])
             if self.language == 'en':
-                x_t = self.ord('e')
-                y_t = self.ord('t')
+                x_t = self.ord('E')
+                y_t = self.ord('T')
                 a = ((x + y) * core.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
             G.append([a, b])
-        return G
+        for h in G:
+            H.append(self.decrypt(h[0], h[1]), h[0], h[1])
+        return H
 
     def decipher(self):
+        hypotesa = self.guess(5)
         print('Trying to guess factors (a, b) in [y=a*x+b] equation:')
-        print('-------------------------------------------------')
         print('|  i | guess                          |  a |  b |')
         print('-------------------------------------------------')
-        i = 0
-        hypotesa = self.guess()
         for h in hypotesa:
-            dec = self.decrypt(h[0], h[1])
-            i += 1
-            print('| {0:-2g} | {1} | {2:-2g} | {3:-2g} |'.format(
-                   i, dec[:30], h[0], h[1]))
-        print('-------------------------------------------------')
+            print 
         variant = int(input('Which guess seems to be right? ')) - 1
         while not 0 <= variant <= len(hypotesa):
-            print('There is no such variant!')
+            print('There are no such variant!')
             variant = int(input('Which guess seems to be right? ')) - 1
         print('Here is open text: {0}'.format(
             self.decrypt(hypotesa[variant][0], hypotesa[variant][1])))
+        return (self.decrypt(hypotesa[variant][0], hypotesa[variant][1]), 
+                hypotesa[variant][0], 
+                hypotesa[variant][1] )
 
 def main():
-    if options.filename:
-        message = open(options.filename).readlines()
-        a = Affine(message)
-        if options.encrypt:
-            if options.a and options.b:
-                print(a.encrypt(options.a, options.b))
-                exit(0)
-            else:
-                print("This task needs more actions.")
-                exit(0)
-        elif options.decrypt:
-            if options.a and options.b:
-                a = Affine(message)
-                print(a.decrypt(options.a, options.b))
-                exit(0)
-            else:
-                a.decipher()
-
-
-if __name__ == '__main__':
     parser = OptionParser('usage: python %prog [options] [file]')
     parser.add_option('-d', '--decrypt',
                       action = 'store_false', dest = 'decrypt', default=False,
@@ -114,5 +79,25 @@ if __name__ == '__main__':
                       dest = 'b', action = 'store',
                       help = 'the "b" in y = ax + b equation')
     (options, args) = parser.parse_args()
-    main()
+    if options.filename:
+        a = Affine(open(options.filename).readlines())
+        if options.encrypt:
+            if options.a and options.b:
+                print(a.encrypt(options.a, options.b))
+                exit(0)
+            else:
+                print("This task needs more actions.")
+                exit(0)
+        elif options.decrypt:
+            if options.a and options.b:
+                print(a.decrypt(options.a, options.b))
+                exit(0)
+            else:
+                a.decipher()
+
+
+if __name__ == '__main__':
+    #main()
+    a = Affine(open('{0}/../sample/affine'.format(curdir)).readlines())
+    a.guess()
 
