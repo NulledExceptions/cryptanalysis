@@ -230,28 +230,23 @@ def totient(n):
         pos -= 1
     return tot
 
-def jacobi(a,n):
+def jacobi(a, n):
     """
     Jacobi symbol: (a|n).
     """
-    if a == 0:
-        return 0
-    if a == 1:
-        return 1
-    if a == 2:
-        n8 = n % 8
-        if n8 == 3 or n8 == 5:
+    if a in range(1):
+        return a
+    elif a == 2:
+        if n % 8 in [3, 5]:
             return -1
-        else:
-            return 1
-    if a % 2 == 0:
-        return jacobi(2,n) * jacobi(a//2,n)
-    if a >= n:
-        return jacobi(a%n,n)
-    if a % 4 == 3 and n%4 == 3:
-        return -jacobi(n,a)
-    else:
-        return jacobi(n,a)
+        return 1
+    elif a % 2 == 0:
+        return jacobi(2, n) * jacobi(a // 2, n)
+    elif a >= n:
+        return jacobi(a % n, n)
+    elif a % 4 == 3 and n % 4 == 3:
+        return -jacobi(n, a)
+    return jacobi(n, a)
 
 def negative(a, m):
     """
@@ -270,37 +265,38 @@ def _negative(a, m):
     """
     return a ** (totient(m) - 1) % m
 
-def brent(N):
+
+def factors(n):
     '''
     Pollard Rho Brent's factorization algorithm.
     https://comeoncodeon.wordpress.com/2010/09/18/pollard-rho-brent-integer-factorization/
     '''
-    if N % 2 == 0:
-        return 2
-    y, c, m = randint(1, N-1), randint(1, N-1), randint(1, N-1)
-    g, r, q = 1, 1, 1
-    while g == 1:            
-        x = y
-        for i in range(r):
-            y = ((y * y) % N + c) % N
-        k = 0
-        while (k < r and g == 1):
-            ys = y
-            for i in range(min(m, r - k)):
+    def brent(N):
+        if N % 2 == 0:
+            return 2
+        y, c, m = randint(1, N-1), randint(1, N-1), randint(1, N-1)
+        g, r, q = 1, 1, 1
+        while g == 1:            
+            x = y
+            for i in range(r):
                 y = ((y * y) % N + c) % N
-                q = q * (abs(x - y)) % N
-            g = gcd(q, N)
-            k = k + m
-        r = r * 2
-    if g == N:
-        while True:
-            ys = ((ys * ys) % N + c) % N
-            g = gcd(abs(x - ys), N)
-            if g > 1:
-                break
-    return g    
+            k = 0
+            while (k < r and g == 1):
+                ys = y
+                for i in range(min(m, r - k)):
+                    y = ((y * y) % N + c) % N
+                    q = q * (abs(x - y)) % N
+                g = gcd(q, N)
+                k = k + m
+            r = r * 2
+        if g == N:
+            while True:
+                ys = ((ys * ys) % N + c) % N
+                g = gcd(abs(x - ys), N)
+                if g > 1:
+                    break
+        return g    
 
-def factors(n):
     f = []
     while n != 1:
         d = brent(n)
