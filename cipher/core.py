@@ -108,15 +108,10 @@ class Cipher(str):
         Return s position in the S natural alphabet.
         Also, says "goodbye" to additional info :(
         '''
-        if char == ' ':
-            return len(self.alphabet)
-        elif char in range(10):
-            return len(self.alphabet) + int(char)
-        elif char.upper() in self.alphabet:
+        if char.upper() in self.alphabet:
             return self.alphabet.index(char.upper())
         else:
-            raise ValueError(
-                    "Aliens char detected: <{0}>!".format(char))
+            return ord(char)
 
     def chr(self, n):
         '''
@@ -124,15 +119,16 @@ class Cipher(str):
 
         Negative for self.ord(). Return char for i position of S alphabet.
         '''
-        if n == len(self.alphabet):
-            return ' '
-        elif len(self.alphabet) < n <= 10 + len(self.alphabet):
-            return n - len(self.alphabet)
         elif 0 <= n < len(self.alphabet):
             return self.alphabet[n]
         else:
-            raise ValueError(
-                    "No char for {0} position exist!".format(n))
+            return n
+
+    def isalpha(char):
+        if char in self.alphabet:
+            return True
+        else:
+            return False
 
 
 # The following are language-specific data on character frequencies.
