@@ -1,14 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-import core
+try:
+    from cipher.core import Cipher
+except ImportError:
+    from core import Cipher
 
-class Caesar(core.Cipher):
+
+class Caesar(Cipher):
     """
     An implementation of the Caesar cipher.
     """
-
-    def encipher(self, shift):
+    def encrypt(self, shift):
         """
         Encipher input (plaintext) using the Caesar cipher and return it
         (ciphertext).
@@ -16,18 +19,20 @@ class Caesar(core.Cipher):
         ciphertext = []
         for p in self:
             if p.isalpha():
-                ciphertext.append(chr((ord(p) - ord('Aa'[int(p.islower())]) +
-                shift) % 26 + ord('Aa'[int(p.islower())])))
+                ciphertext.append(
+                        self.chr((self.ord(p) - self.ord('Aa'[int(p.islower())]) + shift) % 26 + 
+                            self.ord('Aa'[int(p.islower())])))
             else:
                 ciphertext.append(p)
         return Caesar(''.join(ciphertext))
 
-    def decipher(self, shift):
+    def decrypt(self, shift):
         """
         Decipher input (ciphertext) using the Caesar cipher and return it
         (plaintext).
         """
-        return self.encipher(-shift)
+        return self.encrypt(-shift)
+
 
 if __name__ == "__main__":
     pass
