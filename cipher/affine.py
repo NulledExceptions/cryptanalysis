@@ -6,7 +6,6 @@ try:
 except ImportError:
     from core import Cipher, negative
 from itertools import permutations
-from optparse import OptionParser
 
 
 class Affine(Cipher):
@@ -20,7 +19,6 @@ class Affine(Cipher):
             transposition[self.chr(i)] = self.chr((a * i + b) % n)
         return ''.join(transposition[char] for char in self.sample)
 
-
     def decrypt(self, a, b):
         n = len(self.alphabet)
         transposition = {}
@@ -29,8 +27,7 @@ class Affine(Cipher):
                     (negative(a, n) * (i - b)) % n)
         return ''.join(transposition[char] for char in self.sample)
 
-
-    def guess(self, n):
+    def guess(self, n = 5):
         high = [self.statistic[i][0] for i in range(n)]
         G = []
         H = []
@@ -47,17 +44,14 @@ class Affine(Cipher):
             H.append((self.decrypt(h[0], h[1]), h[0], h[1]))
         return H
 
-
     def decipher(self, iteration = 0, shift = 0):
         hypotesa = self.guess(5 + iteration)
         print('\nTrying to guess factors (a, b) in [y = a * x + b] equation:')
         print('|  i | guess {0} |  a |  b |'.format(' ' * 44))
         print('-' * 69)
-        i = 0
-        for h in hypotesa[shift:]:
-            i += 1
+        for i, h in enumerate(hypotesa[shift:]):
             print('| {0:-2g} | {1} | {2:-2g} | {3:-2g} |'.format(
-                i, h[0][:50], h[1], h[2]))
+                   i + 1, h[0][:50], h[1], h[2]))
 
         def communicate(message = ''):
             print(message)
@@ -70,7 +64,7 @@ class Affine(Cipher):
                     variant.lower() == 'n'):
                     return -1
                 else:
-                    return communicate('There are no such variant!')
+                    return communicate('It should be number [1..{0}] or None. '.format(i))
             elif variant.isdigit():
                 variant = int(variant)
                 if 1 <= variant <= len(hypotesa):
@@ -90,6 +84,7 @@ class Affine(Cipher):
 
 
 def main():
+    from optparse import OptionParser
     parser = OptionParser('usage: python %prog [options] [file]')
     parser.add_option('-d', '--decrypt',
                       action = 'store_false', dest = 'decrypt', default=False,
@@ -101,6 +96,7 @@ def main():
                       dest='filename',
                       help='write report to FILE', metavar='FILE')
     (options, args) = parser.parse_args()
+
     if options.filename:
         a = Affine(open(options.filename).readlines())
         if options.encrypt:
@@ -113,7 +109,5 @@ def main():
 
 
 if __name__ == '__main__':
-    #main()
-    a = Affine(open('sample/affine').readlines())
-    print(a.decipher())
+    main()
 
