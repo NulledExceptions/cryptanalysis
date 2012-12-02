@@ -1,4 +1,4 @@
-Cryptoanalysis
+Cryptanalysis
 =============
 
 All this grown on my deepest love to all kind of math-based algorythms and,

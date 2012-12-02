@@ -110,8 +110,7 @@ class Cipher(str):
         '''
         if char.upper() in self.alphabet:
             return self.alphabet.index(char.upper())
-        else:
-            return ord(char)
+        return char
 
     def chr(self, n):
         '''
@@ -119,16 +118,14 @@ class Cipher(str):
 
         Negative for self.ord(). Return char for i position of S alphabet.
         '''
-        elif 0 <= n < len(self.alphabet):
+        if str(n).isdecimal() and 0 <= n < len(self.alphabet):
             return self.alphabet[n]
-        else:
-            return n
+        return n
 
-    def isalpha(char):
+    def isalpha(self, char):
         if char in self.alphabet:
             return True
-        else:
-            return False
+        return False
 
 
 # The following are language-specific data on character frequencies.

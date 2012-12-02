@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-  
 
+try:
+    from cipher.core import Cipher
+except ImportError:
+    from core import Cipher
 from random import shuffle,randint,choice  
 from copy import copy  
-import core
 
 class Enigma(core.Cipher):
     def __init__(self, nocogs,printspecialchars):  

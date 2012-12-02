@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-import core
+try:
+    from cipher.core import Cipher
+except ImportError:
+    from core import Cipher
 
 class Vigenere(core.Cipher):
     """
