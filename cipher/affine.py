@@ -85,27 +85,31 @@ class Affine(Cipher):
 
 def main():
     from optparse import OptionParser
-    parser = OptionParser('usage: python %prog [options] [file]')
-    parser.add_option('-d', '--decrypt',
-                      action = 'store_false', dest = 'decrypt', default=False,
-                      help = 'what task we are going to manage')
+    parser = OptionParser('usage: ./%prog [options] filename')
+    parser.add_option('-a', '--analysis',
+                      action = 'store_true', dest = 'analysis', default=True,
+                      help = 'make analysis, default action')
     parser.add_option('-e', '--encrypt',
-                      action='store_false', dest='encrypt', default=False,
-                      help="don't print status messages to stdout")
-    parser.add_option('-f', '--file', 
-                      dest='filename',
-                      help='write report to FILE', metavar='FILE')
+                      metavar="a,b", 
+                      help="encrypt file with a and b args")
+    parser.add_option('-d', '--decrypt',
+                      metavar="a,b", 
+                      help = 'decrypt file with a and b args')
     (options, args) = parser.parse_args()
-
-    if options.filename:
-        a = Affine(open(options.filename).readlines())
+    if len(args) != 1:
+        parser.print_help()
+    else:
+        ct = Affine(open(args[0]).readlines())
         if options.encrypt:
-            print(a.encrypt(options.a, options.b))
+            print("Encryption...")
+            print(ct.encrypt(int(a), int(b)))
         elif options.decrypt:
-            if options.a and options.b:
-                print(a.decrypt(options.a, options.b))
-            else:
-                a.decipher()
+            print("Decryption...")
+            (a, b) = options.encrypt.split(',')
+            print(a.decrypt(int(a), int(b)))
+        else:
+            print("Analysis...")
+            print(ct)
 
 
 if __name__ == '__main__':
