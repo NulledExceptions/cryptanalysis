@@ -36,7 +36,16 @@ class Cipher(str):
         return self.sample
 
     def __str__(self):
-        return self.sample
+        rval = ""
+        pos = 0
+        for c in self.sample:
+            if pos % 55 == 0:
+                rval += '\n'
+            elif pos % 5 == 0:
+                rval += " "
+            pos += 1
+            rval += c
+        return rval
 
     @cached_property
     def alphabet(self):
@@ -48,8 +57,7 @@ class Cipher(str):
         alphabet = list(_language[self.language].keys())
         alphabet.remove('kappa')
         alphabet.remove('max')
-        alphabet.sort()
-        return alphabet
+        return alphabet.sort()
 
     @cached_property
     def statistic(self):
@@ -58,9 +66,8 @@ class Cipher(str):
 
         Count how many times each char found in message.
         '''
-        message = self.sample
         stat = {}
-        for string in message:
+        for string in self.message:
             for char in string:
                 if char in stat.keys():
                     stat[char] += 1
@@ -97,7 +104,7 @@ class Cipher(str):
     def decipher(self):
         '''
 		This method should be overriden in Cipher subclass.
-        Actually, cryptanalysis main line is here.
+        Actually, cryptanalysis main line should be stored here.
         '''
         raise NotImplemented('Analysis is not implemented.')
 
@@ -106,7 +113,7 @@ class Cipher(str):
         S.ord(s) -> int
 
         Return s position in the S natural alphabet.
-        Also, says "goodbye" to additional info :(
+        Also, says "goodbye" to possible additional info :(
         '''
         if char.upper() in self.alphabet:
             return self.alphabet.index(char.upper())
@@ -116,7 +123,8 @@ class Cipher(str):
         '''
         S.ord(i) -> str
 
-        Negative for self.ord(). Return char for i position of S alphabet.
+        Negative for self.ord().
+        Return char for i position of S alphabet.
         '''
         if str(n).isdecimal() and 0 <= n < len(self.alphabet):
             return self.alphabet[n]
@@ -128,9 +136,14 @@ class Cipher(str):
         return False
 
 
-# The following are language-specific data on character frequencies.
-# Kappa is the "index of coincidence".
-# Languages represented by ISO 639-1 codes.
+'''
+The following are language-specific data on character frequencies.
+* kappa is the "index of coincidence"
+  [link](http://en.wikipedia.org/wiki/Index_of_coincidence)
+* max is the maximum frequency
+* languages represented by ISO 639-1:2002 codes
+  [link](http://en.wikipedia.org/wiki/ISO_639-1)
+'''
 _language = { 
         'ru' : 
             { 'А':1, 'Б':1, 'В':1, 'Г':1, 'Д':1, 'Е':1, 
@@ -261,7 +274,6 @@ def _negative(a, m):
     Negative element for element a in field Z_m, where m is prime.
     """
     return a ** (totient(m) - 1) % m
-
 
 def factors(n):
     '''
