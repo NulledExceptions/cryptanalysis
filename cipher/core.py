@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
-from builtins import str
+import builtins
 from random import randint
 from math import *
 import re
@@ -21,15 +21,16 @@ class cached_property(object):
         return result
 
 
-class Cipher(str):
+class Cipher():
     '''
     '''
     def __init__(self, ciphertext, language = 'en'):
-        """
-        Transform raw message into models.
-        With execution Cipher(X, Y) possible X types is file and array.
-        """
-        self.ciphertext = ciphertext
+        if type(ciphertext) is builtins.str:
+            self.ciphertext = ciphertext
+        elif type(ciphertext) is builtins.list:
+            self.ciphertext = ''.join(ciphertext)
+        else: 
+            raise TypeError('Ciphertext should be text.')
         self.language = language
 
     def __repr__(self):
@@ -126,7 +127,7 @@ class Cipher(str):
         Negative for self.ord().
         Return char for i position of S alphabet.
         '''
-        if str(n).isdecimal() and 0 <= n < len(self.alphabet):
+        if builtins.str(n).isdecimal() and 0 <= n < len(self.alphabet):
             return self.alphabet[n]
         return n
 
