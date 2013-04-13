@@ -5,6 +5,10 @@ import unittest
 from cipher import caesar, affine, core
 
 class affine_test(unittest.TestCase):
+    ct = open('sample/affine')
+    a = core.Cipher(ct.readlines())
+    ct.close()
+
     def test_affine_encrypt(self):
         a = affine.Affine('ATTACK AT DAWN')
         self.assertEqual('EJJEKIEJNESR',
@@ -25,6 +29,10 @@ class affine_test(unittest.TestCase):
 
 
 class caesar_test(unittest.TestCase):
+    ct = open('sample/affine')
+    a = core.Cipher(ct.readlines())
+    ct.close()
+
     def test_caesar_encrypt(self):
         a = caesar.Caesar('ATTACK AT DAWN')
         self.assertEqual('DWWDFN DW GDZQ',
@@ -37,13 +45,33 @@ class caesar_test(unittest.TestCase):
 
 
 class core_test(unittest.TestCase):
-    ciphertext = open('sample/affine')
-    a = core.Cipher(ciphertext.readlines())
-    ciphertext.close()
+    ct = open('sample/affine')
+    a = core.Cipher(ct.readlines())
+    ct.close()
 
     def test_sampler(self):
-        self.assertEqual('BHJUHNBULSVULRUSLYXH',
-                         self.a.sample[:20])
+        sample = 'BHJUHNBULSVULRUSLYXHONUUNBWNUAXUSNLDYJSSWXRLKGNBONUUNBWSWXKXHKXDHUZDLKXBHJUHBNUONUMHUGSWHUXMBXRWXKXLUXBHJUHCXKXAXKZSWKXXLKOLJKCXLCMXONUUBVULRRWHSHBHJUHNBXMBXRWXKXNOZLJBXXHBNFUBHJUHLUSWXGLLKZLJPHUULSYXBJKXSWHSSWXKXNBHBHJUHYXWNUGSWXGLLK'
+        self.assertEqual(sample, self.a.sample)
+
+    def test_representation(self):
+        reprsentation = '''
+BHJUH NBULS VULRU SLYXH ONUUN BWNUA XUSNL DYJSS WXRLK GNBON UUNBW
+SWXKX HKXDH UZDLK XBHJU HBNUO NUMHU GSWHU XMBXR WXKXL UXBHJ UHCXK
+XAXKZ SWKXX LKOLJ KCXLC MXONU UBVUL RRWHS HBHJU HNBXM BXRWX KXNOZ
+LJBXX HBNFU BHJUH LUSWX GLLKZ LJPHU ULSYX BJKXS WHSSW XKXNB HBHJU
+HYXWN UGSWX GLLK'''
+        self.assertEqual(reprsentation, self.a.__repr__())
+
+    def test_statistic(self):
+        statistic = [
+                ('X', 32), ('U', 29), ('H', 23), ('B', 19), 
+                ('L', 19), ('N', 16), ('K', 15), ('S', 15), 
+                ('W', 14), ('J', 11), ('O', 6), ('R', 6), 
+                ('G', 5), ('M', 4), ('Y', 4), ('Z', 4), 
+                ('C', 3), ('D', 3), ('A', 2), ('V', 2), 
+                ('F', 1), ('P', 1) ]
+        self.assertEqual(statistic, self.a.statistic)
+
 
 if __name__ == '__main__':
     unittest.main()

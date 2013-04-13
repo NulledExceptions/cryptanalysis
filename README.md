@@ -12,7 +12,7 @@ The following ciphers are currently being studied:
 
 * [Caesar](http://en.wikipedia.org/wiki/Caesar_cipher)
 * [Affine](http://en.wikipedia.org/wiki/Affine_cipher) - substitution 
-  cipher, containing abstraction of all shift ciphers.
+  cipher, studied as abstraction of most shift ciphers.
 * [Viginere]()
 * [Enigma]()
 

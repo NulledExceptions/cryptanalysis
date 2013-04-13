@@ -21,22 +21,19 @@ class cached_property(object):
         return result
 
 
-class Cipher():
+class Cipher(builtins.str):
     '''
     '''
     def __init__(self, ciphertext, language = 'en'):
         if type(ciphertext) is builtins.str:
-            self.ciphertext = ciphertext
+            self.ct = ciphertext
         elif type(ciphertext) is builtins.list:
-            self.ciphertext = ''.join(ciphertext)
+            self.ct = ''.join(ciphertext)
         else: 
             raise TypeError('Ciphertext should be text.')
         self.language = language
 
     def __repr__(self):
-        return self.sample
-
-    def __str__(self):
         rval = ""
         pos = 0
         for c in self.sample:
@@ -48,6 +45,9 @@ class Cipher():
             rval += c
         return rval
 
+    def __str__(self):
+        return self.sample
+
     @cached_property
     def alphabet(self):
         '''
@@ -58,7 +58,8 @@ class Cipher():
         alphabet = list(_language[self.language].keys())
         alphabet.remove('kappa')
         alphabet.remove('max')
-        return alphabet.sort()
+        alphabet.sort()
+        return alphabet
 
     @cached_property
     def statistic(self):
@@ -68,8 +69,8 @@ class Cipher():
         Count how many times each char found in message.
         '''
         stat = {}
-        for string in self.message:
-            for char in string:
+        for char in self.sample:
+            if char in self.alphabet:
                 if char in stat.keys():
                     stat[char] += 1
                 else:
@@ -81,9 +82,8 @@ class Cipher():
         '''
         Remove all whitespaces and transform letters into lower case.
         '''
-        message = self.ciphertext
         sample = ''
-        for line in message:
+        for line in self.ct:
             line = re.sub(re.compile('\s'), '', line)
             sample += line
         return sample.upper()

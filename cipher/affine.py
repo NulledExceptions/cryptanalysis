@@ -17,7 +17,9 @@ class Affine(Cipher):
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr((a * i + b) % n)
-        return ''.join(transposition[char] for char in self.sample)
+        return ''.join(transposition[char] 
+                for char in self.sample 
+                    if char in self.alphabet)
 
     def decrypt(self, a, b):
         n = len(self.alphabet)
@@ -25,7 +27,9 @@ class Affine(Cipher):
         for i in range(n):
             transposition[self.chr(i)] = self.chr(
                     (negative(a, n) * (i - b)) % n)
-        return ''.join(transposition[char] for char in self.sample)
+        return ''.join(transposition[char] 
+                for char in self.sample
+                    if char in self.alphabet)
 
     def guess(self, n = 5):
         high = [self.statistic[i][0] for i in range(n)]
@@ -90,11 +94,11 @@ def main():
                       action = 'store_true', dest = 'analysis', default=True,
                       help = 'make analysis, default action')
     parser.add_option('-e', '--encrypt',
-                      metavar="a,b", 
-                      help="encrypt file with a and b args")
+                      metavar="AxB", 
+                      help="encrypt file with A and B args")
     parser.add_option('-d', '--decrypt',
-                      metavar="a,b", 
-                      help = 'decrypt file with a and b args')
+                      metavar="AxB", 
+                      help = 'decrypt file with A and B args')
     (options, args) = parser.parse_args()
     if len(args) != 1:
         parser.print_help()
@@ -102,14 +106,15 @@ def main():
         ct = Affine(open(args[0]).readlines())
         if options.encrypt:
             print("Encryption...")
+            (a, b) = options.encrypt.split('x')
             print(ct.encrypt(int(a), int(b)))
         elif options.decrypt:
             print("Decryption...")
-            (a, b) = options.encrypt.split(',')
-            print(a.decrypt(int(a), int(b)))
+            (a, b) = options.decrypt.split('x')
+            print(ct.decrypt(int(a), int(b)))
         else:
             print("Analysis...")
-            print(ct)
+            print(ct.decipher())
 
 
 if __name__ == '__main__':
