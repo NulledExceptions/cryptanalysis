@@ -17,9 +17,12 @@ class Affine(Cipher):
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr((a * i + b) % n)
-        return ''.join(transposition[char] 
-                for char in self.sample 
-                    if char in self.alphabet)
+        ct = ''
+        for char in self.ct:
+            if char.upper() in self.alphabet:
+                char = transposition[char.upper()]
+            ct += char
+        return ct
 
     def decrypt(self, a, b):
         n = len(self.alphabet)
@@ -27,9 +30,12 @@ class Affine(Cipher):
         for i in range(n):
             transposition[self.chr(i)] = self.chr(
                     (negative(a, n) * (i - b)) % n)
-        return ''.join(transposition[char] 
-                for char in self.sample
-                    if char in self.alphabet)
+        ot = ''
+        for char in self.ct:
+            if char.upper() in self.alphabet:
+                char = transposition[char.upper()]
+            ot += char
+        return ot
 
     def guess(self, n = 5):
         high = [self.statistic[i][0] for i in range(n)]
