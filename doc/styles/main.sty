@@ -1,0 +1,29 @@
+	\RequirePackage{ifpdf} 	% для раздельной компиляции pdf и dvi 
+		
+	\newcommand{\globalEncoding}{utf8}		% кодировка	
+	\newcommand{\globalStylesDir}{styles}	% месторасположение стилей
+	\newcommand{\STYLES}{\globalStylesDir}	
+	\newcommand{\IMG}{img}
+	\newcommand{\SRC}{src}
+	
+	\usepackage[\globalEncoding]{inputenc}		% кодировка
+	\usepackage{\globalStylesDir/Fonts}		    % наши шрифты и локализация
+	\usepackage{\globalStylesDir/Math}		    % модуль математики 
+	\usepackage{\globalStylesDir/Code}		    % модуль листингов
+	\usepackage{\globalStylesDir/Tables} 		% модуль таблиц
+	\usepackage{\globalStylesDir/Theorem}		% модуль теоремм и определений
+	\usepackage{\globalStylesDir/Graphics}		% модуль графики
+	\usepackage{\globalStylesDir/Algorithms}	% модуль алгоритмов
+	\usepackage{\globalStylesDir/Lscape}		% модуль ориентации (книжная, албомная)
+	\usepackage{\globalStylesDir/Hyperref}		% модуль гиперссылок
+	\usepackage{\globalStylesDir/Lists} 		% модуль наших списков
+	\usepackage{\globalStylesDir/Sections} 	    % модуль наших секций
+	\usepackage{\globalStylesDir/userCommands}	% переопределения
+
+	\oddsidemargin=-0.4mm
+	\textwidth=160mm
+	\topmargin=4.6mm
+	\textheight=210mm
+	\parindent=0pt
+	\parskip=3pt
+

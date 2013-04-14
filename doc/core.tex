@@ -1,0 +1,21 @@
+\documentclass[unicode, 12pt, a4paper,oneside,fleqn]{article}
+\usepackage{styles/main} 
+\usepackage{listings}
+\lstset{extendedchars=false,
+        breaklines=true,
+        breakatwhitespace=true}
+\ifpdf
+    \hypersetup{
+        pdffitwindow=false,
+        pdfstartview={FitH},
+        pdftitle={Курсовая работа за 5 курс},
+        pdfauthor={Бедняков А.И.}
+        pdfproducer={Бедняков А.И.},
+        pdfsubject={Методики криптоанализа},
+    }
+\fi
+
+\begin{document}
+    \input{affine}
+\end{document}
+
