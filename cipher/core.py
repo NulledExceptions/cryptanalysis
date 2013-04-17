@@ -89,7 +89,7 @@ class Cipher(builtins.str):
         d = open('{0}/dict/{1}.dictionary'.format(curdir, self.language))
         words = d.readlines()
         d.close()
-        words = [word[0:-1] for word in words]
+        words = [word.rstrip().lower() for word in words]
         return tuple(words)
 
     @cached_property
@@ -142,6 +142,19 @@ class Cipher(builtins.str):
         if builtins.str(n).isdecimal() and 0 <= n < len(self.alphabet):
             return self.alphabet[n]
         return n
+
+    def istext(self, text = None):
+        if not text:
+            text = self.ct
+        text = text.split(' ')
+        positive = 0
+        for word in text:
+            letters = [letter.lower() for letter in word 
+                    if letter.capitalize() in self.alphabet]
+            word = ''.join(letters)
+            if word in self.dictionary:
+                positive += 1
+        return positive / len(text)
 
     def isalpha(self, char):
         if char in self.alphabet:
