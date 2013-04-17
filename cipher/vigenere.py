@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# TODO Restore namespace.
 try:
-    from cipher.core import Cipher
+    import cipher.core as core
 except ImportError:
-    from core import Cipher
+    import core
 
 class Vigenere(core.Cipher):
     """

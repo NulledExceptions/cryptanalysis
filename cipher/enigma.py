@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-  
 
-# TODO Restore namespace.
-try:
-    from cipher.core import Cipher
-except ImportError:
-    from core import Cipher
-from random import shuffle,randint,choice  
+from random import shuffle, randint, choice  
 from copy import copy  
+try:
+    import cipher.core as core
+except ImportError:
+    import core
 
 class Enigma(core.Cipher):
     def __init__(self, nocogs,printspecialchars):  

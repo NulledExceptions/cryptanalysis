@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
-# TODO Restore namespace.
-try:
-    from cipher.core import Cipher, negative, gcd
-except ImportError:
-    from core import Cipher, negative, gcd
 from itertools import permutations
+try:
+    import cipher.core as core
+except ImportError:
+    import core
 
 
-class Affine(Cipher):
+class Affine(core.Cipher):
     '''
     This class makes research on afinne chipers.
     '''
     def encrypt(self, a, b):
+        '''
+        '''
         n = len(self.alphabet)
         transposition = {}
         for i in range(n):
@@ -32,7 +33,7 @@ class Affine(Cipher):
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr(
-                    (negative(a, n) * (i - b)) % n)
+                    (core.negative(a, n) * (i - b)) % n)
         ot = ''
         for char in self.ct:
             if char.upper() in self.alphabet:
@@ -51,7 +52,7 @@ class Affine(Cipher):
             if self.language == 'en':
                 x_t = self.ord('E')
                 y_t = self.ord('T')
-                a = ((x + y) * negative(x_t + y_t, 26)) % 26
+                a = ((x + y) * core.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
             G.append((self.decrypt(a, b), a, b))
         return G
@@ -63,10 +64,10 @@ class Affine(Cipher):
         # TODO Test words / letters.
         base = range(1, len(self.alphabet) + 1)
         for a in base:
-            coprimes = [b for b in base if gcd(a, b) == 1]
+            coprimes = [b for b in base if core.gcd(a, b) == 1]
             for b in coprimes:
                 ot = self.decrypt(a, b)
-                if self.istext(ot) > 0.9:
+                if self.istext(ot) > 0.7:
                     return (ot, a, b)
 
         # Step 2: Bruteforce whith viewer test.
