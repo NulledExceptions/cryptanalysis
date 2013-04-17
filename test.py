@@ -13,10 +13,15 @@ class affine_test(unittest.TestCase):
         a = affine.Affine('EJJEKI EJ NESR')
         self.assertEqual('ATTACK AT DAWN', a.decrypt(3, 4))
 
-    def test_affine_decipher(self):
+    def test_affine_bruteforce(self):
         a = affine.Affine('EJJEKI EJ NESR')
-        x = a.guess()[0]
-        self.assertEqual(('ATTACK AT DAWN', 3, 4), (x[0], x[1], x[2]))
+        for i in range(1, 27):
+            for j in range(1, 27):
+                ot = a.decrypt(i, j)
+                if a.istext(ot) > 0.8:
+                    x = (ot, i, j)
+                    break
+        self.assertEqual(('ATTACK AT DAWN', 3, 4), x)
 
 
 class caesar_test(unittest.TestCase):
