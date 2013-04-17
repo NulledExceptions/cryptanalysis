@@ -26,30 +26,29 @@ class Cipher(builtins.str):
     '''
     '''
     def __new__(cls, message, language = None):
-        # TODO It's message, not ct.
         obj = str.__new__(cls, message)
         if not language:
             language = 'en'
-        if type(message) in (builtins.list, builtins.str):
-            if type(message) is builtins.list:
-                message = ''.join(message)
+        if type(message) in (builtins.list, builtins.tuple, builtins.str):
+            if type(message) in (builtins.list, builtins.tuple):
+                message = ''.join(str(message))
         else: 
             raise TypeError('Message should be text.')
-        obj.ct = message
+        obj.message = message
         obj.language = language
         return obj
 
     def __repr__(self):
-        rval = ""
-        pos = 0
+        representation = ""
+        position = 0
         for c in self.sample:
-            if pos % 55 == 0:
-                rval += '\n'
-            elif pos % 5 == 0:
-                rval += " "
-            pos += 1
-            rval += c
-        return rval
+            if position % 55 == 0:
+                representation += '\n'
+            elif position % 5 == 0:
+                representation += " "
+            position += 1
+            representation += c
+        return representation
 
     def __str__(self):
         return self.sample
@@ -61,7 +60,7 @@ class Cipher(builtins.str):
 
         Return alphabet of estimated language.
         '''
-        alphabet = list(_language[self.language].keys())
+        alphabet = list(language_list[self.language].keys())
         alphabet.remove('kappa')
         alphabet.remove('max')
         alphabet.sort()
@@ -102,7 +101,7 @@ class Cipher(builtins.str):
         '''
         Remove all whitespaces and transform letters into lower case.
         '''
-        sample = re.sub(re.compile('\s'), '', self.ct)
+        sample = re.sub(re.compile('\s'), '', self.message)
         sample = [char.upper() for char in sample 
                if char.upper() in self.alphabet]
         return ''.join(sample)
@@ -152,7 +151,7 @@ class Cipher(builtins.str):
 
     def istext(self, text = None):
         if not text:
-            text = self.ct
+            text = self.message
         text = text.split(' ')
         positive = 0
         for word in text:
@@ -177,7 +176,7 @@ The following are language-specific data on character frequencies.
 * languages represented by ISO 639-1:2002 codes
   [link](http://en.wikipedia.org/wiki/ISO_639-1)
 '''
-_language = { 
+language_list = { 
         'en' :
             { 'A':8.16, 'B':1.49, 'C':2.78, 'D':4.25, 
               'E':12.70, 'F':2.22, 'G':2.01, 'H':6.09, 

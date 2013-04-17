@@ -20,7 +20,7 @@ class Affine(core.Cipher):
         for i in range(n):
             transposition[self.chr(i)] = self.chr((a * i + b) % n)
         ct = ''
-        for char in self.ct:
+        for char in self.message:
             if char.upper() in self.alphabet:
                 char = transposition[char.upper()]
             ct += char
@@ -35,7 +35,7 @@ class Affine(core.Cipher):
             transposition[self.chr(i)] = self.chr(
                     (core.negative(a, n) * (i - b)) % n)
         ot = ''
-        for char in self.ct:
+        for char in self.message:
             if char.upper() in self.alphabet:
                 char = transposition[char.upper()]
             ot += char
