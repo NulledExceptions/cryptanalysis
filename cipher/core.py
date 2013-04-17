@@ -25,15 +25,19 @@ class cached_property(object):
 class Cipher(builtins.str):
     '''
     '''
-    def __init__(self, message, language = 'en'):
+    def __new__(cls, message, language = None):
         # TODO It's message, not ct.
-        if type(message) is builtins.str:
-            self.ct = message
-        elif type(message) is builtins.list:
-            self.ct = ''.join(message)
+        obj = str.__new__(cls, message)
+        if not language:
+            language = 'en'
+        if type(message) in (builtins.list, builtins.str):
+            if type(message) is builtins.list:
+                message = ''.join(message)
         else: 
             raise TypeError('Message should be text.')
-        self.language = language
+        obj.ct = message
+        obj.language = language
+        return obj
 
     def __repr__(self):
         rval = ""
