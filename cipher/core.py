@@ -5,6 +5,7 @@ import builtins
 from random import randint
 from math import *
 import re
+import os
 
 
 class cached_property(object):
@@ -24,13 +25,13 @@ class cached_property(object):
 class Cipher(builtins.str):
     '''
     '''
-    def __init__(self, ciphertext, language = 'en'):
-        if type(ciphertext) is builtins.str:
-            self.ct = ciphertext
-        elif type(ciphertext) is builtins.list:
-            self.ct = ''.join(ciphertext)
+    def __init__(self, message, language = 'en'):
+        if type(message) is builtins.str:
+            self.ct = message
+        elif type(message) is builtins.list:
+            self.ct = ''.join(message)
         else: 
-            raise TypeError('Ciphertext should be text.')
+            raise TypeError('Message should be text.')
         self.language = language
 
     def __repr__(self):
@@ -78,15 +79,26 @@ class Cipher(builtins.str):
         return sorted(stat.items(), key = lambda x:x[1], reverse = True)
 
     @cached_property
+    def dictionary(self):
+        '''
+        S.dictionary -> tuple
+
+        List of words in selected language.
+        '''
+        curdir = os.path.abspath(os.path.dirname(__file__))
+        d = open('{0}/dict/{1}.dictionary'.format(curdir, self.language))
+        words = d.readlines()
+        d.close()
+        words = [word[0:-1] for word in words]
+        return tuple(words)
+
+    @cached_property
     def sample(self):
         '''
         Remove all whitespaces and transform letters into lower case.
         '''
-        sample = ''
-        for line in self.ct:
-            line = re.sub(re.compile('\s'), '', line)
-            sample += line
-        return sample.upper()
+        sample = re.sub(re.compile('\s'), '', self.ct)
+        return ''.join([char.upper() for char in sample if char.upper() in self.alphabet])
 
     def encrypt(self):
         '''
