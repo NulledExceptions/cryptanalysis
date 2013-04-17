@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
+# TODO Restore namespace.
 try:
     from cipher.core import Cipher
 except ImportError:

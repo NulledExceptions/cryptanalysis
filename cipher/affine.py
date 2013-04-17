@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
+# TODO Restore namespace.
 try:
-    from cipher.core import Cipher, negative
+    from cipher.core import Cipher, negative, gcd
 except ImportError:
-    from core import Cipher, negative
+    from core import Cipher, negative, gcd
 from itertools import permutations
 
 
 class Affine(Cipher):
-    """
+    '''
     This class makes research on afinne chipers.
-    """
+    '''
     def encrypt(self, a, b):
         n = len(self.alphabet)
         transposition = {}
@@ -25,6 +26,8 @@ class Affine(Cipher):
         return ct
 
     def decrypt(self, a, b):
+        '''
+        '''
         n = len(self.alphabet)
         transposition = {}
         for i in range(n):
@@ -38,9 +41,10 @@ class Affine(Cipher):
         return ot
 
     def guess(self, n = 5):
+        '''
+        '''
         high = [self.statistic[i][0] for i in range(n)]
         G = []
-        H = []
         for h in permutations(high, 2):
             x = self.ord(h[0])
             y = self.ord(h[1])
@@ -49,12 +53,23 @@ class Affine(Cipher):
                 y_t = self.ord('T')
                 a = ((x + y) * negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
-            G.append((a, b))
-        for h in G:
-            H.append((self.decrypt(h[0], h[1]), h[0], h[1]))
-        return H
+            G.append((self.decrypt(a, b), a, b))
+        return G
 
     def decipher(self, iteration = 0, shift = 0):
+        '''
+        '''
+        # Step 1: Bruteforce whith language test.
+        # TODO Test words / letters.
+        base = range(1, len(self.alphabet) + 1)
+        for a in base:
+            coprimes = [b for b in base if gcd(a, b) == 1]
+            for b in coprimes:
+                ot = self.decrypt(a, b)
+                if self.istext(ot) > 0.9:
+                    return (ot, a, b)
+
+        # Step 2: Bruteforce whith viewer test.
         hypotesa = self.guess(5 + iteration)
         print('\nTrying to guess factors (a, b) in [y = a * x + b] equation:')
         print('|  i | guess {0} |  a |  b |'.format(' ' * 44))
@@ -64,6 +79,8 @@ class Affine(Cipher):
                    i + 1, h[0][:50], h[1], h[2]))
 
         def communicate(message = ''):
+            '''
+            '''
             print(message)
             variant = input(
                   'Which guess seems to be right? [1..{0} or None] '.format(i))

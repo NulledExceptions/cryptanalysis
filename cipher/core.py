@@ -3,6 +3,7 @@
 
 import builtins
 from random import randint
+# TODO Restore namespace.
 from math import *
 import re
 import os
@@ -26,6 +27,7 @@ class Cipher(builtins.str):
     '''
     '''
     def __init__(self, message, language = 'en'):
+        # TODO It's message, not ct.
         if type(message) is builtins.str:
             self.ct = message
         elif type(message) is builtins.list:
@@ -98,7 +100,9 @@ class Cipher(builtins.str):
         Remove all whitespaces and transform letters into lower case.
         '''
         sample = re.sub(re.compile('\s'), '', self.ct)
-        return ''.join([char.upper() for char in sample if char.upper() in self.alphabet])
+        sample = [char.upper() for char in sample 
+               if char.upper() in self.alphabet]
+        return ''.join(sample)
 
     def encrypt(self):
         '''
@@ -171,16 +175,6 @@ The following are language-specific data on character frequencies.
   [link](http://en.wikipedia.org/wiki/ISO_639-1)
 '''
 _language = { 
-        'ru' : 
-            { 'А':1, 'Б':1, 'В':1, 'Г':1, 'Д':1, 'Е':1, 
-              'Ж':1, 'З':1, 'И':1, 'К':1, 'Л':1, 'М':1, 
-              'Н':1, 'О':1, 'П':1, 'Р':1, 'С':1, 'Т':1, 
-              'У':1, 'Ф':1, 'Х':1, 'Ц':1, 'Ч':1, 'Ш':1, 
-              'Щ':1, 'Ь':1, 'Ъ':1, 'Ы':1, 'Э':1, 'Ю':1, 
-              'Я':1,
-              'max':1,
-              'kappa':1 },
-
         'en' :
             { 'A':8.16, 'B':1.49, 'C':2.78, 'D':4.25, 
               'E':12.70, 'F':2.22, 'G':2.01, 'H':6.09, 
@@ -192,6 +186,16 @@ _language = {
               'max':12.70, 
               'kappa':0.0667 },
       
+        'ru' : 
+            { 'А':1, 'Б':1, 'В':1, 'Г':1, 'Д':1, 'Е':1, 
+              'Ж':1, 'З':1, 'И':1, 'К':1, 'Л':1, 'М':1, 
+              'Н':1, 'О':1, 'П':1, 'Р':1, 'С':1, 'Т':1, 
+              'У':1, 'Ф':1, 'Х':1, 'Ц':1, 'Ч':1, 'Ш':1, 
+              'Щ':1, 'Ь':1, 'Ъ':1, 'Ы':1, 'Э':1, 'Ю':1, 
+              'Я':1,
+              'max':1,
+              'kappa':1 },
+
         'fr' :
             { 'A':8.11, 'B':0.91, 'C':3.49, 'D':4.27, 
               'E':17.22, 'F':1.14, 'G':1.09, 'H':0.77, 
