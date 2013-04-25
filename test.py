@@ -17,9 +17,9 @@ class affine_test(unittest.TestCase):
         a = affine.Affine('EJJEKI EJ NESR')
         self.assertEqual(('ATTACK AT DAWN', 3, 4), a.decipher())
 
-    def test_affine_decipher_nospaces(self):
-        a = affine.Affine('EJJEKIEJNESR')
-        self.assertEqual(('ATTACK AT DAWN', 3, 4), a.decipher())
+    #def test_affine_decipher_nospaces(self):
+        #a = affine.Affine('EJJEKIEJNESR')
+        #self.assertEqual(('ATTACK AT DAWN', 3, 4), a.decipher())
 
 
 class caesar_test(unittest.TestCase):
@@ -40,16 +40,13 @@ class core_test(unittest.TestCase):
 
     def test_representation(self):
         a = core.Cipher('Attack at dawn, people!!!1')
-        reprsentation = '''
-ATTAC KATDA WNPEO PLE'''
+        reprsentation = '''\nATTAC KATDA WNPEO PLE'''
         self.assertEqual(reprsentation, a.__repr__())
 
     def test_statistic(self):
-        a = core.Cipher('Attack at dawn, people!!!1')
+        a = core.Cipher('AAAaaa bbBB!<>? ЭЮЯцйд')
         statistic = [
-            ('A', 4), ('T', 3), ('E', 2), ('P', 2), 
-            ('C', 1), ('D', 1), ('K', 1), ('L', 1), 
-            ('O', 1), ('N', 1), ('W', 1) ]
+            ('A', 6), ('B', 4),]
         self.assertEqual(statistic, a.statistic)
 
 
