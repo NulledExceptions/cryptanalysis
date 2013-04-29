@@ -2,10 +2,7 @@
 #-*-coding:utf-8-*-
 
 from itertools import permutations
-try:
-    import cipher.core as core
-except ImportError:
-    import core
+import core
 
 
 class Affine(core.Cipher):
@@ -128,14 +125,18 @@ def main():
         parser.print_help()
     else:
         ct = Affine(open(args[0]).readlines())
-        if options.encrypt:
-            print("Encryption...")
-            (a, b) = options.encrypt.split('x')
-            print(ct.encrypt(int(a), int(b)))
-        elif options.decrypt:
-            print("Decryption...")
-            (a, b) = options.decrypt.split('x')
-            print(ct.decrypt(int(a), int(b)))
+        if options.encrypt or options.decrypt:
+            print("Language is {0}.".format(ct.language))
+            if options.encrypt:
+                print("Encryption...")
+                (a, b) = options.encrypt.split('x')
+                message = ct.encrypt(int(a), int(b))
+            elif options.decrypt:
+                print("Decryption...")
+                (a, b) = options.decrypt.split('x')
+                message = ct.decrypt(int(a), int(b))
+            for line in eval(message):
+                print(line)
         else:
             print("Analysis...")
             print(ct.decipher())
