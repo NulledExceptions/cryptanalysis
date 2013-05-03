@@ -1,0 +1,25 @@
+% Подключение математики
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb} 
+\usepackage{mathtext} 
+
+% Переопределение le ge в русских традициях
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+% Переопределение kappa epsilon phi на русский лад
+\renewcommand{\kappa}{\varkappa}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+
+% Прямые интегралы
+% Определяем свой шрифт "lsumb"
+\DeclareSymbolFont{lsymb}{U}{euex}{m}{n}
+	\DeclareMathSymbol{\intop}{\mathop}{lsymb}{"52}
+	\DeclareMathSymbol{\ointop}{\mathop}{lsymb}{"48}
+	\DeclareMathSymbol{\smallint}{\mathop}{lsymb}{"52}
+	\newcommand{\intl}{\int\limits}
+	\usepackage{misccorr}
+

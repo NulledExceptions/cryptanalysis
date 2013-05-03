@@ -1,0 +1,24 @@
+% подключение пакета гиперссылок
+
+\ifpdf
+    \usepackage[pdftex]{hyperref} 
+    % настройка ссылок в оглавлении для pdf формата 
+        \hypersetup{ 
+            unicode=true, 
+            pdfborder    = {0 0 0}, 
+            bookmarksopen, 
+            bookmarksnumbered, 
+            bookmarksopenlevel = 2, 
+            pdftoolbar=true,
+            pdfmenubar=true,
+            pdfnewwindow=true,
+            colorlinks=true,
+            citecolor=blue,  
+            filecolor=red, 
+            linkcolor=blue, 
+            urlcolor=blue 	
+        } 
+\else 
+    \usepackage{hyperref} 
+\fi
+

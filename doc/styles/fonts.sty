@@ -1,0 +1,18 @@
+% шрифты и локализация
+
+\usepackage[english,russian]{babel}
+\frenchspacing
+
+% поиск, и копирование русского текста из pdf
+\ifpdf
+    \usepackage{cmap}
+\fi
+
+% подключение шрифтов
+%\usepackage[T1]{fontenc} 
+		
+%% кирилица
+\usepackage[T2A]{fontenc} % шрифты Лапко-Ходулева (стандарт для СНГ)
+%\usepackage[T2B]{fontenc}
+%\usepackage[T2C]{fontenc}	
+
