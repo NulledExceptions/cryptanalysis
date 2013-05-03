@@ -1,3 +1,7 @@
 *.pyc
 .ropeproject
 __pycache__
+*.aux
+*.log
+*.out
+*.pdf
