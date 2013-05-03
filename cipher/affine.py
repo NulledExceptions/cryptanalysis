@@ -128,18 +128,22 @@ def main():
         if options.encrypt or options.decrypt:
             print("Language is {0}.".format(ct.language))
             if options.encrypt:
-                print("Encryption...")
+                #print("Encryption...")
                 (a, b) = options.encrypt.split('x')
                 message = ct.encrypt(int(a), int(b))
             elif options.decrypt:
-                print("Decryption...")
+                #print("Decryption...")
                 (a, b) = options.decrypt.split('x')
                 message = ct.decrypt(int(a), int(b))
             for line in eval(message):
                 print(line)
         else:
             print("Analysis...")
-            print(ct.decipher())
+            print("Language is {0}.".format(ct.language))
+            message = ct.decipher()
+            for line in eval(message[0]):
+                print(line)
+            print("Decryption parametres is a={0} and b={1}.".format(message[1], message[2]))
 
 
 if __name__ == '__main__':
