@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-from itertools import permutations
-import cipher
 import os
+import cipher.routine
+import cipher.alphabetic
+from itertools import permutations
 
-class Affine(cipher.Cipher):
+class Affine(cipher.alphabetic.Cipher):
     '''
     This class makes research on afinne chipers.
     '''
@@ -29,7 +30,7 @@ class Affine(cipher.Cipher):
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr(
-                    (cipher.negative(a, n) * (i - b)) % n)
+                    (cipher.routine.negative(a, n) * (i - b)) % n)
         ot = ''
         for char in self.message:
             if char.upper() in self.alphabet:
@@ -48,7 +49,7 @@ class Affine(cipher.Cipher):
             if self.language == 'en':
                 x_t = self.ord('E')
                 y_t = self.ord('T')
-                a = ((x + y) * cipher.negative(x_t + y_t, 26)) % 26
+                a = ((x + y) * cipher.routine.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
             G.append((self.decrypt(a, b), a, b))
         return G
@@ -60,7 +61,7 @@ class Affine(cipher.Cipher):
         # TODO Test words / letters.
         base = range(1, len(self.alphabet) + 1)
         for a in base:
-            coprimes = [b for b in base if cipher.gcd(a, b) == 1]
+            coprimes = [b for b in base if cipher.routine.gcd(a, b) == 1]
             for b in coprimes:
                 ot = self.decrypt(a, b)
                 if self.istext(ot) > 0.7:
