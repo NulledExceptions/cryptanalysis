@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 
+from cipher import caesar, affine
 import unittest
-from cipher import caesar, affine, core
+import cipher
 
 class affine_test(unittest.TestCase):
     def test_affine_encrypt(self):
@@ -32,19 +33,19 @@ class caesar_test(unittest.TestCase):
         self.assertEqual('ATTACKATDAWN', a.decrypt(3))
 
 
-class core_test(unittest.TestCase):
+class cipher_test(unittest.TestCase):
     def test_sampler(self):
-        a = core.Cipher('Attack at dawn, people!!!1')
+        a = cipher.Cipher('Attack at dawn, people!!!1')
         sample = 'ATTACKATDAWNPEOPLE'
         self.assertEqual(sample, a.sample)
 
     def test_representation(self):
-        a = core.Cipher('Attack at dawn, people!!!1')
+        a = cipher.Cipher('Attack at dawn, people!!!1')
         reprsentation = '''\nATTAC KATDA WNPEO PLE'''
         self.assertEqual(reprsentation, a.__repr__())
 
     def test_statistic(self):
-        a = core.Cipher('AAAaaa bbBB!<>? ЭЮЯцйд')
+        a = cipher.Cipher('AAAaaa bbBB!<>? ЭЮЯцйд')
         statistic = [
             ('A', 6), ('B', 4),]
         self.assertEqual(statistic, a.statistic)

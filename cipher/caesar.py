@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-try:
-    import cipher.core as core
-except ImportError:
-    import core
+import cipher
 
-
-class Caesar(core.Cipher):
+class Caesar(cipher.Cipher):
     """
     An implementation of the Caesar cipher.
     """

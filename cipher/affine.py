@@ -2,10 +2,10 @@
 #-*-coding:utf-8-*-
 
 from itertools import permutations
-import cipher.core as core
+import cipher
 import os
 
-class Affine(core.Cipher):
+class Affine(cipher.Cipher):
     '''
     This class makes research on afinne chipers.
     '''
@@ -30,7 +30,7 @@ class Affine(core.Cipher):
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr(
-                    (core.negative(a, n) * (i - b)) % n)
+                    (cipher.negative(a, n) * (i - b)) % n)
         ot = ''
         for char in self.message:
             if char.upper() in self.alphabet:
@@ -49,7 +49,7 @@ class Affine(core.Cipher):
             if self.language == 'en':
                 x_t = self.ord('E')
                 y_t = self.ord('T')
-                a = ((x + y) * core.negative(x_t + y_t, 26)) % 26
+                a = ((x + y) * cipher.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
             G.append((self.decrypt(a, b), a, b))
         return G
@@ -61,7 +61,7 @@ class Affine(core.Cipher):
         # TODO Test words / letters.
         base = range(1, len(self.alphabet) + 1)
         for a in base:
-            coprimes = [b for b in base if core.gcd(a, b) == 1]
+            coprimes = [b for b in base if cipher.gcd(a, b) == 1]
             for b in coprimes:
                 ot = self.decrypt(a, b)
                 if self.istext(ot) > 0.7:
