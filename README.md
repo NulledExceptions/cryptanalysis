@@ -5,12 +5,10 @@ All this grown on my deepest love to all kind of math-based algorythms and,
 especially, cryptographic ones. Or, if you are fan of the naked truth, on 
 fear of nearest test.
 
-Intro
--------
-
 The following ciphers are currently being studied:
 
-* [Caesar](http://en.wikipedia.org/wiki/Caesar_cipher)
+* [Caesar](http://en.wikipedia.org/wiki/Caesar_cipher) - simpliest 
+  pre-historical cipher.
 * [Affine](http://en.wikipedia.org/wiki/Affine_cipher) - substitution 
   cipher, studied as abstraction of most shift ciphers.
 * [Viginere]()
