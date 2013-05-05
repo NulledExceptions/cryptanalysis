@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-
-from cipher import caesar, affine
+from cipher import caesar, affine, vigenere
 import unittest
 import cipher
+
 
 class affine_test(unittest.TestCase):
     def test_affine_encrypt(self):
@@ -33,6 +33,16 @@ class caesar_test(unittest.TestCase):
         self.assertEqual('ATTACKATDAWN', a.decrypt(3))
 
 
+class vigenere_test(unittest.TestCase):
+    def test_vigenere_encrypt(self):
+        a = vigenere.Vigenere('ATTACKATDAWN')
+        self.assertEqual('LXFOPVEFRNHR', a.encrypt('LEMON'))
+
+    def test_vigenere_decrypt(self):
+        a = vigenere.Vigenere('LXFOPVEFRNHR')
+        self.assertEqual('ATTACKATDAWN', a.decrypt('LEMON'))
+
+
 class cipher_test(unittest.TestCase):
     def test_sampler(self):
         a = cipher.Cipher('Attack at dawn, people!!!1')
@@ -46,8 +56,7 @@ class cipher_test(unittest.TestCase):
 
     def test_statistic(self):
         a = cipher.Cipher('AAAaaa bbBB!<>? ЭЮЯцйд')
-        statistic = [
-            ('A', 6), ('B', 4),]
+        statistic = [ ('A', 6), ('B', 4) ]
         self.assertEqual(statistic, a.statistic)
 
 
