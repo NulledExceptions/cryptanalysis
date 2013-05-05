@@ -1,6 +1,8 @@
 *.pyc
 .ropeproject
 __pycache__
+build
+
 *.aux
 *.log
 *.out
