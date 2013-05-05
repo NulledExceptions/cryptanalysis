@@ -2,8 +2,8 @@
 #-*-coding:utf-8-*-
 
 from itertools import permutations
-import core
-
+import cipher.core as core
+import os
 
 class Affine(core.Cipher):
     '''
@@ -121,29 +121,30 @@ def main():
                       metavar="AxB", 
                       help = 'decrypt file with A and B args')
     (options, args) = parser.parse_args()
+
     if len(args) != 1:
         parser.print_help()
     else:
-        ct = Affine(open(args[0]).readlines())
+        if os.path.exists(args[0]):
+            message = open(args[0]).readlines()
+        else:
+            message = args[0]
+        ct = Affine(message)
         if options.encrypt or options.decrypt:
-            print("Language is {0}.".format(ct.language))
             if options.encrypt:
-                #print("Encryption...")
                 (a, b) = options.encrypt.split('x')
                 message = ct.encrypt(int(a), int(b))
             elif options.decrypt:
-                #print("Decryption...")
                 (a, b) = options.decrypt.split('x')
                 message = ct.decrypt(int(a), int(b))
             for line in eval(message):
                 print(line)
         else:
             print("Analysis...")
-            print("Language is {0}.".format(ct.language))
-            message = ct.decipher()
-            for line in eval(message[0]):
-                print(line)
-            print("Decryption parametres is a={0} and b={1}.".format(message[1], message[2]))
+            print("Defined language is {0}.".format(ct.language))
+            ot = ct.decipher()
+            print(ot[0])
+            print("Decryption parametres is a={0} and b={1}.".format(ot[1], ot[2]))
 
 
 if __name__ == '__main__':

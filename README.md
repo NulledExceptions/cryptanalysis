@@ -21,6 +21,9 @@ Usage
 
 All files except can be used like executables:
 
+    # Expopt PYTHONPATH
+    $ . ./prepare
+
     # Simple test.
     $ ./cipher/affine.py 'EJJEKI EJ NESR'
     Analysis...

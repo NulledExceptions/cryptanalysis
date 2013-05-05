@@ -2,7 +2,7 @@
 #-*-coding:utf-8-*-
 
 from random import randint
-import linguistics
+import cipher.linguistics as linguistics
 import builtins
 import math
 import re
