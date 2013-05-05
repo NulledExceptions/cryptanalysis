@@ -3,7 +3,6 @@
 import cipher.linguistics as linguistics
 import builtins
 import re
-import os
 
 class cached_property(object):
     '''
@@ -86,12 +85,8 @@ class Cipher(builtins.str):
 
         List of words in selected language.
         '''
-        curdir = os.path.abspath(os.path.dirname(__file__))
-        d = open('{0}/../dict/{1}.dictionary'.format(curdir, self.language))
-        words = d.readlines()
-        d.close()
-        words = [word.rstrip().lower() for word in words]
-        return tuple(words)
+        words = linguistics.get_dictionary(self.language)
+        return words
 
     @cached_property
     def sample(self):

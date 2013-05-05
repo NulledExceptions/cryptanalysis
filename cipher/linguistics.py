@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import builtins
+import os
 
 '''
 The following are language-specific data on character frequencies.
@@ -74,6 +75,8 @@ language_list = {
         }
 
 def define_language(text):
+    '''
+    '''
     distribution = { langcode:0 for langcode in language_list.keys() }
     length = 0
     for letter in text:
@@ -85,7 +88,6 @@ def define_language(text):
         if distribution[langcode] > 0:
             distribution[langcode] /= length
     maximum = sorted(distribution.values(), reverse=True)[0]
-
     # TODO "Core-based" definition.
     if distribution['en'] == maximum:
         return 'en'
@@ -93,6 +95,16 @@ def define_language(text):
         for langcode in distribution.keys():
             if distribution[langcode] == maximum:
                 return langcode
+
+def get_dictionary(lang):
+    '''
+    '''
+    curdir = os.path.abspath(os.path.dirname(__file__))
+    d = open('{0}/dict/{1}.dictionary'.format(curdir, lang))
+    words = d.readlines()
+    d.close()
+    words = [word.rstrip().lower() for word in words]
+    return tuple(words)
 
 if __name__ == "__main__":
     pass
