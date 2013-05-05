@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-
 from itertools import permutations
 import cipher
 import os
@@ -107,7 +106,6 @@ class Affine(cipher.Cipher):
                     hypotesa[desigion][1], 
                     hypotesa[desigion][2])
 
-
 def main():
     from optparse import OptionParser
     parser = OptionParser('usage: ./%prog [options] filename')
@@ -145,7 +143,6 @@ def main():
             ot = ct.decipher()
             print(ot[0])
             print("Decryption parametres is a={0} and b={1}.".format(ot[1], ot[2]))
-
 
 if __name__ == '__main__':
     main()

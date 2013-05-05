@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-from cipher import caesar, affine, vigenere
+from cipher import caesar, affine, vigenere, enigma
 import unittest
 import cipher
 

@@ -11,8 +11,8 @@ The following ciphers are currently being studied:
   pre-historical cipher.
 * [Affine](http://en.wikipedia.org/wiki/Affine_cipher) - substitution 
   cipher, studied as abstraction of most shift ciphers.
-* [Viginere]()
-* [Enigma]()
+* [Viginere](http://en.wikipedia.org/wiki/Vigenère_cipher) - polyalphabetic 
+  substitution, aesy to uderstand and hard to analyse.
 
 Usage
 -----

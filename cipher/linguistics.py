@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-
 import builtins
-
 
 '''
 The following are language-specific data on character frequencies.
@@ -97,5 +95,5 @@ def define_language(text):
                 return langcode
 
 if __name__ == "__main__":
-    print(define_language('asdasd'))
+    pass
 

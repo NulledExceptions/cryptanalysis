@@ -25,7 +25,7 @@ class Vigenere(cipher.Cipher):
                 k += 1
             else:
                 ciphertext.append(p)
-        return Vigenere(''.join(ciphertext))
+        return ''.join(ciphertext)
 
     def decrypt(self, key):
         """
@@ -44,7 +44,7 @@ class Vigenere(cipher.Cipher):
                 k += 1
             else:
                 plaintext.append(c)
-        return Vigenere(''.join(plaintext))
+        return ''.join(plaintext)
 
 if __name__ == '__main__':
     from optparse import OptionParser

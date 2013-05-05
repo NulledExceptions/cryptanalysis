@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-
-from random import randint
 import cipher.linguistics as linguistics
 import builtins
+import random
 import math
 import re
 import os
-
 
 class cached_property(object):
     '''
@@ -21,7 +19,6 @@ class cached_property(object):
     def __get__(self, instance, cls=None):
         result = instance.__dict__[self.func.__name__] = self.func(instance)
         return result
-
 
 class Cipher(builtins.str):
     '''
@@ -183,8 +180,6 @@ class Cipher(builtins.str):
             return True
         return False
 
-
-
 def gcd(a, b):
     '''
     Euclid's Algorithm.
@@ -247,7 +242,7 @@ def factors(n):
     def brent(N):
         if N % 2 == 0:
             return 2
-        y, c, m = randint(1, N-1), randint(1, N-1), randint(1, N-1)
+        y, c, m = ramdom.randint(1, N-1), ramdom.randint(1, N-1), ramdom.randint(1, N-1)
         g, r, q = 1, 1, 1
         while g == 1:            
             x = y

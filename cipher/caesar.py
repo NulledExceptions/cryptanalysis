@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-
 import cipher
 
 class Caesar(cipher.Cipher):
@@ -28,7 +27,6 @@ class Caesar(cipher.Cipher):
         (plaintext).
         """
         return self.encrypt(-shift)
-
 
 if __name__ == "__main__":
     pass
