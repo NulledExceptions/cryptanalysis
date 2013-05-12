@@ -1,12 +1,12 @@
 % подключение цветов и графики
 
-% Картинки
 \ifpdf 
     \usepackage[pdftex]{graphicx} 
 \else
     \usepackage{graphicx}
 \fi
-	
+\usepackage{floatflt}
+
 % Цвета
 \usepackage[usenames]{xcolor}
 	
@@ -14,7 +14,6 @@
 \ifpdf \else
     \usepackage{pspicture}
     \usepackage{pst-plot,pstricks-add}
-    %\usepackage{pstricks,pst-node,pst-text,pst-3d,pst-grad}	
 \fi
 
 \usepackage{tikz}
