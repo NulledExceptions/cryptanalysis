@@ -3,10 +3,10 @@
 import os
 import cipher.routine as routine
 import cipher.linguistics as linguistics
-import cipher.alphabetic
+import cipher.classic
 from itertools import permutations
 
-class Affine(cipher.alphabetic.Cipher):
+class Affine(cipher.classic.Cipher):
     '''
     This class makes research on afinne chipers.
     '''

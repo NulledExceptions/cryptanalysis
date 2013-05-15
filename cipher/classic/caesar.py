@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-import cipher.alphabetic
+import cipher.classic
 
-class Caesar(cipher.alphabetic.Cipher):
+class Caesar(cipher.classic.Cipher):
     """
     An implementation of the Caesar cipher.
     """

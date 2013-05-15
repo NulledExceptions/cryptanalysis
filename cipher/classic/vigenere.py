@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-import cipher.alphabetic
+import cipher.classic
 import os
 
-class Vigenere(cipher.alphabetic.Cipher):
+class Vigenere(cipher.classic.Cipher):
     """
     An implementation of the Vigenere cipher.
     """
