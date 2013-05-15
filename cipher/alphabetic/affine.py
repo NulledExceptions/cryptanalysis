@@ -59,15 +59,13 @@ class Affine(cipher.alphabetic.Cipher):
         '''
         '''
         hypotesa = []
-        n = len(self.alphabet)
-        for a in range(1, n + 1):
-            if routine.gcd(a, n) == 1:
-                for b in range(1, n + 1):
-                    ot = self.decrypt(a, b)
-                    score = linguistics.istext_4gramms(ot)
-                    hypotesa.append((score, ot, a, b))
-        print(hypotesa)
-        return max(hypotesa)
+        ngr = linguistics.gramm()
+        for a in [1,3,5,7,9,11,15,17,19,21,23,25]:
+            for b in range(0, 25):
+                ot = self.decrypt(a, b)
+                score = linguistics.istext_4gramms(ot, ngr)
+                hypotesa.append((score, ot, a, b))
+        return max(hypotesa)[1:]
 
 
 def main():

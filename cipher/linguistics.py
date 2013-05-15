@@ -112,24 +112,27 @@ def define_language(text):
             if distribution[langcode] == maximum:
                 return langcode
 
-def istext_4gramms(text, lang = 'en'):
-    '''
-    '''
+# TODO КОСТЫЛЬ!!!11
+def gramm(lang = 'en'):
     ngrams = {}
     curdir = os.path.abspath(os.path.dirname(__file__))
     for line in open('{0}/ngram/{1}.4'.format(curdir, lang)).readlines():
         key, count = line.split(' ') 
         ngrams[key] = int(count)
-    L = len(key)
     N = sum(ngrams.values())
     floor = math.log10(0.01 / N)
     for key in ngrams.keys():
         ngrams[key] = math.log10(float(ngrams[key]) / N)
+    return (ngrams, floor)
 
+def istext_4gramms(text, ngr, lang = 'en'):
+    '''
+    '''
+    ngrams, floor = ngr
     score = 0
-    for i in range(len(text) - L + 1):
-        if text[i: i + L] in ngrams: 
-            score += ngrams[text[i: i + L]]
+    for i in range(len(text) - 5):
+        if text[i: i + 4] in ngrams: 
+            score += ngrams[text[i: i + 4]]
         else: 
             score += floor          
     return score

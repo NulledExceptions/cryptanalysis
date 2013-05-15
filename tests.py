@@ -14,13 +14,13 @@ class affine_test(unittest.TestCase):
         a = affine.Affine('EJJEKI EJ NESR')
         self.assertEqual('ATTACK AT DAWN', a.decrypt(3, 4))
 
-    def test_affine_decipher_spaces(self):
+    def test_affine_decipher_withspaces(self):
         a = affine.Affine('EJJEKI EJ NESR')
         self.assertEqual(('ATTACK AT DAWN', 3, 4), a.decipher())
 
-    #def test_affine_decipher_nospaces(self):
-        #a = affine.Affine('EJJEKIEJNESR')
-        #self.assertEqual(('ATTACK AT DAWN', 3, 4), a.decipher())
+    def test_affine_decipher_nospaces(self):
+        a = affine.Affine('EJJEKIEJNESR')
+        self.assertEqual(('ATTACKATDAWN', 3, 4), a.decipher())
 
 
 class caesar_test(unittest.TestCase):
