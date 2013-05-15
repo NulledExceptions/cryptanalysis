@@ -90,9 +90,9 @@ def get_dictionary(lang):
     return tuple(words)
 
 def define_language(text):
-    return define_language_dictionary(text)
+    return istext_dictionary(text)
 
-def define_language_dictionary(text):
+def istext_dictionary(text):
     '''
     '''
     distribution = { langcode:0 for langcode in language_list.keys() }
@@ -114,11 +114,27 @@ def define_language_dictionary(text):
             if distribution[langcode] == maximum:
                 return langcode
 
-def define_language_lgramms(a):
-    pass
+def istext_4gramms(text):
+    '''
+    '''
+    ngrams = {}
+    for line in open('{0}/ngams/{1}.4'.format(curdir, lang)).readlines():
+        key, count = line.split(' ') 
+        ngrams[key] = int(count)
+    L = len(key)
+    N = sum(self.ngrams.values())
+    floor = log10(0.01 / N)
+    for key in self.ngrams.keys():
+        ngrams[key] = log10(float(ngrams[key]) / N)
 
-def define_language_wgramms(a):
-    pass
+    score = 0
+    ngrams = ngrams.__getitem__
+    for i in xrange(len(text) - L + 1):
+        if text[i: i + L] in self.ngrams: 
+            score += ngrams(text[i: i + L])
+        else: 
+            score += floor          
+    return score
 
 if __name__ == "__main__":
     pass
