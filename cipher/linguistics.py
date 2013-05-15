@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 #import builtins
 import os
+import math
 
 '''
 The following are language-specific data on character frequencies.
@@ -90,9 +91,6 @@ def get_dictionary(lang):
     return tuple(words)
 
 def define_language(text):
-    return istext_dictionary(text)
-
-def istext_dictionary(text):
     '''
     '''
     distribution = { langcode:0 for langcode in language_list.keys() }
@@ -114,24 +112,24 @@ def istext_dictionary(text):
             if distribution[langcode] == maximum:
                 return langcode
 
-def istext_4gramms(text):
+def istext_4gramms(text, lang = 'en'):
     '''
     '''
     ngrams = {}
-    for line in open('{0}/ngams/{1}.4'.format(curdir, lang)).readlines():
+    curdir = os.path.abspath(os.path.dirname(__file__))
+    for line in open('{0}/ngram/{1}.4'.format(curdir, lang)).readlines():
         key, count = line.split(' ') 
         ngrams[key] = int(count)
     L = len(key)
-    N = sum(self.ngrams.values())
-    floor = log10(0.01 / N)
-    for key in self.ngrams.keys():
-        ngrams[key] = log10(float(ngrams[key]) / N)
+    N = sum(ngrams.values())
+    floor = math.log10(0.01 / N)
+    for key in ngrams.keys():
+        ngrams[key] = math.log10(float(ngrams[key]) / N)
 
     score = 0
-    ngrams = ngrams.__getitem__
-    for i in xrange(len(text) - L + 1):
-        if text[i: i + L] in self.ngrams: 
-            score += ngrams(text[i: i + L])
+    for i in range(len(text) - L + 1):
+        if text[i: i + L] in ngrams: 
+            score += ngrams[text[i: i + L]]
         else: 
             score += floor          
     return score

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 import os
-import cipher.routine
+import cipher.routine as routine
+import cipher.linguistics as linguistics
 import cipher.alphabetic
 from itertools import permutations
 
@@ -30,7 +31,7 @@ class Affine(cipher.alphabetic.Cipher):
         transposition = {}
         for i in range(n):
             transposition[self.chr(i)] = self.chr(
-                    (cipher.routine.negative(a, n) * (i - b)) % n)
+                    (routine.negative(a, n) * (i - b)) % n)
         ot = ''
         for char in self.message:
             if char.upper() in self.alphabet:
@@ -49,7 +50,7 @@ class Affine(cipher.alphabetic.Cipher):
             if self.language == 'en':
                 x_t = self.ord('E')
                 y_t = self.ord('T')
-                a = ((x + y) * cipher.routine.negative(x_t + y_t, 26)) % 26
+                a = ((x + y) * routine.negative(x_t + y_t, 26)) % 26
                 b = (x - x_t * a) % 26
             G.append((self.decrypt(a, b), a, b))
         return G
@@ -57,55 +58,17 @@ class Affine(cipher.alphabetic.Cipher):
     def decipher(self, iteration = 0, shift = 0):
         '''
         '''
-        # Step 1: Bruteforce whith language test.
-        # TODO Test words / letters.
-        base = range(1, len(self.alphabet) + 1)
-        for a in base:
-            coprimes = [b for b in base if cipher.routine.gcd(a, b) == 1]
-            for b in coprimes:
-                ot = self.decrypt(a, b)
-                if self.istext(ot) > 0.7:
-                    return (ot, a, b)
+        hypotesa = []
+        n = len(self.alphabet)
+        for a in range(1, n + 1):
+            if routine.gcd(a, n) == 1:
+                for b in range(1, n + 1):
+                    ot = self.decrypt(a, b)
+                    score = linguistics.istext_4gramms(ot)
+                    hypotesa.append((score, ot, a, b))
+        print(hypotesa)
+        return max(hypotesa)
 
-        # Step 2: Bruteforce whith viewer test.
-        hypotesa = self.guess(5 + iteration)
-        print('\nTrying to guess factors (a, b) in [y = a * x + b] equation:')
-        print('|  i | guess {0} |  a |  b |'.format(' ' * 44))
-        print('-' * 69)
-        for i, h in enumerate(hypotesa[shift:]):
-            print('| {0:-2g} | {1} | {2:-2g} | {3:-2g} |'.format(
-                   i + 1, h[0][:50], h[1], h[2]))
-
-        def communicate(message = ''):
-            '''
-            '''
-            print(message)
-            variant = input(
-                  'Which guess seems to be right? [1..{0} or None] '.format(i))
-            if variant == '':
-                return -1
-            elif variant.isalpha():
-                if (variant.lower() == 'none' or 
-                    variant.lower() == 'n'):
-                    return -1
-                else:
-                    return communicate('It should be number [1..{0}] or None. '.format(i))
-            elif variant.isdigit():
-                variant = int(variant)
-                if 1 <= variant <= len(hypotesa):
-                    return variant - 1
-                return communicate(
-                        'You should choose variant from 1 to {0}.'.format(i))
-
-        desigion = communicate()
-        if desigion == -1:
-            iteration += 1
-            return self.decipher(iteration, i)
-        else:
-            desigion += shift
-            return (self.decrypt(hypotesa[desigion][1], hypotesa[desigion][2]),
-                    hypotesa[desigion][1], 
-                    hypotesa[desigion][2])
 
 def main():
     from optparse import OptionParser
