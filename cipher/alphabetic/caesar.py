@@ -28,6 +28,9 @@ class Caesar(cipher.alphabetic.Cipher):
         """
         return self.encrypt(-shift)
 
+    def decipher(self, text):
+        pass
+
 if __name__ == "__main__":
     pass
 

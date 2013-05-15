@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-import builtins
+#import builtins
 import os
 
 '''
@@ -79,7 +79,20 @@ language_list = {
               'kappa':0.0733 },
         }
 
+def get_dictionary(lang):
+    '''
+    '''
+    curdir = os.path.abspath(os.path.dirname(__file__))
+    d = open('{0}/dict/{1}.dictionary'.format(curdir, lang))
+    words = d.readlines()
+    d.close()
+    words = [word.rstrip().lower() for word in words]
+    return tuple(words)
+
 def define_language(text):
+    return define_language_dictionary(text)
+
+def define_language_dictionary(text):
     '''
     '''
     distribution = { langcode:0 for langcode in language_list.keys() }
@@ -101,15 +114,11 @@ def define_language(text):
             if distribution[langcode] == maximum:
                 return langcode
 
-def get_dictionary(lang):
-    '''
-    '''
-    curdir = os.path.abspath(os.path.dirname(__file__))
-    d = open('{0}/dict/{1}.dictionary'.format(curdir, lang))
-    words = d.readlines()
-    d.close()
-    words = [word.rstrip().lower() for word in words]
-    return tuple(words)
+def define_language_lgramms(a):
+    pass
+
+def define_language_wgramms(a):
+    pass
 
 if __name__ == "__main__":
     pass
