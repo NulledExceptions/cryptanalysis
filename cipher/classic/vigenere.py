@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 import cipher.classic
+import optparse
 import os
 
-class Vigenere(cipher.classic.Cipher):
+class Vigenere(cipher.classic.core):
     """
     An implementation of the Vigenere cipher.
     """
@@ -47,8 +48,7 @@ class Vigenere(cipher.classic.Cipher):
         return ''.join(plaintext)
 
 if __name__ == '__main__':
-    from optparse import OptionParser
-    parser = OptionParser('usage: ./%prog [options] filename')
+    parser = optparse.OptionParser('usage: ./%prog [options] filename')
     parser.add_option('-a', '--analysis',
                       action = 'store_true', dest = 'analysis', default=True,
                       help = 'make analysis, default action')

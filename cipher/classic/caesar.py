@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 import cipher.classic
 
-class Caesar(cipher.classic.Cipher):
+class Caesar(cipher.classic.core):
     """
     An implementation of the Caesar cipher.
     """

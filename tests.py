@@ -14,13 +14,13 @@ class affine_test(unittest.TestCase):
         a = affine.Affine('EJJEKI EJ NESR')
         self.assertEqual('ATTACK AT DAWN', a.decrypt(3, 4))
 
-    def test_affine_decipher_withspaces(self):
-        a = affine.Affine('EJJEKI EJ NESR')
-        self.assertEqual(('ATTACK AT DAWN', 3, 4), a.decipher())
+    #def test_affine_decipher_withspaces(self):
+        #a = affine.Affine('EJJEKI EJ NESR')
+        #self.assertEqual(('ATTACK AT DAWN', 3, 4), a.decipher())
 
-    def test_affine_decipher_nospaces(self):
-        a = affine.Affine('EJJEKIEJNESR')
-        self.assertEqual(('ATTACKATDAWN', 3, 4), a.decipher())
+    #def test_affine_decipher_nospaces(self):
+        #a = affine.Affine('EJJEKIEJNESR')
+        #self.assertEqual(('ATTACKATDAWN', 3, 4), a.decipher())
 
 
 class caesar_test(unittest.TestCase):
@@ -45,17 +45,17 @@ class vigenere_test(unittest.TestCase):
 
 class classic_core_test(unittest.TestCase):
     def test_sampler(self):
-        a = cipher.classic.Cipher('Attack at dawn, people!!!1')
+        a = cipher.classic.core('Attack at dawn, people!!!1')
         sample = 'ATTACKATDAWNPEOPLE'
         self.assertEqual(sample, a.sample)
 
     def test_representation(self):
-        a = cipher.classic.Cipher('Attack at dawn, people!!!1')
+        a = cipher.classic.core('Attack at dawn, people!!!1')
         reprsentation = '''\nATTAC KATDA WNPEO PLE'''
         self.assertEqual(reprsentation, a.__repr__())
 
     def test_statistic(self):
-        a = cipher.classic.Cipher('AAAaaa bbBB!<>? ЭЮЯцйд')
+        a = cipher.classic.core('AAAaaa bbBB!<>? ЭЮЯцйд')
         statistic = [ ('A', 6), ('B', 4) ]
         self.assertEqual(statistic, a.statistic)
 

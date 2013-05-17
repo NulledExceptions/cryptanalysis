@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 import os
-import cipher.routine as routine
+import itertools
 import cipher.linguistics as linguistics
+import cipher.routine as routine
 import cipher.classic
-from itertools import permutations
 
-class Affine(cipher.classic.Cipher):
+class Affine(cipher.classic.core):
     '''
     This class makes research on afinne chipers.
     '''
@@ -44,7 +44,7 @@ class Affine(cipher.classic.Cipher):
         '''
         high = [self.statistic[i][0] for i in range(n)]
         G = []
-        for h in permutations(high, 2):
+        for h in itertools.permutations(high, 2):
             x = self.ord(h[0])
             y = self.ord(h[1])
             if self.language == 'en':

@@ -2,6 +2,7 @@
 #-*-coding:utf-8-*-
 import cipher.linguistics as linguistics
 import builtins
+import cipher
 import re
 
 class cached_property(object):
@@ -17,7 +18,7 @@ class cached_property(object):
         result = instance.__dict__[self.func.__name__] = self.func(instance)
         return result
 
-class Cipher(builtins.str):
+class core(cipher.core):
     '''
     '''
     def __new__(cls, message, language = None):
@@ -141,27 +142,6 @@ class Cipher(builtins.str):
         if not self.language:
             language = 'en'
         return language
-
-    def encrypt(self):
-        '''
-		This method should be overriden in Cipher subclass.
-        It contains encyption procedure.
-        '''
-        raise NotImplemented('Encryption is not implemented.')
-
-    def decrypt(self):
-        '''
-		This method should be overriden in Cipher subclass.
-        It contains decyption procedure.
-        '''
-        raise NotImplemented('Decryption is not implemented.')
-
-    def decipher(self):
-        '''
-		This method should be overriden in Cipher subclass.
-        Actually, cryptanalysis main line should be stored here.
-        '''
-        raise NotImplemented('Analysis is not implemented.')
 
     def ord(self, char):
         '''
