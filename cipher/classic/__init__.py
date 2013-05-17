@@ -87,6 +87,41 @@ class Cipher(builtins.str):
         '''
         words = linguistics.get_dictionary(self.language)
         return words
+    
+    @cached_property
+    def monograms(self):
+        '''
+        '''
+        words = linguistics.get_ngramms(1, self.language)
+        return words
+
+    @cached_property
+    def bigrams(self):
+        '''
+        '''
+        words = linguistics.get_ngramms(2, self.language)
+        return words
+
+    @cached_property
+    def trigrams(self):
+        '''
+        '''
+        words = linguistics.get_ngramms(3, self.language)
+        return words
+
+    @cached_property
+    def quadrograms(self):
+        '''
+        '''
+        words = linguistics.get_ngramms(4, self.language)
+        return words
+
+    @cached_property
+    def quintgrams(self):
+        '''
+        '''
+        words = linguistics.get_ngramms(5, self.language)
+        return words
 
     @cached_property
     def sample(self):

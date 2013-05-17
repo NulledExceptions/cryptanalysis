@@ -80,15 +80,28 @@ language_list = {
               'kappa':0.0733 },
         }
 
-def get_dictionary(lang):
+def get_dictionary(lang = 'en'):
     '''
     '''
     curdir = os.path.abspath(os.path.dirname(__file__))
-    d = open('{0}/dict/{1}.dictionary'.format(curdir, lang))
-    words = d.readlines()
-    d.close()
+    with open('{0}/dict/{1}.dictionary'.format(curdir, lang)) as f:
+        words = f.readlines()
     words = [word.rstrip().lower() for word in words]
     return tuple(words)
+
+def get_ngramms(n, lang = 'en'):
+    ngrams = {}
+    curdir = os.path.abspath(os.path.dirname(__file__))
+    with open('{0}/ngram/{1}.{2}'.format(curdir, lang, n)) as f:
+        for line in f.readlines():
+            key, count = line.split(' ') 
+            ngrams[key] = int(count)
+    N = sum(ngrams.values())
+    floor = math.log10(0.01 / N)
+    for key in ngrams.keys():
+        ngrams[key] = math.log10(float(ngrams[key]) / N)
+    return (ngrams, floor)
+
 
 def define_language(text):
     '''
@@ -111,19 +124,6 @@ def define_language(text):
         for langcode in distribution.keys():
             if distribution[langcode] == maximum:
                 return langcode
-
-# TODO КОСТЫЛЬ!!!11
-def gramm(lang = 'en'):
-    ngrams = {}
-    curdir = os.path.abspath(os.path.dirname(__file__))
-    for line in open('{0}/ngram/{1}.4'.format(curdir, lang)).readlines():
-        key, count = line.split(' ') 
-        ngrams[key] = int(count)
-    N = sum(ngrams.values())
-    floor = math.log10(0.01 / N)
-    for key in ngrams.keys():
-        ngrams[key] = math.log10(float(ngrams[key]) / N)
-    return (ngrams, floor)
 
 def istext_4gramms(text, ngr, lang = 'en'):
     '''

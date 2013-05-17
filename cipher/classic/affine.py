@@ -59,11 +59,10 @@ class Affine(cipher.classic.Cipher):
         '''
         '''
         hypotesa = []
-        ngr = linguistics.gramm()
         for a in [1,3,5,7,9,11,15,17,19,21,23,25]:
             for b in range(0, 25):
                 ot = self.decrypt(a, b)
-                score = linguistics.istext_4gramms(ot, ngr)
+                score = linguistics.istext_4gramms(ot, self.quintgrams)
                 hypotesa.append((score, ot, a, b))
         return max(hypotesa)[1:]
 
