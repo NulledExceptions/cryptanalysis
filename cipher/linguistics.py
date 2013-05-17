@@ -3,6 +3,7 @@
 #import builtins
 import os
 import math
+import json
 
 '''
 The following are language-specific data on character frequencies.
@@ -82,23 +83,16 @@ language_list = {
 
 def get_dictionary(lang = 'en'):
     curdir = os.path.abspath(os.path.dirname(__file__))
-    with open('{0}/dict/{1}.dictionary'.format(curdir, lang)) as f:
-        words = f.readlines()
-    words = [word.rstrip().lower() for word in words]
-    return tuple(words)
+    with open('{0}/dict/{1}.json'.format(curdir, lang)) as f:
+        words = f.read()
+    words = json.loads(words)
+    return words
 
 def get_ngramms(n, lang = 'en'):
     ngrams = {}
     curdir = os.path.abspath(os.path.dirname(__file__))
-    with open('{0}/ngram/{1}.{2}'.format(curdir, lang, n)) as f:
-        for line in f.readlines():
-            key, count = line.split(' ') 
-            ngrams[key] = int(count)
-    N = sum(ngrams.values())
-    floor = math.log10(0.01 / N)
-    for key in ngrams.keys():
-        ngrams[key] = math.log10(float(ngrams[key]) / N)
-    return (ngrams, floor, n)
+    with open('{0}/ngram/{1}-{2}.json'.format(curdir, lang, n)) as f:
+        return json.loads(f.read())
 
 def define_language(text):
     distribution = { langcode:0 for langcode in language_list.keys() }

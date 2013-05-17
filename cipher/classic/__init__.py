@@ -93,8 +93,8 @@ class core(cipher.core):
         S.monograms -> list
         List of monograms for selected language.
         '''
-        words = linguistics.get_ngramms(1, self.language)
-        return words
+        monograms = linguistics.get_ngramms(1, self.language)
+        return monograms
 
     @cached_property
     def bigrams(self):
@@ -102,8 +102,8 @@ class core(cipher.core):
         S.bigrams -> list
         List of bigrams for selected language.
         '''
-        words = linguistics.get_ngramms(2, self.language)
-        return words
+        bigrams = linguistics.get_ngramms(2, self.language)
+        return bigrams
 
     @cached_property
     def trigrams(self):
@@ -111,26 +111,17 @@ class core(cipher.core):
         S.trigrams -> list
         List of trigrams for selected language.
         '''
-        words = linguistics.get_ngramms(3, self.language)
-        return words
+        trigrams = linguistics.get_ngramms(3, self.language)
+        return trigrams
 
     @cached_property
-    def quadrograms(self):
+    def tetragrams(self):
         '''
-        S.quadrograms -> list
-        List of quadrograms for selected language.
+        S.tetragrams -> list
+        List of tetragrams for selected language.
         '''
-        words = linguistics.get_ngramms(4, self.language)
-        return words
-
-    @cached_property
-    def quintgrams(self):
-        '''
-        S.quintgrams -> list
-        List of quintgrams for selected language.
-        '''
-        words = linguistics.get_ngramms(5, self.language)
-        return words
+        tetragrams = linguistics.get_ngramms(4, self.language)
+        return tetragrams
 
     @cached_property
     def sample(self):

@@ -43,10 +43,13 @@ class Affine(cipher.classic.core):
         '''
         '''
         hypotesa = []
-        for a in [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]:
+        for a in [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23]:
             for b in range(0, len(self.alphabet)):
                 ot = self.decrypt(a, b)
-                score = linguistics.istext_ngramms(ot, self.quintgrams)
+                if len(ot) > 100:
+                    score = linguistics.istext_ngramms(ot, self.trigrams)
+                else:
+                    score = linguistics.istext_ngramms(ot, self.tetragrams)
                 hypotesa.append((score, ot, a, b))
         return max(hypotesa)[1:]
 

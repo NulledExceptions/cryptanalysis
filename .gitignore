@@ -4,6 +4,7 @@ __pycache__
 build
 
 html
+*.pkl
 
 *.aux
 *.log
