@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
+import cipher
 
-class Cipher(builtins.str):
+class core(cipher.core):
     '''
+    Binary cipher base class.
     '''
     def encrypt(self):
         '''
@@ -24,4 +26,3 @@ class Cipher(builtins.str):
         Actually, cryptanalysis main line should be stored here.
         '''
         raise NotImplemented('Analysis is not implemented.')
-

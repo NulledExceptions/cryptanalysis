@@ -39,30 +39,14 @@ class Affine(cipher.classic.core):
             ot += char
         return ot
 
-    def guess(self, n = 5):
-        '''
-        '''
-        high = [self.statistic[i][0] for i in range(n)]
-        G = []
-        for h in itertools.permutations(high, 2):
-            x = self.ord(h[0])
-            y = self.ord(h[1])
-            if self.language == 'en':
-                x_t = self.ord('E')
-                y_t = self.ord('T')
-                a = ((x + y) * routine.negative(x_t + y_t, 26)) % 26
-                b = (x - x_t * a) % 26
-            G.append((self.decrypt(a, b), a, b))
-        return G
-
-    def decipher(self, iteration = 0, shift = 0):
+    def decipher(self):
         '''
         '''
         hypotesa = []
-        for a in [1,3,5,7,9,11,15,17,19,21,23,25]:
-            for b in range(0, 25):
+        for a in [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]:
+            for b in range(0, len(self.alphabet)):
                 ot = self.decrypt(a, b)
-                score = linguistics.istext_4gramms(ot, self.quintgrams)
+                score = linguistics.istext_ngramms(ot, self.quintgrams)
                 hypotesa.append((score, ot, a, b))
         return max(hypotesa)[1:]
 

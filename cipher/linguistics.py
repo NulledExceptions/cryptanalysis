@@ -81,8 +81,6 @@ language_list = {
         }
 
 def get_dictionary(lang = 'en'):
-    '''
-    '''
     curdir = os.path.abspath(os.path.dirname(__file__))
     with open('{0}/dict/{1}.dictionary'.format(curdir, lang)) as f:
         words = f.readlines()
@@ -100,12 +98,9 @@ def get_ngramms(n, lang = 'en'):
     floor = math.log10(0.01 / N)
     for key in ngrams.keys():
         ngrams[key] = math.log10(float(ngrams[key]) / N)
-    return (ngrams, floor)
-
+    return (ngrams, floor, n)
 
 def define_language(text):
-    '''
-    '''
     distribution = { langcode:0 for langcode in language_list.keys() }
     length = 0
     for letter in text:
@@ -125,18 +120,15 @@ def define_language(text):
             if distribution[langcode] == maximum:
                 return langcode
 
-def istext_4gramms(text, ngr, lang = 'en'):
-    '''
-    '''
-    ngrams, floor = ngr
+def istext_ngramms(text, ngr, lang = 'en'):
+    ngrams, floor, n = ngr
     score = 0
-    for i in range(len(text) - 5):
-        if text[i: i + 4] in ngrams: 
-            score += ngrams[text[i: i + 4]]
+    for i in range(len(text) - n + 1):
+        if text[i: i + n] in ngrams: 
+            score += ngrams[text[i: i + n]]
         else: 
             score += floor          
     return score
 
 if __name__ == "__main__":
     pass
-

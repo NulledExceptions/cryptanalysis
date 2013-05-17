@@ -20,6 +20,7 @@ class cached_property(object):
 
 class core(cipher.core):
     '''
+    Classical cipher base class.
     '''
     def __new__(cls, message, language = None):
         obj = str.__new__(cls, message)
@@ -54,7 +55,6 @@ class core(cipher.core):
     def alphabet(self):
         '''
         S.alphabet -> list
-
         Return alphabet of estimated language.
         '''
         alphabet = list(linguistics.language_list[self.language].keys())
@@ -67,7 +67,6 @@ class core(cipher.core):
     def statistic(self):
         '''
         S.statistic -> list
-
         Count how many times each char found in message.
         '''
         stat = {}
@@ -83,7 +82,6 @@ class core(cipher.core):
     def dictionary(self):
         '''
         S.dictionary -> tuple
-
         List of words in selected language.
         '''
         words = linguistics.get_dictionary(self.language)
@@ -92,6 +90,8 @@ class core(cipher.core):
     @cached_property
     def monograms(self):
         '''
+        S.monograms -> list
+        List of monograms for selected language.
         '''
         words = linguistics.get_ngramms(1, self.language)
         return words
@@ -99,6 +99,8 @@ class core(cipher.core):
     @cached_property
     def bigrams(self):
         '''
+        S.bigrams -> list
+        List of bigrams for selected language.
         '''
         words = linguistics.get_ngramms(2, self.language)
         return words
@@ -106,6 +108,8 @@ class core(cipher.core):
     @cached_property
     def trigrams(self):
         '''
+        S.trigrams -> list
+        List of trigrams for selected language.
         '''
         words = linguistics.get_ngramms(3, self.language)
         return words
@@ -113,6 +117,8 @@ class core(cipher.core):
     @cached_property
     def quadrograms(self):
         '''
+        S.quadrograms -> list
+        List of quadrograms for selected language.
         '''
         words = linguistics.get_ngramms(4, self.language)
         return words
@@ -120,6 +126,8 @@ class core(cipher.core):
     @cached_property
     def quintgrams(self):
         '''
+        S.quintgrams -> list
+        List of quintgrams for selected language.
         '''
         words = linguistics.get_ngramms(5, self.language)
         return words
@@ -127,6 +135,7 @@ class core(cipher.core):
     @cached_property
     def sample(self):
         '''
+        S.sample -> str
         Remove all whitespaces and transform letters into lower case.
         '''
         sample = re.sub(re.compile('\s'), '', self.message)
@@ -137,7 +146,8 @@ class core(cipher.core):
     @cached_property
     def language(self):
         '''
-        Remove all whitespaces and transform letters into lower case.
+        S.language -> str
+        Define language for current message.
         '''
         if not self.language:
             language = 'en'
@@ -145,10 +155,9 @@ class core(cipher.core):
 
     def ord(self, char):
         '''
-        S.ord(s) -> int
-
-        Return s position in the S natural alphabet.
-        Also, says "goodbye" to possible additional info :(
+        S.ord(c) -> int
+        Return c position in the S natural alphabet.
+        Negative for self.chr(): S.chr(self.ord(c)) should be c.
         '''
         if char.upper() in self.alphabet:
             return self.alphabet.index(char.upper())
@@ -156,35 +165,19 @@ class core(cipher.core):
 
     def chr(self, n):
         '''
-        S.ord(i) -> str
-
-        Negative for self.ord().
-        Return char for i position of S alphabet.
+        S.ord(n) -> str
+        Return char for n position of S alphabet.
+        Negative for self.ord(): S.ord(self.chr(n)) should be n.
         '''
         if builtins.str(n).isdecimal() and 0 <= n < len(self.alphabet):
             return self.alphabet[n]
         return n
 
-    def istext(self, text = None):
-        if not text:
-            text = self.message
-        text = text.split(' ')
-        positive = 0
-        for word in text:
-            letters = [letter.lower() for letter in word 
-                    if letter.capitalize() in self.alphabet]
-            word = ''.join(letters)
-            if word in self.dictionary:
-                positive += 1
-        return positive / len(text)
-
-    def define_language(self, text = None):
-        if not text:
-            text = self.message
-        pass
-
     def isalpha(self, char):
+        '''
+        S.isalpha(c) -> bool
+        Check if c is in self.alphabet.
+        '''
         if char in self.alphabet:
             return True
         return False
-
