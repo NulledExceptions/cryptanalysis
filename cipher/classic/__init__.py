@@ -57,11 +57,22 @@ class core(cipher.core):
         S.alphabet -> list
         Return alphabet of estimated language.
         '''
+        if self.language == 'ru':
+            # Hack on standart sort:
+            # If just return sorted like the others, 'Ё' becomes
+            # the first.
+            alphabet = (
+                    'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 
+                    'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 
+                    'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 
+                    'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 
+                    'Ы', 'Ь', 'Э', 'Ю', 'Я' )
+            return alphabet
         alphabet = list(linguistics.language_list[self.language].keys())
         alphabet.remove('kappa')
         alphabet.remove('max')
         alphabet.sort()
-        return alphabet
+        return list(alphabet)
 
     @cached_property
     def statistic(self):
