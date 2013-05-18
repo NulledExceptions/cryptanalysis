@@ -65,7 +65,7 @@ class classic_core_test(unittest.TestCase):
     def test_statistic(self):
         a = cipher.classic.core('AAAaaa bbBB!<>? ЭЮЯцйд')
         statistic = [ ('A', 6), ('B', 4) ]
-        self.assertEqual(statistic, a.statistic)
+        self.assertEqual(statistic, a.statistic())
 
 
 if __name__ == '__main__':

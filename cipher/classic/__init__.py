@@ -73,7 +73,6 @@ class core(cipher.core):
         alphabet.sort()
         return list(alphabet)
 
-    @cached_property
     def statistic(self):
         '''
         S.statistic -> list
