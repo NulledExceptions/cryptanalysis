@@ -1,2 +1,4 @@
 #!/bin/bash
-export PYTHONPATH="$(pwd)"
+#export PYTHONPATH="$(pwd)"
+rm -rf /usr/lib/python3.3/cipher
+cp -r ./cipher /usr/lib/python3.3/cipher

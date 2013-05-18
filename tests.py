@@ -32,6 +32,14 @@ class caesar_test(unittest.TestCase):
         a = caesar.Caesar('DWWDFNDWGDZQ')
         self.assertEqual('ATTACKATDAWN', a.decrypt(3))
 
+    def test_affine_decipher_russian(self):
+        a = caesar.Caesar('Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб.')
+        self.assertEqual(('СЪЕШЬ ЖЕ ЕЩЕ ЭТИХ МЯГКИХ ФРАНЦУЗСКИХ БУЛОК, ДА ВЫПЕЙ ЧАЮ.', 3), a.decipher())
+
+    def test_affine_decipher_english(self):
+        a = caesar.Caesar('QEB NRFZH YOLTK CLU GRJMP LSBO QEB IXWV ALD')
+        self.assertEqual(('THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG', 23), a.decipher())
+
 
 class vigenere_test(unittest.TestCase):
     def test_vigenere_encrypt(self):
