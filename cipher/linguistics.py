@@ -9,7 +9,6 @@ import json
 The following are language-specific data on character frequencies.
 * kappa is the "index of coincidence"
   [link](http://en.wikipedia.org/wiki/Index_of_coincidence)
-* max is the maximum frequency
 * languages represented by ISO 639-1:2002 codes
   [link](http://en.wikipedia.org/wiki/ISO_639-1)
 '''
@@ -22,7 +21,6 @@ language_list = {
               'Q':0.09, 'R':5.99, 'S':6.32, 'T':9.05, 
               'U':2.75, 'V':0.97, 'W':2.36, 'X':0.15, 
               'Y':1.97, 'Z':0.07, 
-              'max':12.70, 
               'kappa':0.0667 },
       
         'ru' : 
@@ -37,7 +35,6 @@ language_list = {
               'З':1.61, 'Т': 5.83, 'Э':0.31, 
               'И':7.98, 'У': 2.28, 'Ю':0.63, 
               'Й':1.36, 'Ф': 0.41, 'Я':2.00, 
-              'max':10.61,
               'kappa':0.0776 },
 
         'fr' :
@@ -52,7 +49,6 @@ language_list = {
               'U':5.65, 'Ù':5.65, 'Û':5.65, 'Ü':5.65, 
               'V':1.30, 'W':0.04, 'X':0.44, 'Y':0.27, 
               'Ÿ':0.27, 'Z':0.09, 
-              'max':17.22, 
               'kappa':0.0746 },
       
         'de' :
@@ -64,7 +60,6 @@ language_list = {
               'S':6.76, 'T':6.74, 'U':3.70, 'Ü':3.70, 
               'V':1.06, 'W':1.39, 'X':0.02, 'Y':0.03, 
               'Z':1.00, 
-              'max':16.69, 
               'kappa':0.0767 },
       
         'it' :
@@ -77,7 +72,6 @@ language_list = {
               'Q':0.39, 'R':6.68, 'S':5.11, 'T':6.76, 
               'U':3.18, 'Ù':3.18, 'Ú':3.18, 'V':1.52, 
               'W':0.00, 'X':0.02, 'Y':0.048, 'Z':0.95, 
-              'max':11.57, 
               'kappa':0.0733 },
         }
 

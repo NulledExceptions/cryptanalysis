@@ -70,7 +70,6 @@ class core(cipher.core):
             return alphabet
         alphabet = list(linguistics.language_list[self.language].keys())
         alphabet.remove('kappa')
-        alphabet.remove('max')
         alphabet.sort()
         return list(alphabet)
 
