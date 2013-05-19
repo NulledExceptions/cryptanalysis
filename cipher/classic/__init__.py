@@ -67,10 +67,10 @@ class core(cipher.core):
         S.alphabet -> list
         Return alphabet of estimated language.
         '''
-        distribued = sorted(
-                linguistics.language_list['ru']['alphabet'], 
-                key = lambda x: x[1], reverse = True)
-        return [x[0] for x in distribued]
+        alphabet = linguistics.language_list[self.language]['alphabet']
+        distribued = sorted(alphabet, key = lambda x: x[1], reverse = True)
+        distribued = [x[0] for x in distribued]
+        return distribued
 
     @cached_property
     def dictionary(self):
