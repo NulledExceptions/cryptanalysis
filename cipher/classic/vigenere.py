@@ -10,42 +10,35 @@ class Vigenere(cipher.classic.core):
     """
     def encrypt(self, key):
         """
-        Encipher input (plaintext) using the Vigenere cipher and return
-        it (ciphertext).
+        Encrypt input using the Vigenere cipher.
         """
-        ciphertext = []
-        k = 0
-        n = len(key)
-        for i in range(len(self)):
-            p = self[i]
-            if p.isalpha():
-                ciphertext.append(chr((ord(p) + ord(
-                (key[k % n].upper(), key[k % n].lower())[int(p.islower())]
-                ) - 2*ord('Aa'[int(p.islower())])) % 26 +
-                ord('Aa'[int(p.islower())])))
-                k += 1
-            else:
-                ciphertext.append(p)
-        return ''.join(ciphertext)
+        encrypt_letter = (lambda m, k: 
+            self.chr((self.ord(m) + self.ord(k)) 
+                % len(self.alphabet)))
+        return self.mapper(encrypt_letter, key)
 
     def decrypt(self, key):
         """
-        Decipher input (ciphertext) using the Vigenere cipher and return
-        it (plaintext).
+        Decrypt input using the Vigenere cipher.
         """
-        plaintext = []
-        k = 0
-        n = len(key)
-        for i in range(len(self)):
-            c = self[i]
-            if c.isalpha():
-                plaintext.append(chr((ord(c) - ord(
-                (key[k % n].upper(), key[k % n].lower())[int(c.islower())]
-                )) % 26 + ord('Aa'[int(c.islower())])))
-                k += 1
-            else:
-                plaintext.append(c)
-        return ''.join(plaintext)
+        decrypt_letter = (lambda m, k: 
+            self.chr((self.ord(m) - self.ord(k) + len(self.alphabet)) 
+                % len(self.alphabet)))
+        return self.mapper(decrypt_letter, key)
+
+    def mapper(self, f, key):
+        '''
+        Blur all work except function.
+        '''
+        key = key.upper()
+        for letter in key:
+            if letter not in self.alphabet:
+                raise 'Key should be the same language as message.'
+        pad = key * (len(self) % len(key))
+        complement = key[:len(self) - len(pad)]
+        padded_key = pad + complement
+        result = map(f, self, padded_key)
+        return ''.join(result)
 
 if __name__ == '__main__':
     parser = optparse.OptionParser('usage: ./%prog [options] filename')
@@ -59,7 +52,6 @@ if __name__ == '__main__':
                       metavar="KEY", 
                       help = 'decrypt file with  KEY as a key')
     (options, args) = parser.parse_args()
-
     if len(args) != 1:
         parser.print_help()
     else:
@@ -81,4 +73,3 @@ if __name__ == '__main__':
             ot = ct.decipher()
             print(ot[0])
             print("Decryption parametres is a={0} and b={1}.".format(ot[1], ot[2]))
-
