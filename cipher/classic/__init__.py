@@ -57,35 +57,20 @@ class core(cipher.core):
         S.alphabet -> list
         Return alphabet of estimated language.
         '''
-        if self.language == 'ru':
-            # Hack on standart sort:
-            # If just return sorted like the others, 'Ё' becomes
-            # the first.
-            alphabet = (
-                    'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 
-                    'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 
-                    'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 
-                    'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 
-                    'Ы', 'Ь', 'Э', 'Ю', 'Я' )
-            return alphabet
-        alphabet = list(linguistics.language_list[self.language].keys())
-        alphabet.remove('kappa')
-        alphabet.sort()
+        alphabet = linguistics.language_list[self.language]['alphabet']
+        alphabet = [x[0] for x in alphabet]
         return list(alphabet)
 
-    def statistic(self):
+    @cached_property
+    def alphabet_distribued(self):
         '''
-        S.statistic -> list
-        Count how many times each char found in message.
+        S.alphabet -> list
+        Return alphabet of estimated language.
         '''
-        stat = {}
-        for char in self.sample:
-            if char in self.alphabet:
-                if char in stat.keys():
-                    stat[char] += 1
-                else:
-                    stat[char] = 1
-        return sorted(stat.items(), key = lambda x:x[1], reverse = True)
+        distribued = sorted(
+                linguistics.language_list['ru']['alphabet'], 
+                key = lambda x: x[1], reverse = True)
+        return [x[0] for x in distribued]
 
     @cached_property
     def dictionary(self):
@@ -139,19 +124,22 @@ class core(cipher.core):
         Remove all whitespaces and transform letters into lower case.
         '''
         sample = re.sub(re.compile('\s'), '', self.message)
-        sample = [char.upper() for char in sample 
-               if char.upper() in self.alphabet]
+        sample = [char.upper() for char in sample if char.upper() in self.alphabet]
         return ''.join(sample)
 
-    @cached_property
-    def language(self):
+    def statistic(self):
         '''
-        S.language -> str
-        Define language for current message.
+        S.statistic -> list
+        Count how many times each char found in message.
         '''
-        if not self.language:
-            language = 'en'
-        return language
+        stat = {}
+        for char in self.sample:
+            if char in self.alphabet:
+                if char in stat.keys():
+                    stat[char] += 1
+                else:
+                    stat[char] = 1
+        return sorted(stat.items(), key = lambda x: x[1], reverse = True)
 
     def ord(self, char):
         '''
@@ -172,12 +160,3 @@ class core(cipher.core):
         if builtins.str(n).isdecimal() and 0 <= n < len(self.alphabet):
             return self.alphabet[n]
         return n
-
-    def isalpha(self, char):
-        '''
-        S.isalpha(c) -> bool
-        Check if c is in self.alphabet.
-        '''
-        if char in self.alphabet:
-            return True
-        return False

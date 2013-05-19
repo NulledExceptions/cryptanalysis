@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 import cipher.linguistics as linguistics
 import cipher.classic
+import math
 import os
 
 class Caesar(cipher.classic.core):
@@ -35,6 +36,25 @@ class Caesar(cipher.classic.core):
         Most effective method.
         '''
         return self.bruteforce()
+
+    def pick(self):
+        hypotesa = []
+        language_stats = linguistics.language_list[self.language]
+        language_stats = sorted(language_stats.items(), key = lambda x:x[1], reverse = True)
+        high = language_stats[0][0]
+        print(self.statistic())
+        #TODO hackhackhack
+        for i in range(len(self.alphabet)):
+            now_high = self.statistic()[i][0]
+            key = (self.ord(high) - self.ord(now_high)) % len(self.alphabet)
+            ot = self.decrypt(key)
+            if len(ot) > 100:
+                score = linguistics.istext_ngramms(ot, self.trigrams)
+            else:
+                score = linguistics.istext_ngramms(ot, self.tetragrams)
+            hypotesa.append((score, ot, key))
+            print((score, ot, key))
+        return max(hypotesa)[1:]
 
     def bruteforce(self):
         '''
