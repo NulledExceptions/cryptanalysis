@@ -111,7 +111,10 @@ def define_language(text):
             distribution[langcode] /= length
     maximum = sorted(distribution.values(), reverse=True)[0]
     # TODO "Core-based" definition.
-    return 'ru'
+    if maximum == 'ru':
+        return 'ru'
+    else:
+        return 'en'
 
 def istext_ngramms(text, ngr, lang = 'en'):
     ngrams, floor, n = ngr
