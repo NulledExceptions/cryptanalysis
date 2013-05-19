@@ -37,8 +37,8 @@ class caesar_test(unittest.TestCase):
         self.assertEqual(('СЪЕШЬ ЖЕ ЕЩЁ ЭТИХ МЯГКИХ ФРАНЦУЗСКИХ БУЛОК, ДА ВЫПЕЙ ЧАЮ.', 3), a.decipher())
 
     def test_affine_decipher_english(self):
-        a = caesar.Caesar('QEB NRFZH YOLTK CLU GRJMP LSBO QEB IXWV ALD')
-        self.assertEqual(('THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG', 23), a.decipher())
+        a = caesar.Caesar('WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ')
+        self.assertEqual(('THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG', 3), a.decipher())
 
 
 class vigenere_test(unittest.TestCase):

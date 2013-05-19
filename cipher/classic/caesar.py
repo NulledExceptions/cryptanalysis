@@ -39,16 +39,17 @@ class Caesar(cipher.classic.core):
 
     def pick(self):
         hypotesa = []
-        high = self.alphabet_distribued[0]
-        for i in range(len(self.alphabet)):
-            now_high = self.statistic()[i][0]
-            key = (self.ord(high) - self.ord(now_high)) % len(self.alphabet)
-            ot = self.decrypt(key)
-            if len(ot) > 100:
-                score = linguistics.istext_ngramms(ot, self.trigrams)
-            else:
-                score = linguistics.istext_ngramms(ot, self.tetragrams)
-            hypotesa.append((score, ot, key))
+        for j in range(len(self.alphabet)):
+            high = self.alphabet_distribued[j]
+            for i in range(len(self.statistic())):
+                now_high = self.statistic()[i][0]
+                key = (self.ord(high) - self.ord(now_high)) % len(self.alphabet)
+                ot = self.decrypt(key)
+                if len(ot) > 100:
+                    score = linguistics.istext_ngramms(ot, self.trigrams)
+                else:
+                    score = linguistics.istext_ngramms(ot, self.tetragrams)
+                hypotesa.append((score, ot, key))
         return max(hypotesa)[1:]
 
     def bruteforce(self):
@@ -57,7 +58,7 @@ class Caesar(cipher.classic.core):
         of them.
         '''
         hypotesa = []
-        for b in range(0, len(self.alphabet)):
+        for b in range(len(self.alphabet)):
             ot = self.decrypt(b)
             if len(ot) > 100:
                 score = linguistics.istext_ngramms(ot, self.trigrams)
