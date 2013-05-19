@@ -59,7 +59,7 @@ class classic_core_test(unittest.TestCase):
 
     def test_representation(self):
         a = cipher.classic.core('Attack at dawn, people!!!1')
-        reprsentation = '''\nATTAC KATDA WNPEO PLE'''
+        reprsentation = 'ATTAC KATDA WNPEO PLE'
         self.assertEqual(reprsentation, a.__repr__())
 
     def test_statistic(self):

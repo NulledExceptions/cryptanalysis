@@ -40,9 +40,9 @@ class core(cipher.core):
         representation = ""
         position = 0
         for c in self.sample:
-            if position % 55 == 0:
+            if position % 55 == 0 and position != 0:
                 representation += '\n'
-            elif position % 5 == 0:
+            elif position % 5 == 0 and position != 0:
                 representation += " "
             position += 1
             representation += c
