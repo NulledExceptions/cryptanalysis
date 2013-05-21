@@ -33,7 +33,8 @@ class Vigenere(cipher.classic.core):
         key = key.upper()
         for letter in key:
             if letter not in self.alphabet:
-                raise 'Key should be the same language as message.'
+                raise ValueError(
+                        'Key should be the same language as message.')
         pad = key * (len(self) % len(key))
         complement = key[:len(self) - len(pad)]
         padded_key = pad + complement
