@@ -100,33 +100,6 @@ $A_5^3 = \frac{{5!}}{{\left( {5 - 3} \right)!}} = 60$.
 Впоследствии за время войны было выпущено 210 устройств, позволивших 
 расшифровывать до двух-трех тысяч сообщений в день.
 
-\begin{listing}[1]
-char enigma_encipher(char ch, EnigmaKey *key){
-    ch = toupper(ch);
-    increment_indicator_settings(key->indicator, key->rotors);
-
-    ch = apply_steckers(ch,key->plugboard);
-    ch=rotor(key->rotors[2],ch,key->indicator[2]-key->ringsettings[2]);  
-    ch=rotor(key->rotors[1],ch,key->indicator[1]-key->ringsettings[1]);
-    ch=rotor(key->rotors[0],ch,key->indicator[0]-key->ringsettings[0]);  
-    ch=reflector(key->reflector,ch); 
-    ch=rotor(inverse(key->rotors[0]),ch,key->indicator[0]-key->ringsettings[0]);  
-    ch=rotor(inverse(key->rotors[1]),ch,key->indicator[1]-key->ringsettings[1]);   
-    ch=rotor(inverse(key->rotors[2]),ch,key->indicator[2]-key->ringsettings[2]);   
-    ch = apply_steckers(ch,key->plugboard);   
-    return ch;
-} 
-
-char apply_steckers(char in, char steckers[13][2]){
-    int i;
-    for(i=0;i<13;i++){
-        if(in==steckers[i][0]) return steckers[i][1];
-        else if(in==steckers[i][1]) return steckers[i][0];
-    }
-    return in;
-}
-\end{listing}
-
 C современной точки зрения шифр «Энигмы» был не очень надежным,
 но только сочетание этого фактора с наличием множества перехваченных 
 сообщений, кодовых книг, донесений разведки, результатов усилий 
