@@ -1,14 +1,14 @@
-\subsection{Реализация работы с естественным языком}
-Написан подключаемый модуль $linguistics$, выполняющий все операции, 
+\subsection{Реализация критериев}
+Написан подключаемый модуль \texttt{linguistics}, выполняющий все операции, 
 связанные с естественными языками. Статистический анализ
 содержится в базовом классе и будет описан далее.
 Модуль состоит из 6 функций:
 
-\begin{enumerate}
-\item $get\_alphabet(lang)$ — возвращает алфавит с частотой встречамости 
+\begin{trivlist}
+\item \texttt{get\_alphabet(lang)} --- возвращает алфавит с частотой встречамости 
     букв и некоторыми дополнительными характеристиками языка.
-\item $define\_language(text)$ — определяет язык текста.
-\item $istext\_dictionary(text)$ — словарный анализ.
-\item $istext\_lgramms(text)$ — анализ n-грамм из слов.
-\item $istext\_wgramms(text)$ — анализ n-грамм из букв.
-\end{enumerate}
+\item \texttt{define\_language(text)} --- определяет язык текста.
+\item \texttt{istext\_dictionary(text)} --- словарный анализ.
+\item \texttt{istext\_lgramms(text)} --- анализ словарных n-грамм.
+\item \texttt{istext\_wgramms(text)} --- анализ буквенных n-грамм.
+\end{trivlist}
