@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 from cipher.classic import caesar, affine, vigenere
+import cipher.linguistics as linguistics
 import unittest
 import cipher
 
@@ -67,6 +68,12 @@ class classic_core_test(unittest.TestCase):
         statistic = [ ('A', 6), ('B', 4) ]
         self.assertEqual(statistic, a.statistic())
 
+
+class linguistics_test(unittest.TestCase):
+    def test_word_parser(self):
+        a = linguistics.restore_words('HELLOHOWAREYOUTODAY')
+        sample = ['HELLO','HOW','ARE','YOU','TODAY']
+        self.assertEqual(sample, a[1])
 
 if __name__ == '__main__':
     unittest.main()
