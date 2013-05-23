@@ -101,6 +101,7 @@ language_list = {
                     ('S', 5.11), ('T', 6.76), ('U', 3.18), 
                     ('V', 1.52), ('W', 0.00), ('X', 0.02), 
                     ('Y',0.048), ('Z', 0.95), 
+                ),
                 'ligatures': (
                     'À', 'Ì', 'Í', 'Î', 'É', 
                     'È', 'Ò', 'Ó', 'Ù', 'Ú', 
@@ -139,6 +140,37 @@ def define_language(text):
         return 'ru'
     else:
         return 'en'
+
+def restore_words(text, maxwordlen=20, lang = 'en'):
+    N = 1024908267229
+    unseen = [math.log10(10./(N * 10**L)) for L in range(50)]        
+    curdir = os.path.abspath(os.path.dirname(__file__))
+    with open('{0}/dict/{1}.counted.json'.format(curdir, lang)) as f:
+        Pw = json.loads(f.read())
+    with open('{0}/dict/{1}.counted_pairs.json'.format(curdir, lang)) as f:
+        Pw2 = json.loads(f.read())
+
+    def cPw(word, prev='<UNK>'):
+        if word not in Pw: 
+            return unseen[len(word)]
+        elif prev + ' ' + word not in Pw2: 
+            return Pw[word]
+        else: 
+            return Pw2[prev + ' ' + word]
+
+    prob = [[-99e99] * maxwordlen for _ in range(len(text))]
+    strs = [[''] * maxwordlen for _ in range(len(text))]
+    for j in range(maxwordlen):
+        prob[0][j] = cPw(text[:j + 1])
+        strs[0][j] = [text[:j + 1]]
+    for i in range(1, len(text)):
+        for j in range(maxwordlen):
+            if i + j + 1 > len(text): break
+            candidates = [(prob[i - k - 1][k] + cPw(text[i:i + j + 1],strs[i - k - 1][k][-1]),
+                           strs[i - k - 1][k] + [text[i:i + j + 1]]) for k in range(min(i, maxwordlen))]
+            prob[i][j], strs[i][j] = max(candidates)
+    ends = [(prob[-i - 1][i],strs[-i - 1][i]) for i in range(min(len(text), maxwordlen))]
+    return max(ends)
 
 def istext_ngramms(text, ngr, lang = 'en'):
     ngrams, floor, n = ngr
