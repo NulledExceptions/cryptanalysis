@@ -2,6 +2,7 @@
 #-*-coding:utf-8-*-
 import os
 import itertools
+import time
 import cipher.linguistics as linguistics
 import cipher.routine as routine
 import cipher.classic
@@ -60,12 +61,6 @@ def main():
     parser.add_option('-a', '--analysis',
                       action = 'store_true', dest = 'analysis', default=True,
                       help = 'make analysis, default action')
-    parser.add_option('-e', '--encrypt',
-                      metavar="AxB", 
-                      help="encrypt file with A and B args")
-    parser.add_option('-d', '--decrypt',
-                      metavar="AxB", 
-                      help = 'decrypt file with A and B args')
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
@@ -76,20 +71,14 @@ def main():
         else:
             message = args[0]
         ct = Affine(message)
-        if options.encrypt or options.decrypt:
-            if options.encrypt:
-                (a, b) = options.encrypt.split('x')
-                message = ct.encrypt(int(a), int(b))
-            elif options.decrypt:
-                (a, b) = options.decrypt.split('x')
-                message = ct.decrypt(int(a), int(b))
-            print(message)
-        else:
-            print("Analysis...")
-            print("Defined language is {0}.".format(ct.language))
-            ot = ct.decipher()
-            print(ot[0])
-            print("Decryption parametres is a={0} and b={1}.".format(ot[1], ot[2]))
+        print("Analysis...")
+        time.sleep(5)
+        print("Defined cipher is Affine.")
+        time.sleep(2)
+        print("Defined language is {0}.".format(ct.language))
+        ot = ct.decipher()
+        print(ot[0])
+        print("Decryption parametres is a={0} and b={1}.".format(ot[1], ot[2]))
 
 if __name__ == '__main__':
     main()
