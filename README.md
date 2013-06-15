@@ -17,23 +17,20 @@ The following ciphers are currently being studied:
 Usage
 -----
 
-All files except can be used like executables:
-
-    # Expopt PYTHONPATH
-    $ . ./prepare
+Each file can be used like an executable:
 
     # Simple test.
-    $ ./cipher/classic/affine.py 'EJJEKI EJ NESR'
+    $ ./pycry/cipher/classic/affine.py 'EJJEKI EJ NESR'
     Analysis...
     Defined language is en.
     ATTACK AT DAWN
     Decryption parametres is a=3 and b=4.
 
     # Encrypting english sample.
-    $ ./cipher/classic/affine.py -e 9x23 sample/en.opentext > sample/en.affine
+    $ ./pycry/cipher/classic/affine.py -e 9x23 sample/en.opentext > sample/en.affine
 
     # Analyzing encrypted.
-    $ ./cipher/classic/affine.py sample/en.affine 
+    $ ./pycry/cipher/classic/affine.py sample/en.affine 
     Analysis...
     Defined language is en.
     ['TO BE, OR NOT TO BE: THAT IS THE QUESTION:', 
@@ -43,17 +40,15 @@ All files except can be used like executables:
 Also, each file can be used like module:
 
     $ ipython3
-    In [1]: import cipher.classic.affine as a
+    In [1]: import pycry.cipher.classic.affine as a
 
     In [2]: secret = a.Affine('EJJEKI EJ NESR')
 
     In [3]: secret
-    Out[3]: 
-    EJJEK IEJNE SR
+    Out[3]: EJJEK IEJNE SR
 
     In [4]: secret.statistic
     Out[4]: [('E', 4), ('J', 3), ('R', 1), ('S', 1), ('K', 1), ('I', 1), ('N', 1)]
 
     In [5]: secret.decipher()
     Out[5]: ('ATTACK AT DAWN', 3, 4)
-
