@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-import cipher.classic
+import pycry.cipher.classic as classic
 import optparse
 import os
 
-class Vigenere(cipher.classic.core):
+class Vigenere(classic.core):
     """
     An implementation of the Vigenere cipher.
     """

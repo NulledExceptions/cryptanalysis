@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-import cipher.linguistics as linguistics
-import cipher.classic
+import pycry.linguistics as linguistics
+import pycry.cipher.classic as classic
 import math
 import os
 
-class Caesar(cipher.classic.core):
+class Caesar(classic.core):
     """
     An implementation of the Caesar cipher.
     """

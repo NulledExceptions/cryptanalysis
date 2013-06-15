@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-import cipher.linguistics as linguistics
+import pycry.linguistics as linguistics
+import pycry.cipher as cipher
 import builtins
-import cipher
 import re
 
 class cached_property(object):

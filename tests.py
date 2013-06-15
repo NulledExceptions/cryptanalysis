@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-from cipher.classic import caesar, affine, vigenere
-import cipher.linguistics as linguistics
+from pycry.cipher.classic import caesar, affine, vigenere
+import pycry.linguistics as linguistics
+import pycry.cipher as cipher
 import unittest
-import cipher
-
 
 class affine_test(unittest.TestCase):
     def test_affine_encrypt(self):
@@ -23,7 +22,6 @@ class affine_test(unittest.TestCase):
         a = affine.Affine('EJJEKIEJNESR')
         self.assertEqual(('ATTACKATDAWN', 3, 4), a.decipher())
 
-
 class caesar_test(unittest.TestCase):
     def test_caesar_encrypt(self):
         a = caesar.Caesar('ATTACK AT DAWN')
@@ -41,7 +39,6 @@ class caesar_test(unittest.TestCase):
         a = caesar.Caesar('WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ')
         self.assertEqual(('THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG', 3), a.decipher())
 
-
 class vigenere_test(unittest.TestCase):
     def test_vigenere_encrypt(self):
         a = vigenere.Vigenere('ATTACKATDAWN')
@@ -50,7 +47,6 @@ class vigenere_test(unittest.TestCase):
     def test_vigenere_decrypt(self):
         a = vigenere.Vigenere('LXFOPVEFRNHR')
         self.assertEqual('ATTACKATDAWN', a.decrypt('LEMON'))
-
 
 class classic_core_test(unittest.TestCase):
     def test_sampler(self):
@@ -68,7 +64,6 @@ class classic_core_test(unittest.TestCase):
         statistic = [ ('A', 6), ('B', 4) ]
         self.assertEqual(statistic, a.statistic())
 
-
 class linguistics_test(unittest.TestCase):
     def test_word_parser(self):
         a = linguistics.restore_words('HELLOHOWAREYOUTODAY')
@@ -77,4 +72,3 @@ class linguistics_test(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

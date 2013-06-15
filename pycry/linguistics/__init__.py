@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-#import builtins
-import os
 import math
 import json
+import os
 
 '''
 The following are language-specific data on character frequencies.

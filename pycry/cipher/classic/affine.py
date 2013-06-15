@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
-import os
+import pycry.linguistics as linguistics
+import pycry.cipher.routine as routine
+import pycry.cipher.classic as classic
 import itertools
-import cipher.linguistics as linguistics
-import cipher.routine as routine
-import cipher.classic
+import os
 
-class Affine(cipher.classic.core):
+class Affine(classic.core):
     '''
     This class makes research on afinne chipers.
     '''
@@ -53,7 +53,6 @@ class Affine(cipher.classic.core):
                 hypotesa.append((score, ot, a, b))
         return max(hypotesa)[1:]
 
-
 def main():
     from optparse import OptionParser
     parser = OptionParser('usage: ./%prog [options] filename')
@@ -93,4 +92,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

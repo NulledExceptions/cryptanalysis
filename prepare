@@ -1,4 +1,3 @@
 #!/bin/bash
-#export PYTHONPATH="$(pwd)"
-sudo rm -rf /usr/lib/python3.2/cipher
-sudo cp -r ./cipher /usr/lib/python3.2/cipher
+sudo rm -rf /usr/lib/python3/pycry
+sudo cp -r ./pycry /usr/lib/python3/pycry
