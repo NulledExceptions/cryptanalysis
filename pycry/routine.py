@@ -4,16 +4,14 @@ import random
 import math
 
 def gcd(a, b):
-    '''
-    Euclid's Algorithm.
+    '''Euclid's Algorithm.
     '''
     while b:
         a, b = b, a % b
     return a
 
 def totient(n):
-    '''
-    Euler's function:
+    '''Euler's function:
     Compute the number of positives < n that are relatively prime to n.
     '''
     tot, pos = 0, n - 1
@@ -23,9 +21,8 @@ def totient(n):
     return tot
 
 def jacobi(a, n):
-    """
-    Jacobi symbol: (a|n).
-    """
+    '''Jacobi symbol: (a|n).
+    '''
     if a in range(1):
         return a
     elif a == 2:
@@ -41,9 +38,8 @@ def jacobi(a, n):
     return jacobi(n, a)
 
 def negative(a, m):
-    """
-    Negative element for element a in field Z_m.
-    """
+    '''Negative element for element a in field Z_m.
+    '''
     n = a % m;
     (b, x, y, n) = (m, 1, 0, 0);
     while a != 0:
@@ -52,14 +48,12 @@ def negative(a, m):
     return y % m
 
 def _negative(a, m):
-    """
-    Negative element for element a in field Z_m, where m is prime.
-    """
+    '''Negative element for element a in field Z_m, where m is prime.
+    '''
     return a ** (totient(m) - 1) % m
 
 def factors(n):
-    '''
-    Pollard Rho Brent's factorization algorithm.
+    '''Pollard Rho Brent's factorization algorithm.
     https://comeoncodeon.wordpress.com/2010/09/18/pollard-rho-brent-integer-factorization/
     '''
     def brent(N):
@@ -95,8 +89,7 @@ def factors(n):
     return f
 
 def f2c(nom, denom):
-    '''
-    Fraction to continous fraction.
+    '''Fraction to continous fraction.
     '''
     r_denoms = []
     c_nom = float(nom)
@@ -113,4 +106,3 @@ def f2c(nom, denom):
         c_nom = c_denom
         c_denom = t
     return r_denoms
-

@@ -6,8 +6,7 @@ import builtins
 import re
 
 class cached_property(object):
-    '''
-    A read-only @property that is only evaluated once. 
+    '''A read-only @property that is only evaluated once. 
     The value is cached on the object itself rather than the function 
     or class; this should prevent memory leakage.
     '''
@@ -19,8 +18,7 @@ class cached_property(object):
         return result
 
 class core(cipher.core):
-    '''
-    Classical cipher base class.
+    '''Classical cipher base class.
     '''
     def __new__(cls, message, language = None):
         obj = str.__new__(cls, message)
@@ -53,8 +51,7 @@ class core(cipher.core):
 
     @cached_property
     def alphabet(self):
-        '''
-        S.alphabet -> list
+        '''S.alphabet -> list
         Return alphabet of estimated language.
         '''
         alphabet = linguistics.language_list[self.language]['alphabet']
@@ -63,8 +60,7 @@ class core(cipher.core):
 
     @cached_property
     def alphabet_distribued(self):
-        '''
-        S.alphabet -> list
+        '''S.alphabet -> list
         Return alphabet of estimated language.
         '''
         alphabet = linguistics.language_list[self.language]['alphabet']
@@ -74,8 +70,7 @@ class core(cipher.core):
 
     @cached_property
     def dictionary(self):
-        '''
-        S.dictionary -> tuple
+        '''S.dictionary -> tuple
         List of words in selected language.
         '''
         words = linguistics.get_dictionary(self.language)
@@ -83,8 +78,7 @@ class core(cipher.core):
     
     @cached_property
     def monograms(self):
-        '''
-        S.monograms -> list
+        '''S.monograms -> list
         List of monograms for selected language.
         '''
         monograms = linguistics.get_ngramms(1, self.language)
@@ -92,8 +86,7 @@ class core(cipher.core):
 
     @cached_property
     def bigrams(self):
-        '''
-        S.bigrams -> list
+        '''S.bigrams -> list
         List of bigrams for selected language.
         '''
         bigrams = linguistics.get_ngramms(2, self.language)
@@ -101,8 +94,7 @@ class core(cipher.core):
 
     @cached_property
     def trigrams(self):
-        '''
-        S.trigrams -> list
+        '''S.trigrams -> list
         List of trigrams for selected language.
         '''
         trigrams = linguistics.get_ngramms(3, self.language)
@@ -110,8 +102,7 @@ class core(cipher.core):
 
     @cached_property
     def tetragrams(self):
-        '''
-        S.tetragrams -> list
+        '''S.tetragrams -> list
         List of tetragrams for selected language.
         '''
         tetragrams = linguistics.get_ngramms(4, self.language)
@@ -119,8 +110,7 @@ class core(cipher.core):
 
     @cached_property
     def sample(self):
-        '''
-        S.sample -> str
+        '''S.sample -> str
         Remove all whitespaces and transform letters into lower case.
         '''
         sample = re.sub(re.compile('\s'), '', self.message)
@@ -128,8 +118,7 @@ class core(cipher.core):
         return ''.join(sample)
 
     def statistic(self):
-        '''
-        S.statistic -> list
+        '''S.statistic -> list
         Count how many times each char found in message.
         '''
         stat = {}
@@ -142,8 +131,7 @@ class core(cipher.core):
         return sorted(stat.items(), key = lambda x: x[1], reverse = True)
 
     def ord(self, char):
-        '''
-        S.ord(c) -> int
+        '''S.ord(c) -> int
         Return c position in the S natural alphabet.
         Negative for self.chr(): S.chr(self.ord(c)) should be c.
         '''
@@ -152,8 +140,7 @@ class core(cipher.core):
         return char
 
     def chr(self, n):
-        '''
-        S.ord(n) -> str
+        '''S.ord(n) -> str
         Return char for n position of S alphabet.
         Negative for self.ord(): S.ord(self.chr(n)) should be n.
         '''

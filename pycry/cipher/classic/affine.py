@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 #-*-coding:utf-8-*-
 import pycry.linguistics as linguistics
-import pycry.cipher.routine as routine
 import pycry.cipher.classic as classic
+import pycry.routine as routine
 import itertools
 import os
 
 class Affine(classic.core):
-    '''
-    This class makes research on afinne chipers.
+    '''This class makes research on afinne chipers.
     '''
     def encrypt(self, a, b):
         '''

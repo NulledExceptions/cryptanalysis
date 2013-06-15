@@ -6,14 +6,12 @@ import math
 import os
 
 class Caesar(classic.core):
-    """
-    An implementation of the Caesar cipher.
-    """
+    '''An implementation of the Caesar cipher.
+    '''
     def encrypt(self, shift):
-        """
-        Encipher input (plaintext) using the Caesar cipher and return it
-        (ciphertext).
-        """
+        '''Encipher input (plaintext) using the Caesar cipher 
+        and return it (ciphertext).
+        '''
         ciphertext = []
         for char in self.message:
             if char.upper() in self.alphabet:
@@ -25,10 +23,10 @@ class Caesar(classic.core):
         return ''.join(ciphertext)
 
     def decrypt(self, shift):
-        """
+        '''
         Decipher input (ciphertext) using the Caesar cipher and return it
         (plaintext).
-        """
+        '''
         return self.encrypt(-shift)
 
     def decipher(self):
@@ -53,8 +51,7 @@ class Caesar(classic.core):
         return max(hypotesa)[1:]
 
     def bruteforce(self):
-        '''
-        Full bruteforce with all keys, there are length of alphabet
+        '''Bruteforce with all keys, there are length of alphabet
         of them.
         '''
         hypotesa = []

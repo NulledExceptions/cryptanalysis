@@ -4,8 +4,7 @@ import math
 import json
 import os
 
-'''
-The following are language-specific data on character frequencies.
+'''The following are language-specific data on character frequencies.
 * kappa is the "index of coincidence"
   [link](http://en.wikipedia.org/wiki/Index_of_coincidence)
 * languages represented by ISO 639-1:2002 codes

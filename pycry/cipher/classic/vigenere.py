@@ -5,30 +5,26 @@ import optparse
 import os
 
 class Vigenere(classic.core):
-    """
-    An implementation of the Vigenere cipher.
-    """
+    '''An implementation of the Vigenere cipher.
+    '''
     def encrypt(self, key):
-        """
-        Encrypt input using the Vigenere cipher.
-        """
+        '''Encrypt input using the Vigenere cipher.
+        '''
         encrypt_letter = (lambda m, k: 
             self.chr((self.ord(m) + self.ord(k)) 
                 % len(self.alphabet)))
         return self.mapper(encrypt_letter, key)
 
     def decrypt(self, key):
-        """
-        Decrypt input using the Vigenere cipher.
-        """
+        '''Decrypt input using the Vigenere cipher.
+        '''
         decrypt_letter = (lambda m, k: 
             self.chr((self.ord(m) - self.ord(k) + len(self.alphabet)) 
                 % len(self.alphabet)))
         return self.mapper(decrypt_letter, key)
 
     def mapper(self, f, key):
-        '''
-        Blur all work except function.
+        '''Blur all work except function.
         '''
         key = key.upper()
         for letter in key:
@@ -73,4 +69,5 @@ if __name__ == '__main__':
             print("Defined language is {0}.".format(ct.language))
             ot = ct.decipher()
             print(ot[0])
-            print("Decryption parametres is a={0} and b={1}.".format(ot[1], ot[2]))
+            print("Decryption parametres is a={0} and b={1}.".format(
+                ot[1], ot[2]))
