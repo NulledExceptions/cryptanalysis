@@ -1,11 +1,10 @@
 *.pyc
-.ropeproject
 __pycache__
 build
+dist/
+pycry.egg-info/
 
-html
 *.pkl
-
 *.aux
 *.log
 *.out
