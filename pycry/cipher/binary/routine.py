@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-
-import os
-import sys
 import string
+import sys
+import os
 
 class MkdirError(Exception):
     pass
@@ -16,13 +15,11 @@ def load_file(filename):
     fd.close()
     return contents
 
-
 def save_file(filename, data):
     fd = open(filename, "wb")
     fd.write(data)
     fd.close()
     return
-
 
 def mkdir(dirname):
     if os.path.exists(dirname):
@@ -32,7 +29,6 @@ def mkdir(dirname):
     except BaseException as err:
         raise MkdirError(str(err))
     return
-
 
 def rmdir(dirname):
     if dirname[-1] == os.sep:
@@ -51,13 +47,6 @@ def rmdir(dirname):
     os.rmdir(dirname)
     return
 
-
-def decode_from_hex(text):
-    HEXDIGITS = "0123456789abcdefABCDEF"
-    only_hex_digits = "".join([c for c in text if c in HEXDIGITS])
-    return only_hex_digits.decode("hex")
-
-
 def parse_char(ch):
     """
     'A' or '\x41' or '41'
@@ -68,23 +57,11 @@ def parse_char(ch):
         ch = ch[2:]
     return int(ch, 16)
 
-
 def dexor(text, key):
     ret = list(text)
     for index, char in enumerate(ret):
         ret[index] = chr(ord(char) ^ ord(key[index % len(key)]))
     return "".join(ret)
-
-
-def die(exitMessage, exitCode=1):
-    print exitMessage
-    sys.exit(exitCode)
-    return
-
-
-def is_linux():
-    return sys.platform.startswith("linux")
-
 
 def alphanum(s):
     lst = list(s)
@@ -93,4 +70,3 @@ def alphanum(s):
             continue
         lst[index] = char.encode("hex")
     return "".join(lst)
-        

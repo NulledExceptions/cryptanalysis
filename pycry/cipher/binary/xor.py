@@ -1,46 +1,25 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*- coding:utf-8 -*-
-# ---------------------------------------------------------------
-# xortool.py
-#   A tool to do some xor analysis:
-#   - guess the key length (based on count of equal chars)
-#   - guess the key (base on knowledge of most frequent char)
-# Usage:
-#   xortool [-h|--help] [OPTIONS] [<filename>]
-# Options:
-#  -l,--key-length     length of the key (integer)
-#  -c,--char           most frequent char (one char or hex code)
-#  -m,--max-keylen=65  maximum key length to probe (integer)
-#  -x,--hex            input is hex-encoded str
-# Examples:
-#   xortool file.bin
-#   xortool -x -l 4 -c ' ' file.hex
 # ---------------------------------------------------------------
 # Author: hellman ( hellman1908@gmail.com )
 # License: GNU GPL v2 ( http://opensource.org/licenses/gpl-2.0.php )
 # ---------------------------------------------------------------
-
-import os
-import sys
-import math
-import string
-from colors import *
-
-from routine import *
 from args import parse_parameters, ArgError
+from routine import *
+import string
+import math
+import sys
+import os
 
-DIRNAME = 'xor_output'  # here plaintexts will be placed
+DIRNAME = 'xor_output'
 PARAMETERS = dict()
 
 def main():
     global PARAMETERS
     try:
         PARAMETERS = parse_parameters()
-
         ciphertext = get_ciphertext()
-
         update_key_length(ciphertext)
-
 
         if  PARAMETERS["brute_chars"] != None:
             try_chars = range(0,256)
@@ -49,19 +28,19 @@ def main():
         elif PARAMETERS["most_frequent_char"] != None:
             try_chars = [PARAMETERS["most_frequent_char"]]
         else:
-            die(C_WARN + "Most possible char is needed to guess the key!" + C_RESET)
+            print("Most possible char is needed to guess the key!")
+            sys.exit(0)
         
         (probable_keys, key_char_used) = guess_probable_keys_for_chars(ciphertext, try_chars)
-
         print_keys(probable_keys)
         produce_plaintexts(ciphertext, probable_keys, key_char_used)
 
     except IOError as err:
-        print C_FATAL + "[ERROR] Can't load file:\n\t", err, C_RESET
+        print("[ERROR] Can't load file:\n\t", err)
     except ArgError as err:
-        print C_FATAL + "[ERROR] Bad argument:\n\t", err, C_RESET
+        print("[ERROR] Bad argument:\n\t", err)
     except MkdirError as err:
-        print C_FATAL + "[ERROR] Can't create directory:\n\t", err, C_RESET
+        print("[ERROR] Can't create directory:\n\t", err)
     else:
         return
     cleanup()
@@ -76,7 +55,9 @@ def get_ciphertext():
     """
     ciphertext = load_file(PARAMETERS["filename"])
     if PARAMETERS["input_is_hex"]:
-        ciphertext = decode_from_hex(ciphertext)
+        HEXDIGITS = "0123456789abcdefABCDEF"
+        only_hex_digits = "".join([c for c in ciphertext if c in HEXDIGITS])
+        ciphertext = only_hex_digits.decode("hex")
     return ciphertext
 
 # -----------------------------------------------------------------------------
@@ -129,7 +110,7 @@ def calculate_fitnesses(text):
 
 
 def print_fitnesses(fitnesses):
-    print "The most probable key lengths:"
+    print("The most probable key lengths:")
 
     # top sorted by fitness, but print sorted by length
     fitnesses.sort(key=lambda a: a[1], reverse=True)
@@ -143,11 +124,9 @@ def print_fitnesses(fitnesses):
         s1 = str(key_length).rjust(4, " ")
         s2 = str(round(100 * fitness * 1.0 / fitness_sum, 1)) + "%"
         if fitness == best_fitness:
-            print C_BEST_KEYLEN + s1 + C_RESET + ":  ",
-            print C_BEST_PROB + s2 + C_RESET
+            print(s1 + ":  " + s2)
         else:
-            print C_KEYLEN + s1 + C_RESET + ":  ",
-            print C_PROB + s2 + C_RESET
+            print(s1 + ":  " + s2)
     return
 
 
@@ -184,7 +163,7 @@ def guess_and_print_divizors(fitnesses):
     ret = 2
     for number, divizors_count in enumerate(divizors_counts):
         if divizors_count == max_divizors:
-            print "Key-length can be " + C_DIV + str(number) + "*n" + C_RESET
+            print("Key-length can be " + str(number) + "*n")
             ret = number
             limit -= 1
             if limit == 0:
@@ -264,20 +243,16 @@ def all_keys(key_possible_bytes, key_part="", offset=0):
 
 def print_keys(keys):
     if not keys:
-        print "No keys guessed!"
+        print("No keys guessed!")
         return
     
-    s1 = C_COUNT + str(len(keys)) + C_RESET
-    s2 = C_COUNT + str(len(keys[0])) + C_RESET
-    print "{0} possible key(s) of length {1}:".format(s1, s2)
+    s1 = str(len(keys))
+    s2 = str(len(keys[0]))
+    print("{0} possible key(s) of length {1}:".format(s1, s2))
     for key in keys[:5]:
-        print C_KEY + repr(key)[1:-1] + C_RESET
+        print(repr(key)[1:-1])
     if len(keys) > 10:
-        print "..."
-
-# -----------------------------------------------------------------------------
-# RETURNS PERCENTAGE OF PRINABLE CHARS
-# -----------------------------------------------------------------------------
+        print("...")
 
 def percentage_printable(text):
     x = 0.0
@@ -286,14 +261,8 @@ def percentage_printable(text):
             x+=1
     return x/len(text)
     
-
-# -----------------------------------------------------------------------------
-# PRODUCE OUTPUT
-# -----------------------------------------------------------------------------
-
 def produce_plaintexts(ciphertext, keys, key_char_used):
-    """
-    Produce plaintext variant for each possible key,
+    """Produce plaintext variant for each possible key,
     creates csv files with keys, percentage of printable
     characters and used most frequent character
     """
@@ -318,7 +287,7 @@ def produce_plaintexts(ciphertext, keys, key_char_used):
     for index, key in enumerate(keys):
         key_index = str(index).rjust(len(str(len(keys) - 1)), "0")
         key_repr = repr(key)[1:-1].replace("/", "\\x2f")
-        if not is_linux():
+        if not sys.platform.startswith("linux"):
             key_repr = alphanum(key)
         file_name = os.path.join(DIRNAME, key_index + ".out")
 
@@ -327,18 +296,20 @@ def produce_plaintexts(ciphertext, keys, key_char_used):
         if perc > threshold_printable:
             count_printable += 1
         key_mapping.write("{0};{1}\n".format(file_name, key_repr))
-        perc_mapping.write("{0};{1};{2}\n".format(file_name, repr(key_char_used[key]), perc))
+        perc_mapping.write("{0};{1};{2}\n".format(
+            file_name, repr(key_char_used[key]), perc))
         f = open(file_name, "wb")
         f.write(dexored)
         f.close()
     key_mapping.close()
     perc_mapping.close()
 
-    s1 = C_COUNT + str(count_printable) + C_RESET
-    s2 = C_COUNT + str(round(threshold_printable)) + C_RESET
+    s1 = str(count_printable)
+    s2 = str(round(threshold_printable))
 
-    print "Found {0} plaintexts with {1}%+ printable characters".format(s1, s2)
-    print "See files {0}, {1}".format(fn_key_mapping, fn_perc_mapping)
+    print("Found {0} plaintexts with {1}%+ printable characters".format(
+        s1, s2))
+    print("See files {0}, {1}".format(fn_key_mapping, fn_perc_mapping))
     return
 
 def cleanup():

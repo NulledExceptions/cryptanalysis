@@ -20,21 +20,21 @@ PARAMETERS = {
 }
 
 def show_usage_and_exit():
-    print "xortool.py"
-    print "  A tool to do some xor analysis:"
-    print "  - guess the key length (based on count of equal chars)"
-    print "  - guess the key (base on knowledge of most probable char)"
-    print "Usage:"
-    print " ", os.path.basename(sys.argv[0]), "[-h|--help] [OPTIONS] [<filename>]"
-    print "Options:"
-    print " ", "-l,--key-length       length of the key (integer)"
-    print " ", "-c,--char             most possible char (one char or hex code)"
-    print " ", "-m,--max-keylen=32    maximum key length to probe (integer)"
-    print " ", "-x,--hex              input is hex-encoded str"
-    print " ", "-b,--brute-chars      brute force all possible characters"
-    print " ", "-o,--brute-printable  same as -b but will only use printable"
-    print " ", "                      characters for keys"
-    sys.exit(1)
+    print("xortool.py")
+    print("  A tool to do some xor analysis:")
+    print("  - guess the key length (based on count of equal chars)")
+    print("  - guess the key (base on knowledge of most probable char)")
+    print("Usage:")
+    print(" ", os.path.basename(sys.argv[0]), "[-h|--help] [OPTIONS] [<filename>]")
+    print("Options:")
+    print(" ", "-l,--key-length       length of the key (integer)")
+    print(" ", "-c,--char             most possible char (one char or hex code)")
+    print(" ", "-m,--max-keylen=32    maximum key length to probe (integer)")
+    print(" ", "-x,--hex              input is hex-encoded str")
+    print(" ", "-b,--brute-chars      brute force all possible characters")
+    print(" ", "-o,--brute-printable  same as -b but will only use printable")
+    print(" ", "                      characters for keys")
+    sys.exit(0)
     return
 
 
